@@ -2,11 +2,14 @@ var express = require('express');
 var app = express();
 
 app.get('/arse', function (req, res) {
-  res.send('<html><head><title>Hello</title></head><body><h2>Hello World</h2></body></html>\n');
+	res.send('<html><head><title>Hello</title></head><body><h2>Hello World</h2></body></html>\n');
 });
 
 app.get('/nitro/*', function (req, res) {
-  res.send('<html><head><title>Nitro Proxy</title></head><body><h2>Log content here</h2></body></html>\n');
+	var s = '<html><head><title>Nitro Proxy</title></head><body><h2>Log content here</h2>';
+	s += JSON.stringify(req,null,2);
+	s += '</body></html>\n';
+	res.send(s);
 });
 
 var myport = process.env.PORT || 3000;
