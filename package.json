@@ -2,7 +2,7 @@
   "name": "miniserver",
   "version": "1.0.0",
   "description": "Minimalist web server",
-  "main": "index.js",
+  "main": "app1.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
 	"start": "node app1.js"
