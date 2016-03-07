@@ -155,7 +155,7 @@ function finish(payload) {
 	rss['@version'] = "2.0";
 	rss.channel = {};
 	rss.channel.title = 'BBC RSS programmes feed - '+payload.feed;
-	rss.channel.link = 'http://bbc-rss.herokuapp.com/rss/'+payload.feed+'.rss';
+	rss.channel.link = 'http://bbc-rss.herokuapp.com/rss/'+payload.domain+'/'+payload.feed+'.rss';
 	rss.channel.description = 'Unofficial BBC iPlayer feeds';
 	rss.channel.webMaster = 'mike.ralphson@gmail.com (Mike Ralphson)';
 	rss.channel.pubDate = new Date().toUTCString();
@@ -165,23 +165,33 @@ function finish(payload) {
 	for (var j=0;j<payload.results.length;j++) {
 		var p = payload.results[j];
 		
-		var d = new Date(p.first_broadcast_date);
-		var title = (p.display_titles ? p.display_titles.title + 
-			(p.display_titles.subtitle ? ' / ' + p.display_titles.subtitle : '') : p.title);
-		if (p.parent) {
-			title = p.parent.title + ' / ' + title;
+		if ((payload.domain != 'tv') || (p.media_type != 'audio')) {
+			var d = new Date(p.first_broadcast_date);
+			var title = (p.display_titles ? p.display_titles.title + 
+				(p.display_titles.subtitle ? ' / ' + p.display_titles.subtitle : '') : p.title);
+			if (p.parent) {
+				title = p.parent.title + ' / ' + title;
+			}
+			
+			var i = {};
+			i.title = title;
+			i.link = 'http://bbc.co.uk/programmes/'+p.pid;
+			i.description = p.long_synopsis ? p.long_synopsis : (p.medium_synopsis ? p.medium_synopsis : p.short_synopsis);
+			i.category = p.media_type ? p.media_type : (payload.domain == 'radio' ? 'audio' : 'audio_video');
+			i.guid = {};
+			i.guid["@isPermaLink"] = 'false';
+			i.guid[""] = 'PID:' + p.pid;
+			i.pubDate = d.toUTCString();
+			if (i.pubDate == 'Invalid Date') {
+				i.pubDate = p.first_broadcast_date; // raw
+			}
+			
+			if (!i.description) {
+				i.description = i.title;
+			}
+			
+			rss.channel.item.push(i);
 		}
-		
-		var i = {};
-		i.title = title;
-		i.link = 'http://bbc.co.uk/programmes/'+p.pid;
-		i.description = p.long_synopsis ? p.long_synopsis : (p.medium_synopsis ? p.medium_synopsis : p.short_synopsis);
-		i.category = p.media_type ? p.media_type : 'audio';
-		i.guid = {};
-		i.guid["@isPermaLink"] = 'false';
-		i.guid[""] = 'PID:' + p.pid;
-		i.pubDate = d.toUTCString();
-		rss.channel.item.push(i);		
 	}
 	
 	feed.rss = rss;
@@ -192,17 +202,19 @@ function finish(payload) {
 }
 
 app.get('/', function (req, res) {
-	res.sendFile(__dirname+'/index.html');
+	res.sendFile(__dirname+'/pub/index.html');
 });
 
 app.get('/favicon.ico', function (req, res) {
 	res.sendFile(__dirname+'/favicon.ico');
 });
 
-app.use("/images",  express.static(__dirname + '/public/images'));
+app.use("/images",  express.static(__dirname + '/pub/images'));
+app.use("/css",  express.static(__dirname + '/pub/css'));
+app.use("/scripts",  express.static(__dirname + '/pub/scripts'));
 
 app.get('/*.html', function (req, res) {
-	res.sendFile(__dirname+req.path);
+	res.sendFile(__dirname+'/pub+'+req.path);
 });
 
 app.get('/nitro/*', function(req, res) {
@@ -245,6 +257,10 @@ app.get('/nitro/*', function(req, res) {
 	});
 });
 
+app.get('/rss/:domain/:feed.rss', function (req, res) {
+	res.send('Please use /rss/domain/formats/category.rss');
+});
+
 app.get('/rss/:domain/:top/:feed.rss', function (req, res) {
 	//. http://expressjs.com/en/api.html#req
 	//. http://expressjs.com/en/api.html#res
@@ -263,25 +279,33 @@ app.get('/rss/:domain/:top/:feed.rss', function (req, res) {
 		domain = '/radio';
 	}
 	mode = '/genres';
+	if (top == 'formats') {
+		mode = '/formats';
+		top = '';
+	}
 	
+	if (feed == 'all') {
+		feed = top;
+		feed = '';
+	}
+
 	var options = {
 		host: bbc,
 		port: 80,
-		path: domain+'/programmes'+mode+'/'+top+'/'+feed+'/player.json',
+		path: domain+'/programmes'+mode+(top ? '/'+top : '')+(feed ? '/'+feed : '')+'/player.json',
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
 		}
 	};
 	
-	console.log(options.path);
-	
 	getJSON(options,function(stateCode,obj) {
 		if (stateCode == 200) {
-			feed = top + '/' + feed;
+			feed = (top ? top : 'formats') + (feed ? '/' + feed : '');
 			var payload = {};
 			payload.res = res;
 			payload.finish = finish;
+			payload.domain = req.params.domain; //original not modified
 			payload.feed = feed;
 			children(obj,payload);
 		}
