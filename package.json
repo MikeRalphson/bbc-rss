@@ -5,7 +5,7 @@
   "main": "app1.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-	"start": "node app1.js"
+    "start": "node app1.js"
   },
   "keywords": [
     "http",
@@ -15,6 +15,7 @@
   "author": "Mike Ralphson",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.13.3"
+    "express": "^4.13.3",
+    "jgexml": "^0.2.0"
   }
 }
