@@ -216,7 +216,9 @@ app.get('/nitro/*', function(req, res) {
 			}
 		}
 		else {
-			s += '&' + q + '=' + escape(req.query[q]);
+			if (q != 'api_key') {
+				s += '&' + q + '=' + escape(req.query[q]);
+			}
 		}
 	}
 
