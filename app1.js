@@ -3,7 +3,7 @@ var https = require('https');
 var express = require('express');
 var app = express();
 
-var j2x = require('jgeXml/json2xml');
+var j2x = require('jgeXml/json2xml.js');
 
 const bbc = 'www.bbc.co.uk';
 
