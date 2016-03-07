@@ -192,7 +192,6 @@ function finish(payload) {
 }
 
 app.get('/', function (req, res) {
-//	res.send('<html><head><title>Hello</title></head><body><h2>Hello World</h2></body></html>\n');
 	res.sendFile(__dirname+'/index.html');
 });
 
@@ -200,14 +199,48 @@ app.get('/favicon.ico', function (req, res) {
 	res.sendFile(__dirname+'/favicon.ico');
 });
 
-app.use("/styles",  express.static(__dirname + '/public/stylesheets'));
+app.use("/images",  express.static(__dirname + '/public/images'));
 
 app.get('/*.html', function (req, res) {
 	res.sendFile(__dirname+req.path);
 });
 
 app.get('/nitro/*', function(req, res) {
+	var key = process.env.nitrokey || 'key';
+	var s = req.path+'?api_key='+key;
+	for (var q in req.query) {
+		//console.log(req.query[q]);
+		if (Array.isArray(req.query[q])) {
+			for (var a=0;a<req.query[q].length;a++) {
+				s += '&' + q + '=' + escape(req.query[q][a]);
+			}
+		}
+		else {
+			s += '&' + q + '=' + escape(req.query[q]);
+		}
+	}
+
+	var options = {
+		host: 'programmes.api.bbc.com',
+		port: 80,
+		path: s,
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json'
+		}
+	};
 	
+	console.log(options.path);
+	
+	getJSON(options,function(stateCode,obj) {
+		if (stateCode == 200) {
+			res.send(JSON.stringify(obj,null,2));
+		}
+		else {
+			res.send('Request failed with statusCode; '+stateCode);
+		}
+	});
 });
 
 app.get('/rss/:domain/:top/:feed.rss', function (req, res) {
