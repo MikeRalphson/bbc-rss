@@ -154,8 +154,8 @@ function finish(payload) {
 	var rss = {};
 	rss['@version'] = "2.0";
 	rss.channel = {};
-	rss.channel.title = 'BBC RSS programmes feed - '+payload.name;
-	rss.channel.link = 'http://bbc-rss.herokuapp.com/rss/'+payload.name+'.rss';
+	rss.channel.title = 'BBC RSS programmes feed - '+payload.feed;
+	rss.channel.link = 'http://bbc-rss.herokuapp.com/rss/'+payload.feed+'.rss';
 	rss.channel.description = 'Unofficial BBC iPlayer feeds';
 	rss.channel.webMaster = 'mike.ralphson@gmail.com (Mike Ralphson)';
 	rss.channel.pubDate = new Date().toUTCString();
