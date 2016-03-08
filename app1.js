@@ -201,13 +201,16 @@ function finish(payload) {
 	payload.res.send(s);
 }
 
-app.get('/', function (req, res) {
+app.get('/', function(req, res) {
 	res.sendFile(__dirname+'/pub/index.html');
 });
 
-app.get('/favicon.ico', function (req, res) {
+app.get('/favicon.ico', function(req, res) {
 	res.sendFile(__dirname+'/favicon.ico');
 });
+app.get('/browserconfig.xml', function(req,res) {
+	res.send('<?xml version="1.0" encoding="utf-8"?><browserconfig><msapplication></msapplication></browserconfig>');
+}
 
 app.use("/images",  express.static(__dirname + '/pub/images'));
 app.use("/css",  express.static(__dirname + '/pub/css'));
