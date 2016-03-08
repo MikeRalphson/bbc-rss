@@ -210,7 +210,7 @@ app.get('/favicon.ico', function(req, res) {
 });
 app.get('/browserconfig.xml', function(req,res) {
 	res.send('<?xml version="1.0" encoding="utf-8"?><browserconfig><msapplication></msapplication></browserconfig>');
-}
+});
 
 app.use("/images",  express.static(__dirname + '/pub/images'));
 app.use("/css",  express.static(__dirname + '/pub/css'));
