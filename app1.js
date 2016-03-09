@@ -30,7 +30,12 @@ getJSON = function(options, onResult)
         res.on('end', function() {
 			var obj = {};
 			if (res.statusCode == 200) {
-				obj = JSON.parse(output);
+				obj = {}
+				try {
+					obj = JSON.parse(output);
+				}
+				catch (err) {
+				}
 			}
             onResult(res.statusCode, obj);
         });
@@ -99,18 +104,20 @@ function list(payload,parent) {
 function children(obj,payload) {
 	payload.source = [];
 	payload.results = [];
-	for (var i=0;i<obj.category_slice.programmes.length;i++) {
-		p = obj.category_slice.programmes[i];
-		
-		if ((p.type == 'episode') || (p.type == 'clip')) {
-			payload.results.push(p);
-		}
-		else if ((p.type == 'brand') || (p.type == 'series')) {
-			var job = {};
-			job.done = false;
-			job.pid = p.pid;
-			payload.source.push(job);
-			list(payload,p);
+	if ((obj.category_slice) && (obj.category_slice.programmes)) {
+		for (var i=0;i<obj.category_slice.programmes.length;i++) {
+			p = obj.category_slice.programmes[i];
+			
+			if ((p.type == 'episode') || (p.type == 'clip')) {
+				payload.results.push(p);
+			}
+			else if ((p.type == 'brand') || (p.type == 'series')) {
+				var job = {};
+				job.done = false;
+				job.pid = p.pid;
+				payload.source.push(job);
+				list(payload,p);
+			}
 		}
 	}
 	return payload.results;
