@@ -71,7 +71,8 @@ function list(payload,parent) {
 		path: '/programmes/'+parent.pid+'/episodes/player.json',
 		method: 'GET',
 		headers: {
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			'Accept': 'application/json'
 		}
 	};
 	getJSON(options,function(stateCode,obj) {
@@ -123,6 +124,75 @@ function children(obj,payload) {
 	return payload.results;
 }
 
+function ss_child(payload,parent) {
+	//. http://www.bbc.co.uk/programmes/b0557671.json
+	var options = {
+		host: bbc,
+		port: 80,
+		path: '/programmes/'+parent.pid+'.json',
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json'
+		}
+	};
+	getJSON(options,function(stateCode,obj) {
+		if (stateCode == 200) {
+			var p = obj.programme;
+			if ((p.type == 'episode') || (p.type == 'clip')) {
+				p.parent = parent;
+				payload.results.push(p);
+			}
+			else {
+				console.log('Recursing to '+p.pid);
+				var job = {};
+				job.pid = p.pid;
+				job.done = false;
+				payload.source.push(job);
+				list(payload,p);
+			}
+		}
+		else {
+			console.log('Inner '+parent.pid+' '+stateCode);
+		}
+		clear(parent.pid,payload);
+	});
+}
+
+function ss_children(obj,payload) {
+	payload.source = [];
+	payload.results = [];
+	
+	var any = false;
+	
+	var input = obj[1];
+	
+	for (var i=0;i<input.length;i++) {
+		o = input[i];
+		for (var j=0;j<o.tleo.length;j++) {
+			p = o.tleo[j];
+			if (p.pid && p.type) {
+				any = true;
+				console.log('Children: '+p.type+' '+p.pid);
+				var job = {};
+				job.done = false;
+				job.pid = p.pid;
+				payload.source.push(job);
+				if ((p.type == 'episode') || (p.type == 'clip')) {
+					ss_child(payload,p);
+				}
+				else if ((p.type == 'brand') || (p.type == 'series')) {
+					list(payload,p);
+				}
+			}
+		}
+	}
+	if (!any) {
+		finish(payload);
+	}
+	return payload.results;
+}
+
 /*
     "type": "episode",
     "pid": "b007jmt2",
@@ -162,7 +232,7 @@ function finish(payload) {
 	rss['@version'] = "2.0";
 	rss.channel = {};
 	rss.channel.title = 'BBC RSS programmes feed - '+payload.feed;
-	rss.channel.link = 'http://bbc-rss.herokuapp.com/rss/'+payload.domain+'/'+payload.feed+'.rss';
+	rss.channel.link = 'http://bbc-rss.herokuapp.com/rss/'+(payload.domain ? payload.domain+'/' : '')+encodeURIComponent(payload.feed)+'.rss';
 	rss.channel.description = 'Unofficial BBC iPlayer feeds';
 	rss.channel.webMaster = 'mike.ralphson@gmail.com (Mike Ralphson)';
 	rss.channel.pubDate = new Date().toUTCString();
@@ -227,6 +297,45 @@ app.get('/*.html', function (req, res) {
 	res.sendFile(__dirname+'/pub+'+req.path);
 });
 
+app.get('/suggest', function(req, res) {
+	var key = process.env.searchsuggestkey || 'key';
+	var s = req.path+'?api_key='+key;
+	for (var q in req.query) {
+		if (Array.isArray(req.query[q])) {
+			for (var a=0;a<req.query[q].length;a++) {
+				s += '&' + q + '=' + encodeURIComponent(req.query[q][a]);
+			}
+		}
+		else {
+			if (q != 'api_key') {
+				s += '&' + q + '=' + encodeURIComponent(req.query[q]);
+			}
+		}
+	}
+
+	var options = {
+		host: 'search-suggest.api.bbci.co.uk',
+		port: 80,
+		path: s,
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json'
+		}
+	};
+	
+	console.log(options.path);
+	
+	getJSON(options,function(stateCode,obj) {
+		if (stateCode == 200) {
+			res.send(JSON.stringify(obj,null,2));
+		}
+		else {
+			res.send('Request failed with statusCode; '+stateCode);
+		}
+	});
+});
+
 app.get('/nitro/*', function(req, res) {
 	var key = process.env.nitrokey || 'key';
 	var s = req.path+'?api_key='+key;
@@ -234,12 +343,12 @@ app.get('/nitro/*', function(req, res) {
 		//console.log(req.query[q]);
 		if (Array.isArray(req.query[q])) {
 			for (var a=0;a<req.query[q].length;a++) {
-				s += '&' + q + '=' + escape(req.query[q][a]);
+				s += '&' + q + '=' + encodeURIComponent(req.query[q][a]);
 			}
 		}
 		else {
 			if (q != 'api_key') {
-				s += '&' + q + '=' + escape(req.query[q]);
+				s += '&' + q + '=' + encodeURIComponent(req.query[q]);
 			}
 		}
 	}
@@ -265,6 +374,42 @@ app.get('/nitro/*', function(req, res) {
 			res.send('Request failed with statusCode; '+stateCode);
 		}
 	});
+});
+
+app.get('/rss/custom/:search.rss', function (req, res) {
+	var options = {
+		host: 'search-suggest.api.bbci.co.uk',
+		port: 80,
+		path: '/search-suggest/suggest',
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json'
+		}
+	};
+	
+	options.path += '?apikey='+process.env.searchsuggestkey || 'key';
+	options.path += '&q='+encodeURIComponent(req.params.search);
+	options.path += '&scope=all';
+	options.path += '&format=bigscreen-2';
+	//options.path += '&mediatype=audio';
+	options.path += '&mediaset=pc';
+	
+	getJSON(options,function(stateCode,obj) {
+		if (stateCode == 200) {
+			feed = 'custom/' + req.params.search;
+			var payload = {};
+			payload.res = res;
+			payload.finish = finish;
+			payload.domain = req.params.domain; //original not modified
+			payload.feed = feed;
+			ss_children(obj,payload);
+		}
+		else {
+			res.send('<html><head><title>BBC RSS</title></head><body><h2>Feed not found</h2></body></html>\n');
+		}
+	});
+
 });
 
 app.get('/rss/:domain/:feed.rss', function (req, res) {
@@ -305,7 +450,8 @@ app.get('/rss/:domain/:top/:feed.rss', function (req, res) {
 		path: domain+'/programmes'+mode+(top ? '/'+top : '')+(feed ? '/'+feed : '')+'/player.json',
 		method: 'GET',
 		headers: {
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			'Accept': 'application/json'
 		}
 	};
 	
