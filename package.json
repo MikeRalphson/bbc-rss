@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.13.3",
-    "jgexml": "^0.2.0"
+    "jgexml": "^0.2.0",
+    "pg": "^4.5.1"
   }
 }

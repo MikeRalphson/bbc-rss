@@ -3,21 +3,26 @@ var https = require('https');
 var express = require('express');
 var app = express();
 
+var pg = require('pg');
+
 var j2x = require('jgexml/json2xml.js');
 
 const bbc = 'www.bbc.co.uk';
+var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/main';
+connectionString = connectionString + '?ssl=true';
+
 
 /**
  * getJSON:  REST get request returning JSON object(s)
  * @param options: http options object
  * @param callback: callback to pass the results JSON object(s) back
  */
-getJSON = function(options, onResult)
-{
+getJSON = function(options, onResult) {
     //console.log("rest::getJSON");
 
     var prot = options.port == 443 ? https : http;
 	console.log(options.path);
+	options.headers.Connection = 'keep-alive';
     var req = prot.request(options, function(res) {
         var output = '';
         console.log(options.host + ':' + res.statusCode);
@@ -47,6 +52,26 @@ getJSON = function(options, onResult)
 
     req.end();
 };
+
+function updateHitCounter() {
+	var client = new pg.Client(connectionString);
+	client.connect();
+	var query = client.query("UPDATE hitcounter SET hit = hit+1 WHERE app = 'bbc-rss'");
+	query.on('end', function() { client.end(); });
+}
+
+function getHitCounter(callback) {
+	var hit = {};
+	var client = new pg.Client(connectionString);
+	client.connect();
+	var query = client.query("SELECT hit FROM hitcounter WHERE app = 'bbc-rss'");
+	query.on('row', function(row) {
+		callback(row);
+	});
+	query.on('end', function() {	
+		client.end();
+	});
+}
 
 function clear(pid,payload) {
 	var undone = false;
@@ -278,6 +303,12 @@ function finish(payload) {
 	payload.res.send(s);
 }
 
+app.get('/dynamic/hitCounter.js', function(req,res) {
+	getHitCounter(function(hits) {
+		res.send('var hits = '+JSON.stringify(hits)+';');
+	});
+});
+
 app.get('/', function(req, res) {
 	res.sendFile(__dirname+'/pub/index.html');
 });
@@ -469,6 +500,8 @@ app.get('/rss/:domain/:top/:feed.rss', function (req, res) {
 			res.send('<html><head><title>BBC RSS</title></head><body><h2>Feed not found</h2></body></html>\n');
 		}
 	});
+	
+	updateHitCounter();
 
 });
 

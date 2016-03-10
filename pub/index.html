@@ -4,6 +4,7 @@
 	<link rel="stylesheet" type="text/css" href="/css/datatables.css" media="screen">
 	<script src="/scripts/jQuery-min.js"></script>
 	<script src="/scripts/dataTables.js"></script>
+	<script src="/dynamic/hitCounter.js"></script>
 
 </head>
 <body>
@@ -140,10 +141,15 @@
 </form>
 </div>
 
+<br />
+
+<div>Hit counter: <span id="spnHitCounter"></span></div>
+
 	<script language="JavaScript" type='text/javascript'>
 		var table;
 		$(document).ready(function(){
 			$('#tblMain').DataTable();
+			$('#spnHitCounter').text(hits.hit);
 			$('#btnCustom').click(function(){
 				var search = $('#txtCustom').val();
 				if (search) {
