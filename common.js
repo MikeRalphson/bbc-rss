@@ -116,10 +116,11 @@ function clear(pid,payload) {
 
 function list(payload,parent) {
 	//. path = '/programmes/'+obj.pid+'/episodes/player.json'
+	//. path = '/programmes/'+obj.pid+'/children.json'
 	var options = {
 		host: bbc,
 		port: 80,
-		path: '/programmes/'+parent.pid+'/episodes/player.json',
+		path: '/programmes/'+parent.pid+'/children.json',
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -129,12 +130,14 @@ function list(payload,parent) {
 	getJSON(options,function(stateCode,obj) {
 		if (stateCode == 200) {
 			//console.log(JSON.stringify(obj,null,2));
-			for (var i in obj.episodes) {
+			for (var i in obj.children.programmes) {
 				process.stdout.write('.');
-				var p = obj.episodes[i].programme;
+				var p = obj.children.programmes[i];
 				if ((p.type == 'episode') || (p.type == 'clip')) {
 					p.parent = parent;
-					payload.results.push(p);
+					if (p.available_until) {
+						payload.results.push(p);
+					}
 				}
 				else {
 					console.log('Recursing to '+p.pid);
@@ -180,6 +183,8 @@ module.exports = {
 			client.end();
 		});
 	},
+	
+	bbc: bbc,
 	
 	list : list,
 	

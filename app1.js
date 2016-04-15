@@ -117,7 +117,7 @@ app.get('/rss/:domain/:top/:feed.rss', function (req, res) {
 			children(obj,payload);
 		}
 		else {
-			res.send('<html><head><title>BBC RSS</title></head><body><h2>Feed not found</h2></body></html>\n');
+			res.send('<html><head><title>BBC RSS</title></head><body><h2>'+stateCode+': Feed not found</h2></body></html>\n');
 		}
 	});
 	
