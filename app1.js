@@ -3,6 +3,9 @@ var app = express();
 
 var common = require('./common');
 var searchSuggest = require('./searchSuggest');
+var ssp = require('./searchSuggestProxy');
+var nitro = require('./nitroProxy.js');
+var sky = require('./skyProxy.js');
 
 function children(obj,payload) {
 	payload.source = [];
@@ -10,7 +13,7 @@ function children(obj,payload) {
 	if ((obj.category_slice) && (obj.category_slice.programmes)) {
 		for (var i=0;i<obj.category_slice.programmes.length;i++) {
 			p = obj.category_slice.programmes[i];
-			
+
 			if ((p.type == 'episode') || (p.type == 'clip')) {
 				payload.results.push(p);
 			}
@@ -52,11 +55,15 @@ app.get('/*.html', function (req, res) {
 });
 
 app.get('/suggest', function(req, res) {
-	searchSuggestProxy(req,res);
+	ssp.searchSuggestProxy(req,res);
 });
 
 app.get('/nitro/*', function(req, res) {
-	nitroProxy(req,res);
+	nitro.nitroProxy(req,res);
+});
+
+app.get('/sky/*', function(req, res) {
+	sky.skyProxy(req,res);
 });
 
 app.get('/rss/custom/:search.rss', function (req, res) {
@@ -70,14 +77,14 @@ app.get('/rss/:domain/:feed.rss', function (req, res) {
 app.get('/rss/:domain/:top/:feed.rss', function (req, res) {
 	//. http://expressjs.com/en/api.html#req
 	//. http://expressjs.com/en/api.html#res
-	
+
 	// req.path (string)
 	// req.query (object)
 
 	var domain = req.params.domain;
-	var top = req.params.top; 
+	var top = req.params.top;
 	var feed = req.params.feed;
-	
+
 	if (domain == 'tv') {
 		domain = '';
 	}
@@ -89,7 +96,7 @@ app.get('/rss/:domain/:top/:feed.rss', function (req, res) {
 		mode = '/formats';
 		top = '';
 	}
-	
+
 	if (feed == 'all') {
 		feed = top;
 		feed = '';
@@ -105,7 +112,7 @@ app.get('/rss/:domain/:top/:feed.rss', function (req, res) {
 			'Accept': 'application/json'
 		}
 	};
-	
+
 	common.getJSON(options,function(stateCode,obj) {
 		if (stateCode == 200) {
 			feed = (top ? top : 'formats') + (feed ? '/' + feed : '');
@@ -120,7 +127,7 @@ app.get('/rss/:domain/:top/:feed.rss', function (req, res) {
 			res.send('<html><head><title>BBC RSS</title></head><body><h2>'+stateCode+': Feed not found</h2></body></html>\n');
 		}
 	});
-	
+
 	common.updateHitCounter();
 
 });
