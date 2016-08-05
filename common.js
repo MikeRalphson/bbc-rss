@@ -10,7 +10,6 @@ var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/ma
 connectionString = connectionString + '?ssl=true';
 
 function getJSON(options, onResult) {
-	//console.log("rest::getJSON");
 
 	var prot = options.port == 443 ? https : http;
 	console.log(options.path);
@@ -167,23 +166,33 @@ module.exports = {
 	getJSON : getJSON,
 
 	updateHitCounter : function() {
-		var client = new pg.Client(connectionString);
-		client.connect();
-		var query = client.query("UPDATE hitcounter SET hit = hit+1 WHERE app = 'bbc-rss'");
-		query.on('end', function() { client.end(); });
+		try {
+			var client = new pg.Client(connectionString);
+			client.connect();
+			var query = client.query("UPDATE hitcounter SET hit = hit+1 WHERE app = 'bbc-rss'");
+			query.on('end', function() { client.end(); });
+		}
+		catch (e) {
+		}
 	},
 
 	getHitCounter : function(callback) {
-		var hit = {};
-		var client = new pg.Client(connectionString);
-		client.connect();
-		var query = client.query("SELECT hit FROM hitcounter WHERE app = 'bbc-rss'");
-		query.on('row', function(row) {
-			callback(row);
-		});
-		query.on('end', function() {
-			client.end();
-		});
+		try {
+			var client = new pg.Client(connectionString);
+			client.connect();
+			var query = client.query("SELECT hit FROM hitcounter WHERE app = 'bbc-rss'");
+			query.on('row', function(row) {
+				callback(row);
+			});
+			query.on('end', function() {
+				client.end();
+			});
+		}
+		catch (e) {
+			var hit = {};
+			hit.hit = 0;
+			callback(hit);
+		}
 	},
 
 	bbc: bbc,

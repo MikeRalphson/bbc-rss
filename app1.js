@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 
 var common = require('./common');
+var pid = require('./pidInspector');
 var searchSuggest = require('./searchSuggest');
 var ssp = require('./searchSuggestProxy');
 var nitro = require('./nitroProxy.js');
@@ -44,6 +45,17 @@ app.get('/favicon.ico', function(req, res) {
 });
 app.get('/browserconfig.xml', function(req,res) {
 	res.send('<?xml version="1.0" encoding="utf-8"?><browserconfig><msapplication></msapplication></browserconfig>');
+});
+
+app.get('/pid.html', function(req,res) {
+	if (Object.keys(req.query).length>0) {
+		if (!pid.processPid(req,res)) {
+			res.sendFile(__dirname+'/pub/pidNotFound.html');
+		}
+	}
+	else {
+		res.sendFile(__dirname+'/pub'+req.path);
+	}
 });
 
 app.use("/images",  express.static(__dirname + '/pub/images'));

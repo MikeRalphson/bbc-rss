@@ -29,8 +29,6 @@ module.exports = {
 			}
 		};
 
-		console.log(options.path);
-
 		common.getJSON(options,function(stateCode,obj) {
 			res.setHeader('Access-Control-Allow-Origin','*');
 			if (stateCode == 200) {
