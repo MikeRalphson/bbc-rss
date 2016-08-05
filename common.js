@@ -47,7 +47,7 @@ function getJSON(options, onResult) {
 
 function finish(payload) {
 	console.log('final '+payload.results.length);
-	
+
 	var feed = {};
 	var rss = {};
 	rss['@version'] = "2.0";
@@ -59,23 +59,25 @@ function finish(payload) {
 	rss.channel.pubDate = new Date().toUTCString();
 	rss.channel.generator = 'bbcparse by Mermade Software';
 	rss.channel.item = [];
-	
+
 	for (var j=0;j<payload.results.length;j++) {
 		var p = payload.results[j];
-		
-		if ((payload.domain != 'tv') || (p.media_type != 'audio')) {
+
+		var domain = payload.orgDomain ? payload.orgDomain : payload.domain;
+
+		if ((domain != 'tv') || (p.media_type != 'audio')) {
 			var d = new Date(p.first_broadcast_date);
-			var title = (p.display_titles ? p.display_titles.title + 
+			var title = (p.display_titles ? p.display_titles.title +
 				(p.display_titles.subtitle ? ' / ' + p.display_titles.subtitle : '') : p.title);
 			if (p.parent) {
 				title = p.parent.title + ' / ' + title;
 			}
-			
+
 			var i = {};
 			i.title = title;
 			i.link = 'http://bbc.co.uk/programmes/'+p.pid;
 			i.description = p.long_synopsis ? p.long_synopsis : (p.medium_synopsis ? p.medium_synopsis : p.short_synopsis);
-			i.category = p.media_type ? p.media_type : (payload.domain == 'radio' ? 'audio' : 'audio_video');
+			i.category = p.media_type ? p.media_type : (domain == 'radio' ? 'audio' : 'audio_video');
 			i.guid = {};
 			i.guid["@isPermaLink"] = 'false';
 			i.guid[""] = 'PID:' + p.pid;
@@ -83,18 +85,18 @@ function finish(payload) {
 			if (i.pubDate == 'Invalid Date') {
 				i.pubDate = p.first_broadcast_date; // raw
 			}
-			
+
 			if (!i.description) {
 				i.description = i.title;
 			}
-			
+
 			rss.channel.item.push(i);
 		}
 	}
-	
+
 	feed.rss = rss;
 	s = j2x.getXml(feed,'@','',2);
-	
+
 	payload.res.set('Content-Type', 'text/xml');
 	payload.res.send(s);
 }
@@ -111,7 +113,7 @@ function clear(pid,payload) {
 	}
 	if (!undone) {
 		finish(payload);
-	}	
+	}
 }
 
 function list(payload,parent) {
@@ -179,15 +181,15 @@ module.exports = {
 		query.on('row', function(row) {
 			callback(row);
 		});
-		query.on('end', function() {	
+		query.on('end', function() {
 			client.end();
 		});
 	},
-	
+
 	bbc: bbc,
-	
+
 	list : list,
-	
+
 	finish : finish,
 
 	clear : clear

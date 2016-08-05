@@ -38,11 +38,11 @@ function ss_child(payload,parent) {
 function ss_children(obj,payload) {
 	payload.source = [];
 	payload.results = [];
-	
+
 	var any = false;
-	
+
 	var input = obj[1];
-	
+
 	for (var i=0;i<input.length;i++) {
 		o = input[i];
 		for (var j=0;j<o.tleo.length;j++) {
@@ -112,22 +112,22 @@ module.exports = {
 				'Accept': 'application/json'
 			}
 		};
-		
+
 		options.path += '?apikey='+process.env.searchsuggestkey || 'key';
 		options.path += '&q='+encodeURIComponent(req.params.search);
 		options.path += '&scope=all';
 		options.path += '&format=bigscreen-2';
 		//options.path += '&mediatype=audio';
 		options.path += '&mediaset=pc';
-		
+
 		common.getJSON(options,function(stateCode,obj) {
 			if (stateCode == 200) {
-				feed = 'custom/' + req.params.search;
 				var payload = {};
 				payload.res = res;
 				payload.finish = common.finish;
-				payload.domain = req.params.domain; //original not modified
-				payload.feed = feed;
+				payload.orgDomain = req.params.domain; //original not modified
+				payload.domain = 'custom';
+				payload.feed = req.params.search;
 				ss_children(obj,payload);
 			}
 			else {
