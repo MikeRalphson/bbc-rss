@@ -1,5 +1,6 @@
 var http = require('http');
 var https = require('https');
+var url = require('url');
 var pg = require('pg');
 
 var j2x = require('jgexml/json2xml.js');
@@ -8,6 +9,17 @@ const bbc = 'www.bbc.co.uk';
 
 var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/main';
 connectionString = connectionString + '?ssl=true';
+
+function hasHeader(header, headers) {
+	// snaffled from request module
+	var headers = Object.keys(headers || this.headers),
+		lheaders = headers.map(function (h) {return h.toLowerCase();});
+	header = header.toLowerCase();
+	for (var i=0;i<lheaders.length;i++) {
+		if (lheaders[i] === header) return headers[i];
+	}
+	return false;
+}
 
 function getJSON(options, onResult) {
 
@@ -25,15 +37,26 @@ function getJSON(options, onResult) {
 
 		res.on('end', function() {
 			var obj = {};
-			if (res.statusCode == 200) {
-				obj = {}
-				try {
-					obj = JSON.parse(output);
-				}
-				catch (err) {
-				}
+			if (res.statusCode >= 300 && res.statusCode < 400 && hasHeader('location', res.headers)) {
+				// handle redirects, as per request module
+				var location = res.headers[hasHeader('location', res.headers)];
+				var locUrl = url.parse(location);
+				options.path = locUrl.pathname;
+				options.host = locUrl.host;
+				console.log('Redirecting to '+options.path);
+				getJSON(options, onResult);
 			}
-			onResult(res.statusCode, obj);
+			else {
+				if (res.statusCode == 200) {
+					obj = {}
+					try {
+						obj = JSON.parse(output);
+					}
+					catch (err) {
+					}
+				}
+				onResult(res.statusCode, obj);
+			}
 		});
 	});
 
