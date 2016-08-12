@@ -6,6 +6,7 @@ var pid = require('./pidInspector');
 var searchSuggest = require('./searchSuggest');
 var ssp = require('./searchSuggestProxy');
 var nitro = require('./nitroProxy.js');
+var msp = require('./msProxy.js');
 var sky = require('./skyProxy.js');
 
 function children(obj,payload) {
@@ -76,6 +77,10 @@ app.get('/nitro/*', function(req, res) {
 
 app.get('/sky/*', function(req, res) {
 	sky.skyProxy(req,res);
+});
+
+app.get('/msProxy/*', function(req, res) {
+	msp.msProxy(req,res);
 });
 
 app.get('/rss/custom/:search.rss', function (req, res) {
