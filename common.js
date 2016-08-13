@@ -72,11 +72,15 @@ function finish(payload) {
 
 	var feed = {};
 	var rss = {};
-	rss['@version'] = "2.0";
+	rss['@version'] = '2.0';
+	rss["@xmlns:atom"] = 'http://www.w3.org/2005/Atom';
 	rss.channel = {};
 	rss.channel.title = 'BBC RSS programmes feed - '+payload.feed;
 	rss.channel.link = 'http://bbc-rss.herokuapp.com/rss/'+(payload.domain ? payload.domain+'/' : '')+encodeURIComponent(payload.prefix)+'/'+
 		encodeURIComponent(payload.feed)+'.rss';
+	rss["atom:link"] = {};
+	rss["atom:link"]["@rel"] = 'self';
+	rss["atom:link"][""] = rss.channel.link;
 	rss.channel.description = 'Unofficial BBC iPlayer feeds';
 	rss.channel.webMaster = 'mike.ralphson@gmail.com (Mike Ralphson)';
 	rss.channel.pubDate = new Date().toUTCString();
@@ -121,7 +125,7 @@ function finish(payload) {
 
 			i.enclosure = {};
 			i.enclosure["@url"] = 'http://ichef.bbci.co.uk/images/ic/320x180/'+p.image.pid+'.jpg';
-			i.enclosure["@length"] = 40000;
+			i.enclosure["@length"] = 15026;
 			i.enclosure["@type"] = 'image/jpeg';
 
 			rss.channel.item.push(i);

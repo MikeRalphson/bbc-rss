@@ -150,7 +150,7 @@ app.get('/rss/:domain/:prefix/:feed.rss', function (req, res) {
 		}
 	});
 
-	//common.updateHitCounter();
+	common.updateHitCounter();
 
 });
 
