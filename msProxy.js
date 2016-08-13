@@ -104,7 +104,9 @@ module.exports = {
 				res.send(s);
 			}
 			else {
-				res.send('Request failed with statusCode; '+stateCode);
+				var s = 'Request failed with statusCode; '+stateCode + '\n';
+				s += obj;
+				res.send(s);
 			}
 		});
 	}
