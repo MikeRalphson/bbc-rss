@@ -105,7 +105,12 @@ module.exports = {
 			}
 			else {
 				var s = 'Request failed with statusCode; '+stateCode + '\n';
-				s += obj;
+				if (typeof obj == 'object') {
+					s += JSON.stringify(obj,null,2);
+				}
+				else {
+					s += obj;
+				}
 				res.send(s);
 			}
 		});
