@@ -80,7 +80,7 @@ function finish(payload) {
 		encodeURIComponent(payload.feed)+'.rss';
 	rss["atom:link"] = {};
 	rss["atom:link"]["@rel"] = 'self';
-	rss["atom:link"][""] = rss.channel.link;
+	rss["atom:link"]["@href"] = rss.channel.link;
 	rss.channel.description = 'Unofficial BBC iPlayer feeds';
 	rss.channel.webMaster = 'mike.ralphson@gmail.com (Mike Ralphson)';
 	rss.channel.pubDate = new Date().toUTCString();
