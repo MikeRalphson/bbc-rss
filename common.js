@@ -78,10 +78,10 @@ function finish(payload) {
 	rss.channel.title = 'BBC RSS programmes feed - '+payload.feed;
 	rss.channel.link = 'http://bbc-rss.herokuapp.com/rss/'+(payload.domain ? payload.domain+'/' : '')+encodeURIComponent(payload.prefix)+'/'+
 		encodeURIComponent(payload.feed)+'.rss';
-	rss["atom:link"] = {};
-	rss["atom:link"]["@rel"] = 'self';
-	rss["atom:link"]["@href"] = rss.channel.link;
-	rss["atom:link"]["@type"] = 'application/rss+xml';
+	rss.channel["atom:link"] = {};
+	rss.channel["atom:link"]["@rel"] = 'self';
+	rss.channel["atom:link"]["@href"] = rss.channel.link;
+	rss.channel["atom:link"]["@type"] = 'application/rss+xml';
 	rss.channel.description = 'Unofficial BBC iPlayer feeds';
 	rss.channel.webMaster = 'mike.ralphson@gmail.com (Mike Ralphson)';
 	rss.channel.pubDate = new Date().toUTCString();
