@@ -19,7 +19,7 @@ function children(obj,payload) {
 			if ((p.type == 'episode') || (p.type == 'clip')) {
 				payload.results.push(p);
 				//if (payload.results.length == 1) {
-				//	console.log(JSON.stringify(p,null,2));
+				//  console.log(JSON.stringify(p,null,2));
 				//}
 			}
 			else if ((p.type == 'brand') || (p.type == 'series')) {
