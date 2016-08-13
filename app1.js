@@ -18,8 +18,12 @@ function children(obj,payload) {
 
 			if ((p.type == 'episode') || (p.type == 'clip')) {
 				payload.results.push(p);
+				//if (payload.results.length == 1) {
+				//	console.log(JSON.stringify(p,null,2));
+				//}
 			}
 			else if ((p.type == 'brand') || (p.type == 'series')) {
+				//console.log(JSON.stringify(p,null,2));
 				var job = {};
 				job.done = false;
 				job.pid = p.pid;
@@ -91,7 +95,7 @@ app.get('/rss/:domain/:feed.rss', function (req, res) {
 	res.send('Please use /rss/domain/formats/category.rss');
 });
 
-app.get('/rss/:domain/:top/:feed.rss', function (req, res) {
+app.get('/rss/:domain/:prefix/:feed.rss', function (req, res) {
 	//. http://expressjs.com/en/api.html#req
 	//. http://expressjs.com/en/api.html#res
 
@@ -99,7 +103,7 @@ app.get('/rss/:domain/:top/:feed.rss', function (req, res) {
 	// req.query (object)
 
 	var domain = req.params.domain;
-	var top = req.params.top;
+	var prefix = req.params.prefix;
 	var feed = req.params.feed;
 
 	if (domain == 'tv') {
@@ -109,20 +113,20 @@ app.get('/rss/:domain/:top/:feed.rss', function (req, res) {
 		domain = '/radio';
 	}
 	mode = '/genres';
-	if (top == 'formats') {
+	if (prefix == 'formats') {
 		mode = '/formats';
-		top = '';
+		prefix = '';
 	}
 
 	if (feed == 'all') {
-		feed = top;
+		feed = prefix;
 		feed = '';
 	}
 
 	var options = {
 		host: common.bbc,
 		port: 80,
-		path: domain+'/programmes'+mode+(top ? '/'+top : '')+(feed ? '/'+feed : '')+'/player.json',
+		path: domain+'/programmes'+mode+(prefix ? '/'+prefix : '')+(feed ? '/'+feed : '')+'/player.json',
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -132,11 +136,12 @@ app.get('/rss/:domain/:top/:feed.rss', function (req, res) {
 
 	common.getJSON(options,function(stateCode,obj) {
 		if (stateCode == 200) {
-			feed = (top ? top : 'formats') + (feed ? '/' + feed : '');
+			//feed = (prefix ? prefix : 'formats') + (feed ? '/' + feed : '');
 			var payload = {};
 			payload.res = res;
 			payload.finish = common.finish;
 			payload.domain = req.params.domain; //original not modified
+			payload.prefix = prefix ? prefix : 'formats';
 			payload.feed = feed;
 			children(obj,payload);
 		}
@@ -145,7 +150,7 @@ app.get('/rss/:domain/:top/:feed.rss', function (req, res) {
 		}
 	});
 
-	common.updateHitCounter();
+	//common.updateHitCounter();
 
 });
 

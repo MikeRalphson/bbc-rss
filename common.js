@@ -75,7 +75,8 @@ function finish(payload) {
 	rss['@version'] = "2.0";
 	rss.channel = {};
 	rss.channel.title = 'BBC RSS programmes feed - '+payload.feed;
-	rss.channel.link = 'http://bbc-rss.herokuapp.com/rss/'+(payload.domain ? payload.domain+'/' : '')+encodeURIComponent(payload.feed)+'.rss';
+	rss.channel.link = 'http://bbc-rss.herokuapp.com/rss/'+(payload.domain ? payload.domain+'/' : '')+encodeURIComponent(payload.prefix)+'/'+
+		encodeURIComponent(payload.feed)+'.rss';
 	rss.channel.description = 'Unofficial BBC iPlayer feeds';
 	rss.channel.webMaster = 'mike.ralphson@gmail.com (Mike Ralphson)';
 	rss.channel.pubDate = new Date().toUTCString();
@@ -88,11 +89,14 @@ function finish(payload) {
 		var domain = payload.orgDomain ? payload.orgDomain : payload.domain;
 
 		if ((domain != 'tv') || (p.media_type != 'audio')) {
-			var d = new Date(p.first_broadcast_date);
+			var d = new Date(p.actual_start);
 			var title = (p.display_titles ? p.display_titles.title +
 				(p.display_titles.subtitle ? ' / ' + p.display_titles.subtitle : '') : p.title);
 			if (p.parent) {
 				title = p.parent.title + ' / ' + title;
+			}
+			if (p.parent && p.parent.parent) {
+				title = p.parent.parent.title + ' / ' + title;
 			}
 
 			var i = {};
@@ -107,10 +111,18 @@ function finish(payload) {
 			if (i.pubDate == 'Invalid Date') {
 				i.pubDate = p.first_broadcast_date; // raw
 			}
+			if (typeof i.pubDate == 'undefined') {
+				i.pubDate = new Date().toUTCString();
+			}
 
 			if (!i.description) {
 				i.description = i.title;
 			}
+
+			i.enclosure = {};
+			i.enclosure["@url"] = 'http://ichef.bbci.co.uk/images/ic/320x180/'+p.image.pid+'.jpg';
+			i.enclosure["@length"] = 40000;
+			i.enclosure["@type"] = 'image/jpeg';
 
 			rss.channel.item.push(i);
 		}
@@ -157,14 +169,18 @@ function list(payload,parent) {
 			for (var i in obj.children.programmes) {
 				process.stdout.write('.');
 				var p = obj.children.programmes[i];
+				p.parent = parent;
+				//p.grandparent = parent.parent;
 				if ((p.type == 'episode') || (p.type == 'clip')) {
-					p.parent = parent;
 					if (p.available_until) {
+						//console.log(JSON.stringify(p,null,2));
 						payload.results.push(p);
 					}
 				}
 				else {
+					// brand or series
 					console.log('Recursing to '+p.pid);
+					//console.log(JSON.stringify(p,null,2));
 					var job = {};
 					job.pid = p.pid;
 					job.done = false;
