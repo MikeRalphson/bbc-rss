@@ -76,8 +76,8 @@ function finish(payload) {
 	rss["@xmlns:atom"] = 'http://www.w3.org/2005/Atom';
 	rss.channel = {};
 	rss.channel.title = 'BBC RSS programmes feed - '+payload.feed;
-	rss.channel.link = 'http://bbc-rss.herokuapp.com/rss/'+(payload.domain ? payload.domain+'/' : '')+encodeURIComponent(payload.prefix)+'/'+
-		encodeURIComponent(payload.feed)+'.rss';
+	rss.channel.link = 'http://bbc-rss.herokuapp.com/rss/'+(payload.domain ? payload.domain+'/' : '')+(payload.prefix ?
+		encodeURIComponent(payload.prefix)+'/' : '')+encodeURIComponent(payload.feed)+'.rss';
 	rss.channel["atom:link"] = {};
 	rss.channel["atom:link"]["@rel"] = 'self';
 	rss.channel["atom:link"]["@href"] = rss.channel.link;
@@ -97,10 +97,11 @@ function finish(payload) {
 			var d = new Date(p.actual_start);
 			var title = (p.display_titles ? p.display_titles.title +
 				(p.display_titles.subtitle ? ' / ' + p.display_titles.subtitle : '') : p.title);
-			if (p.parent) {
+			var orgTitle = title;
+			if ((p.parent) && (p.parent.title != orgTitle)) {
 				title = p.parent.title + ' / ' + title;
 			}
-			if (p.parent && p.parent.parent) {
+			if ((p.parent && p.parent.parent) && (p.parent.parent.title != orgTitle)) {
 				title = p.parent.parent.title + ' / ' + title;
 			}
 
