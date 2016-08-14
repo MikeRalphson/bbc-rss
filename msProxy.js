@@ -35,6 +35,16 @@ module.exports = {
 			if (stateCode == 200) {
 				s = '<html><head><title>MediaSelector</title></head><body>';
 
+				var pids = req.path.split('/');
+				for (var p in pids) {
+					if (pids[p].match('^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$')) {
+						pid = pids[p];
+						result = true;
+					}
+				}
+
+				s += '<h1>Version PID: '+pid+'</h1>';
+
 				s += '<pre>';
 				delete obj.disclaimer;
 				//s += JSON.stringify(obj,null,2);
@@ -49,7 +59,7 @@ module.exports = {
 				s += '<td>Size</td>';
 				s += '<td>Priority</td>';
 				s += '<td>Link</td>';
-				s += '<td>Host</td>';
+				s += '<td>Supplier</td>';
 				s += '</tr></thead>';
 
 				for (var m in obj.media) {
@@ -90,8 +100,8 @@ module.exports = {
 
 						var u = url.parse(conn.href);
 
-						row += '<td><a href="'+conn.href+'">'+conn.protocol+'/'+conn.transferFormat+'@'+conn.supplier+'</a></td>';
-						row += '<td>'+u.host+'</td>';
+						row += '<td><a href="'+conn.href+'">'+conn.protocol+(conn.transferFormat ? '+'+conn.transferFormat : '')+'://'+u.host+'</a></td>';
+						row += '<td>'+conn.supplier+'</td>';
 
 						row += '</tr>';
 						s += row;

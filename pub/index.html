@@ -2,6 +2,7 @@
 <head><title>Mermade BBC RSS Feeds</title>
 
 	<link rel="stylesheet" type="text/css" href="/css/datatables.css" media="screen">
+	<link rel="stylesheet" type="text/css" href="/css/smart-green.css" media="screen">
 	<script src="/scripts/jQuery-min.js"></script>
 	<script src="/scripts/dataTables.js"></script>
 	<script src="/dynamic/hitCounter.js"></script>
@@ -10,16 +11,22 @@
 <body>
 
 <a href="https://github.com/mermade/bbc-rss"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+<img alt="Valid RSS" style="position: absolute; top: 5; left: 5; border: 0;" src="/images/valid-rss-rogers.png"/>
 
+<div class="smart-green">
 <h1 align="center">Mermade BBC RSS Feeds</h1>
-<table width="70%" align="center">
-<tr><td>
+<!--<table width="70%" align="center">
+<tr><td>-->
 
 <table id="tblMain" width="100%" class="stripe">
 <thead>
 <tr><td>iPlayer Category</td><td>Radio Feed</td><td>TV Feed</td></tr>
 </thead>
 <tbody>
+
+<tr><td>Animation</td><td>Unavailable</td><td><a href="/rss/tv/formats/animation.rss">TV Feed</a></td></tr>
+<tr><td>Appeals</td><td><a href="/rss/radio/formats/appeals.rss">Radio Feed</a></td><td>Unavailable</td></tr>
+<tr><td>Bulletins</td><td><a href="/rss/radio/formats/bulletins.rss">Radio Feed</a></td><td><a href="/rss/tv/formats/bulletins.rss">TV Feed</a></td></tr>
 <tr><td>Comedy All</td><td><a href="/rss/radio/comedy/all.rss">Radio Feed</a></td><td><a href="/rss/tv/comedy/all.rss">TV Feed</a></td></tr>
 <tr><td>Comedy Character</td><td><a href="/rss/radio/comedy/character.rss">Radio Feed</a></td><td><a href="/rss/tv/comedy/character.rss">TV Feed</a></td></tr>
 <tr><td>Comedy Impressionists</td><td><a href="/rss/radio/comedy/impressionists.rss">Radio Feed</a></td><td><a href="/rss/tv/comedy/impressionists.rss">TV Feed</a></td></tr>
@@ -30,6 +37,9 @@
 <tr><td>Comedy Spoof</td><td><a href="/rss/radio/comedy/spoof.rss">Radio Feed</a></td><td><a href="/rss/tv/comedy/spoof.rss">TV Feed</a></td></tr>
 <tr><td>Comedy Standup</td><td><a href="/rss/radio/comedy/standup.rss">Radio Feed</a></td><td><a href="/rss/tv/comedy/standup.rss">TV Feed</a></td></tr>
 <tr><td>Comedy Stunt</td><td><a href="/rss/radio/comedy/stunt.rss">Radio Feed</a></td><td><a href="/rss/tv/comedy/stunt.rss">TV Feed</a></td></tr>
+<tr><td>Discussion &amp; Talk</td><td><a href="/rss/radio/formats/discussionandtalk.rss">Radio Feed</a></td><td><a href="/rss/tv/formats/discussionandtalk.rss">TV Feed</a></td></tr>
+<tr><td>Docudramas</td><td><a href="/rss/radio/formats/docudramas.rss">Radio Feed</a></td><td><a href="/rss/tv/formats/docudramas.rss">TV Feed</a></td></tr>
+<tr><td>Documentaries</td><td><a href="/rss/radio/formats/documentaries.rss">Radio Feed</a></td><td><a href="/rss/tv/formats/documentaries.rss">TV Feed</a></td></tr>
 <tr><td>Drama All</td><td><a href="/rss/radio/drama/all.rss">Radio Feed</a></td><td><a href="/rss/tv/drama/all.rss">TV Feed</a></td></tr>
 <tr><td>Drama Action &amp; Adventure</td><td><a href="/rss/radio/drama/actionandadventure.rss">Radio Feed</a></td><td><a href="/rss/tv/drama/actionandadventure.rss">TV Feed</a></td></tr>
 <tr><td>Drama Biographical</td><td><a href="/rss/radio/drama/biographical.rss">Radio Feed</a></td><td><a href="/rss/tv/drama/biographical.rss">TV Feed</a></td></tr>
@@ -71,11 +81,14 @@
 <tr><td>Factual Science &amp; Nature</td><td><a href="/rss/radio/factual/scienceandnature.rss">Radio Feed</a></td><td><a href="/rss/tv/factual/scienceandnature.rss">TV Feed</a></td></tr>
 <tr><td>Factual Travel</td><td><a href="/rss/radio/factual/travel.rss">Radio Feed</a></td><td><a href="/rss/tv/factual/travel.rss">TV Feed</a></td></tr>
 <tr><td>Films</td><td>Unavailable</td><td><a href="/rss/tv/formats/films.rss">TV Feed</a></td></tr>
+<tr><td>Games &amp; Quizzes</td><td><a href="/rss/radio/formats/gamesandquizzes.rss">Radio Feed</a></td><td><a href="/rss/tv/formats/gamesandquizzes.rss">TV Feed</a></td></tr>
 <tr><td>Learning All</td><td><a href="/rss/radio/learning/all.rss">Radio Feed</a></td><td><a href="/rss/tv/learning.rss">TV Feed</a></td></tr>
 <tr><td>Learning Adults</td><td><a href="/rss/radio/learning/adults.rss">Radio Feed</a></td><td><a href="/rss/tv/learning/adults.rss">TV Feed</a></td></tr>
 <tr><td>Learning Pre-School</td><td><a href="/rss/radio/learning/preschool.rss">Radio Feed</a></td><td><a href="/rss/tv/learning/preschool.rss">TV Feed</a></td></tr>
 <tr><td>Learning Primary</td><td><a href="/rss/radio/learning/primary.rss">Radio Feed</a></td><td><a href="/rss/tv/learning/primary.rss">TV Feed</a></td></tr>
 <tr><td>Learning Secondary</td><td><a href="/rss/radio/learning/secondary.rss">Radio Feed</a></td><td><a href="/rss/tv/learning/secondary.rss">TV Feed</a></td></tr>
+<tr><td>Magazines &amp; Reviews</td><td><a href="/rss/radio/formats/magazinesandreviews.rss">Radio Feed</a></td><td><a href="/rss/tv/formats/magazinesandreviews.rss">TV Feed</a></td></tr>
+<tr><td>Makeovers</td><td>Unavailable</td><td><a href="/rss/tv/formats/makeovers.rss">TV Feed</a></td></tr>
 <tr><td>Music All</td><td><a href="/rss/radio/music/all.rss">Radio Feed</a></td><td><a href="/rss/tv/music/all.rss">TV Feed</a></td></tr>
 <tr><td>Music Classic Pop &amp; Rock</td><td><a href="/rss/radio/music/classicpopandrock.rss">Radio Feed</a></td><td><a href="/rss/tv/music/classicpopandrock.rss">TV Feed</a></td></tr>
 <tr><td>Music Classical</td><td><a href="/rss/radio/music/classical.rss">Radio Feed</a></td><td><a href="/rss/tv/music/classical.rss">TV Feed</a></td></tr>
@@ -91,6 +104,10 @@
 <tr><td>Music Soul &amp; Reggae</td><td><a href="/rss/radio/music/soulandreggae.rss">Radio Feed</a></td><td><a href="/rss/tv/music/soulandreggae.rss">TV Feed</a></td></tr>
 <tr><td>Music World</td><td><a href="/rss/radio/music/world.rss">Radio Feed</a></td><td><a href="/rss/tv/music/world.rss">TV Feed</a></td></tr>
 <tr><td>News News</td><td><a href="/rss/radio/news/all.rss">Radio Feed</a></td><td><a href="/rss/tv/news/all.rss">TV Feed</a></td></tr>
+<tr><td>Performances &amp; Events</td><td><a href="/rss/radio/formats/performancesandevents.rss">Radio Feed</a></td><td><a href="/rss/tv/formats/performancesandevents.rss">TV Feed</a></td></tr>
+<tr><td>Phone-ins</td><td><a href="/rss/radio/formats/phoneins.rss">Radio Feed</a></td><td>Unavailable</td></tr>
+<tr><td>Readings</td><td><a href="/rss/radio/formats/readings.rss">Radio Feed</a></td><td>Unavailable</td></tr>
+<tr><td>Reality</td><td>Unavailable</td><td><a href="/rss/tv/formats/reality.rss">TV Feed</a></td></tr>
 <tr><td>Sport All</td><td><a href="/rss/radio/sport/all.rss">Radio Feed</a></td><td><a href="/rss/tv/sport.rss">TV Feed</a></td></tr>
 <tr><td>Sport American Football</td><td><a href="/rss/radio/sport/americanfootball.rss">Radio Feed</a></td><td><a href="/rss/tv/sport/americanfootball.rss">TV Feed</a></td></tr>
 <tr><td>Sport Athletics</td><td><a href="/rss/radio/sport/athletics.rss">Radio Feed</a></td><td><a href="/rss/tv/sport/athletics.rss">TV Feed</a></td></tr>
@@ -127,24 +144,29 @@
 <tr><td>Sport Triathlon</td><td><a href="/rss/radio/sport/triathlon.rss">Radio Feed</a></td><td><a href="/rss/tv/sport/triathlon.rss">TV Feed</a></td></tr>
 <tr><td>Sport Winter Olympics</td><td><a href="/rss/radio/sport/winterolympics.rss">Radio Feed</a></td><td><a href="/rss/tv/sport/winterolympics.rss">TV Feed</a></td></tr>
 <tr><td>Sport Winter Sports</td><td><a href="/rss/radio/sport/wintersports.rss">Radio Feed</a></td><td><a href="/rss/tv/sport/wintersports.rss">TV Feed</a></td></tr>
+<tr><td>Talent Shows</td><td>Unavailable</td><td><a href="/rss/tv/formats/talentshows.rss">TV Feed</a></td></tr>
 </tbody>
 </table>
 
-</td></tr>
-</table>
+<!--</td></tr>
+</table>-->
 
 <br/>
 
-<div align="center">
 <form>
-	<img alt="Valid RSS" src="/images/valid-rss-rogers.png"/>
-	<br/><br/>
-	<label>Custom search:</label><input id="txtCustom" type="text"></input>
-	<input type="button" id="btnCustom" value="Generate"/>
-	<br/>
-	<a href="#" id='aCustom' style="display: none;">Custom RSS feed</a>
+	<h2>Other options</h2>
+	<label for="txtCustom">
+		<span>Custom search:</span>
+		<input id="txtCustom" type="text"></input>
+	</label>
+	<div class="sg-button-box">
+	<input type="button" id="btnCustom" class="button" value="Generate"/>
+	<span>&nbsp;</span>
+	<a href="#" id='aCustom' class="button" style="display: none;">Click here for your custom RSS feed</a>
+	<span>&nbsp;</span>
+	<a class="button" href="/pid.html">New! PID Inspector</a>
+	</div>
 </form>
-<a href="/pid.html">PID Inspector</a>
 </div>
 
 <br />
