@@ -24,11 +24,11 @@ function hasHeader(header, headers) {
 function getJSON(options, onResult) {
 
 	var prot = options.port == 443 ? https : http;
-	console.log(options.path);
+	//console.log(options.path);
 	options.headers.Connection = 'keep-alive';
 	var req = prot.request(options, function(res) {
 		var output = '';
-		console.log(options.host + ':' + res.statusCode);
+		//console.log(options.host + ':' + res.statusCode);
 		res.setEncoding('utf8');
 
 		res.on('data', function (chunk) {
@@ -68,7 +68,7 @@ function getJSON(options, onResult) {
 }
 
 function finish(payload) {
-	console.log('final '+payload.results.length);
+	//console.log('final '+payload.results.length);
 
 	var feed = {};
 	var rss = {};
@@ -173,7 +173,7 @@ function list(payload,parent) {
 		if (stateCode == 200) {
 			//console.log(JSON.stringify(obj,null,2));
 			for (var i in obj.children.programmes) {
-				process.stdout.write('.');
+				//process.stdout.write('.');
 				var p = obj.children.programmes[i];
 				p.parent = parent;
 				//p.grandparent = parent.parent;
@@ -185,7 +185,7 @@ function list(payload,parent) {
 				}
 				else {
 					// brand or series
-					console.log('Recursing to '+p.pid);
+					//console.log('Recursing to '+p.pid);
 					//console.log(JSON.stringify(p,null,2));
 					var job = {};
 					job.pid = p.pid;
@@ -196,7 +196,7 @@ function list(payload,parent) {
 			}
 		}
 		else {
-			console.log('Inner '+parent.pid+' '+stateCode);
+			console.log('Inner '+parent.pid+' '+stateCode+' ecc: '+(parent.expected_child_count ? expected_child_count : 0));
 		}
 		clear(parent.pid,payload);
 	});

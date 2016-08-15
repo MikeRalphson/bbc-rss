@@ -42,6 +42,7 @@ app.get('/dynamic/hitCounter.js', function(req,res) {
 });
 
 app.get('/', function(req, res) {
+	if (req.headers.referer) console.log(req.headers.referer);
 	res.sendFile(__dirname+'/pub/index.html');
 });
 
@@ -101,6 +102,8 @@ app.get('/rss/:domain/:prefix/:feed.rss', function (req, res) {
 
 	// req.path (string)
 	// req.query (object)
+	console.log(req.path);
+	if (req.headers.referer) console.log(req.headers.referer);
 
 	var domain = req.params.domain;
 	var prefix = req.params.prefix;
