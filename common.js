@@ -196,7 +196,7 @@ function list(payload,parent) {
 			}
 		}
 		else {
-			console.log('Inner '+parent.pid+' '+stateCode+' ecc: '+(parent.expected_child_count ? expected_child_count : 0));
+			console.log('Inner '+parent.pid+' '+stateCode+' ecc: '+(parent.expected_child_count ? parent.expected_child_count : 0));
 		}
 		clear(parent.pid,payload);
 	});

@@ -103,7 +103,9 @@ app.get('/rss/:domain/:prefix/:feed.rss', function (req, res) {
 	// req.path (string)
 	// req.query (object)
 	console.log(req.path);
-	if (req.headers.referer) console.log(req.headers.referer);
+	for (var h in req.headers) {
+		console.log(h+': '+req.headers[h]);
+	}
 
 	var domain = req.params.domain;
 	var prefix = req.params.prefix;
