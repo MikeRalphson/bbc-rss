@@ -125,10 +125,12 @@ function finish(payload) {
 				i.description = i.title;
 			}
 
-			i.enclosure = {};
-			i.enclosure["@url"] = 'http://ichef.bbci.co.uk/images/ic/320x180/'+p.image.pid+'.jpg';
-			i.enclosure["@length"] = 15026;
-			i.enclosure["@type"] = 'image/jpeg';
+			if (p.image && p.image.pid) {
+				i.enclosure = {};
+				i.enclosure["@url"] = 'http://ichef.bbci.co.uk/images/ic/320x180/'+p.image.pid+'.jpg';
+				i.enclosure["@length"] = 15026;
+				i.enclosure["@type"] = 'image/jpeg';
+			}
 
 			rss.channel.item.push(i);
 		}
@@ -196,7 +198,8 @@ function list(payload,parent) {
 			}
 		}
 		else {
-			console.log('Inner '+parent.pid+' '+stateCode+' ecc: '+(parent.expected_child_count ? parent.expected_child_count : 0));
+			var ecc = (parent.expected_child_count ? parent.expected_child_count : 0);
+			if (ecc>0) console.log('Inner '+parent.pid+' '+stateCode+' '+parent.title+' ecc: '+ecc);
 		}
 		clear(parent.pid,payload);
 	});

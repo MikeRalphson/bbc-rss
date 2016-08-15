@@ -93,7 +93,10 @@ app.get('/rss/custom/:search.rss', function (req, res) {
 });
 
 app.get('/rss/:domain/:feed.rss', function (req, res) {
-	res.send('Please use /rss/domain/formats/category.rss');
+	// redirect for a couple of incorrect feed links, now corrected
+	var p = req.path;
+	p = p.replace('.rss','/all.rss');
+	res.redirect(301,p);
 });
 
 app.get('/rss/:domain/:prefix/:feed.rss', function (req, res) {
