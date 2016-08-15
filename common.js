@@ -75,17 +75,17 @@ function finish(payload) {
 	rss['@version'] = '2.0';
 	rss["@xmlns:atom"] = 'http://www.w3.org/2005/Atom';
 	rss.channel = {};
-	rss.channel.title = 'BBC RSS programmes feed - '+payload.feed;
+	rss.channel.title = 'BBC iPlayer RSS programmes feed - '+payload.feed;
 	rss.channel.link = 'http://bbc-rss.herokuapp.com/rss/'+(payload.domain ? payload.domain+'/' : '')+(payload.prefix ?
 		encodeURIComponent(payload.prefix)+'/' : '')+encodeURIComponent(payload.feed)+'.rss';
 	rss.channel["atom:link"] = {};
 	rss.channel["atom:link"]["@rel"] = 'self';
 	rss.channel["atom:link"]["@href"] = rss.channel.link;
 	rss.channel["atom:link"]["@type"] = 'application/rss+xml';
-	rss.channel.description = 'Unofficial BBC iPlayer feeds';
+	rss.channel.description = 'Unofficial BBC iPlayer RSS feeds';
 	rss.channel.webMaster = 'mike.ralphson@gmail.com (Mike Ralphson)';
 	rss.channel.pubDate = new Date().toUTCString();
-	rss.channel.generator = 'bbcparse by Mermade Software';
+	rss.channel.generator = 'bbcparse by Mermade Software http://github.com/mermade/bbc-rss';
 	rss.channel.item = [];
 
 	for (var j=0;j<payload.results.length;j++) {
@@ -98,11 +98,11 @@ function finish(payload) {
 			var title = (p.display_titles ? p.display_titles.title +
 				(p.display_titles.subtitle ? ' / ' + p.display_titles.subtitle : '') : p.title);
 			var orgTitle = title;
-			if ((p.parent) && (p.parent.title != orgTitle)) {
-				title = p.parent.title + ' / ' + title;
+			if ((p.ancestor) && (p.ancestor.title != orgTitle)) {
+				title = p.ancestor.title + ' / ' + title;
 			}
-			if ((p.parent && p.parent.parent) && (p.parent.parent.title != orgTitle)) {
-				title = p.parent.parent.title + ' / ' + title;
+			if ((p.ancestor && p.ancestor.ancestor) && (p.ancestor.ancestor.title != orgTitle)) {
+				title = p.ancestor.ancestor.title + ' / ' + title;
 			}
 
 			var i = {};
@@ -173,12 +173,12 @@ function list(payload,parent) {
 	};
 	getJSON(options,function(stateCode,obj) {
 		if (stateCode == 200) {
+			//console.log(JSON.stringify(parent,null,2));
 			//console.log(JSON.stringify(obj,null,2));
 			for (var i in obj.children.programmes) {
 				//process.stdout.write('.');
 				var p = obj.children.programmes[i];
-				p.parent = parent;
-				//p.grandparent = parent.parent;
+				p.ancestor = parent;
 				if ((p.type == 'episode') || (p.type == 'clip')) {
 					if (p.available_until) {
 						//console.log(JSON.stringify(p,null,2));
