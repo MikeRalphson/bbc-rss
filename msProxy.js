@@ -34,7 +34,7 @@ module.exports = {
 			res.setHeader('Access-Control-Allow-Origin','*');
 			if (stateCode == 200) {
 				s = '<html><head><title>MediaSelector</title></head>';
-				s += '<link rel="stylesheet" href="//yui.yahooapis.com/pure/0.6.0/pure-min.css">';
+				s += '<link rel="stylesheet" href="//css/pure.css">';
 				s += '<body>';
 
 				var pids = req.path.split('/');
