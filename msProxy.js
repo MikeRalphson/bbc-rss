@@ -33,7 +33,9 @@ module.exports = {
 		common.getJSON(options,function(stateCode,obj) {
 			res.setHeader('Access-Control-Allow-Origin','*');
 			if (stateCode == 200) {
-				s = '<html><head><title>MediaSelector</title></head><body>';
+				s = '<html><head><title>MediaSelector</title></head>';
+				s += '<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">';
+				s += '<body>';
 
 				var pids = req.path.split('/');
 				for (var p in pids) {
@@ -50,7 +52,7 @@ module.exports = {
 				//s += JSON.stringify(obj,null,2);
 				s += '</pre>';
 
-				s += '<table border="2" cellpadding="5"><thead><tr>'
+				s += '<table border="2" cellpadding="5" class="pure-table pure-table-striped"><thead><tr>'
 				s += '<td>Width</td>';
 				s += '<td>Height</td>';
 				s += '<td>Bitrate</td>';

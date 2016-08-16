@@ -21,6 +21,7 @@
   "dependencies": {
     "bbcparse": "latest",
     "compression": "^1.6.2",
+    "ejs": "^2.5.1",
     "express": "^4.13.3",
     "jgexml": "^0.2.0",
     "pg": "^4.5.6"
