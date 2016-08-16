@@ -24,7 +24,7 @@ function getSegments(req,res,pid) {
 		res.setHeader('Access-Control-Allow-Origin','*');
 		if (stateCode == 200) {
 			var html = '<html><head><title></title>';
-			html += '<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">';
+			html += '<link rel="stylesheet" href="//yui.yahooapis.com/pure/0.6.0/pure-min.css">';
 			html += '</head><body>';
 			html += '<h1>Programme Segment information</h1>';
 			html += '<table border="1" class="pure-table pure-table-striped"><thead><tr><td>Artist</td><td>Performer</td><td>Track</td></tr></thead><tbody>';
@@ -77,7 +77,7 @@ function getVersions(req,res,pid,raw) {
 
 	nitro.make_request('programmes.api.bbc.com',api.nitroProgrammes,api_key,query,{},function(obj){
 		var s = '<html><head><title>PID Inspector</title>';
-		s += '<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">';
+		s += '<link rel="stylesheet" href="//yui.yahooapis.com/pure/0.6.0/pure-min.css">';
 		s += '</head><body>';
 
 		if ((obj.nitro.results.items && obj.nitro.results.items.length == 1) && (!raw)) {
@@ -148,7 +148,7 @@ function clone(obj) {
 
 function processResponses(res,r,title) {
 	var s = '<html><head><title>PID Inspector</title>';
-	s += '<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">';
+	s += '<link rel="stylesheet" href="//yui.yahooapis.com/pure/0.6.0/pure-min.css">';
 	s += '</head><body>';
 
 	var seen = [];
