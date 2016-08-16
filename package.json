@@ -19,7 +19,7 @@
   "author": "Mike Ralphson",
   "license": "ISC",
   "dependencies": {
-    "bbcparse": "latest",
+    "bbcparse": "^1.1.11",
     "compression": "^1.6.2",
     "ejs": "^2.5.1",
     "express": "^4.13.3",
