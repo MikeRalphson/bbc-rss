@@ -76,9 +76,9 @@ function getVersions(req,res,pid,raw) {
 	var api_key = process.env.nitrokey || 'key';
 
 	nitro.make_request('programmes.api.bbc.com',api.nitroProgrammes,api_key,query,{},function(obj){
-		var s = '<html><head><title>PID Inspector</title></head>';
+		var s = '<html><head><title>PID Inspector</title>';
 		s += '<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">';
-		s += '<body>';
+		s += '</head><body>';
 
 		if ((obj.nitro.results.items && obj.nitro.results.items.length == 1) && (!raw)) {
 			var item = obj.nitro.results.items[0];
@@ -147,9 +147,9 @@ function clone(obj) {
 }
 
 function processResponses(res,r,title) {
-	var s = '<html><head><title>PID Inspector</title></head>';
+	var s = '<html><head><title>PID Inspector</title>';
 	s += '<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">';
-	s += '<body>';
+	s += '</head><body>';
 
 	var seen = [];
 
