@@ -13,6 +13,7 @@ var msp = require('./msProxy.js');
 var sky = require('./skyProxy.js');
 
 function children(obj,payload) {
+	var deferred = 0;
 	payload.source = [];
 	payload.results = [];
 	if ((obj.category_slice) && (obj.category_slice.programmes)) {
@@ -27,6 +28,7 @@ function children(obj,payload) {
 			}
 			else if ((p.type == 'brand') || (p.type == 'series')) {
 				//console.log(JSON.stringify(p,null,2));
+				deferred++;
 				var job = {};
 				job.done = false;
 				job.pid = p.pid;
@@ -34,6 +36,10 @@ function children(obj,payload) {
 				common.list(payload,p);
 			}
 		}
+	}
+	if (deferred<=0) {
+		console.log('Empty or all episodes');
+		common.finish(payload);
 	}
 	return payload.results;
 }

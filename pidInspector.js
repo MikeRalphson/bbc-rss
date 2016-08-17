@@ -1,3 +1,4 @@
+var url = require('url');
 var ejs = require('ejs');
 var common = require('./common');
 var nitro = require('bbcparse/nitroSdk.js');
@@ -174,8 +175,10 @@ function processResponses(res,r,title) {
 			for (var c in media.connection) {
 				var conn = media.connection[c];
 
-				if (seen.indexOf(conn.href) < 0) {
-					seen.push(conn.href);
+				var u = url.parse(conn.href);
+
+				if (seen.indexOf(u.path) < 0) {
+					seen.push(u.path);
 
 					var flat = clone(media);
 					delete flat.connection;

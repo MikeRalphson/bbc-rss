@@ -53,6 +53,7 @@ function getJSON(options, onResult) {
 						obj = JSON.parse(output);
 					}
 					catch (err) {
+						console.log('Invalid json received: '+output);
 					}
 				}
 				onResult(res.statusCode, obj);
