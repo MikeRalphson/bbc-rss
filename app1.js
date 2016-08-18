@@ -10,6 +10,7 @@ var searchSuggest = require('./searchSuggest');
 var ssp = require('./searchSuggestProxy');
 var nitro = require('./nitroProxy.js');
 var msp = require('./msProxy.js');
+var channel4 = require('./channel4.js');
 var sky = require('./skyProxy.js');
 
 function children(obj,payload) {
@@ -99,6 +100,20 @@ app.get('/msProxy/*', function(req, res) {
 
 app.get('/rss/custom/:search.rss', function (req, res) {
 	searchSuggest.searchSuggest(req,res);
+});
+
+app.get('/rss/channel4/:category.rss', function (req, res) {
+	channel4.getCategory(req,res);
+});
+app.get('/rss/channel4/channel/:channel.rss', function (req, res) {
+	req.params.category = 'channel/'+req.params.channel;
+	delete req.params.channel;
+	channel4.getCategory(req,res);
+});
+app.get('/rss/channel4/derived/:mode.rss', function (req, res) {
+	req.params.category = 'derived/'+req.params.mode;
+	delete req.params.mode;
+	channel4.getCategory(req,res);
 });
 
 app.get('/rss/:domain/:feed.rss', function (req, res) {
