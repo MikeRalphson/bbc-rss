@@ -1,11 +1,11 @@
 {
-  "name": "miniserver",
+  "name": "bbc-rss",
   "version": "1.0.0",
-  "description": "Minimalist web server",
-  "main": "app1.js",
+  "description": "BBC iPlayer RSS adaptor",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app1.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -17,10 +17,11 @@
     "test"
   ],
   "author": "Mike Ralphson",
-  "license": "ISC",
+  "license": "BSD-3-Clause",
   "dependencies": {
     "bbcparse": "^1.1.11",
     "openc4": "latest",
+    "jgexml": "latest",
     "compression": "^1.6.2",
     "ejs": "^2.5.1",
     "express": "^4.13.3",

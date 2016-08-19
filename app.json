@@ -1,6 +1,6 @@
 {
   "name": "Mermade BBC-RSS adaptor",
-  "description": "An adaptor to provide the missing BBC RSS feeds",
+  "description": "An adaptor to provide missing BBC iPlayer RSS feeds",
   "repository": "https://github.com/mermade/bbc-rss",
   "logo": "http://bbc-rss.herokuapp.com/images/logo.png",
   "keywords": ["bbc", "nitro", "rss", "adaptor", "API", "proxy"],

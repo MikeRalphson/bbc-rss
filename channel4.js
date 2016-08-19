@@ -30,7 +30,7 @@ function respond(category,obj,res) {
 	rss.channel.generator = 'openc4 by Mermade Software http://github.com/mermade/openc4';
 	rss.channel.item = [];
 
-	var e = toArray(obj.feed.entry);
+	var e = obj.feed ? toArray(obj.feed.entry) : [];
 
 	for (var j=0;j<e.length;j++) {
 		var p = e[j];
