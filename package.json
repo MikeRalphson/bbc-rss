@@ -12,9 +12,15 @@
     "url": "git+https://github.com/Mermade/bbc-rss.git"
   },
   "keywords": [
-    "http",
-    "server",
-    "test"
+    "bbc",
+    "rss",
+    "iplayer",
+    "nitro",
+    "channel4",
+    "radio",
+    "tv",
+    "entertainment",
+    "uk"
   ],
   "author": "Mike Ralphson",
   "license": "BSD-3-Clause",

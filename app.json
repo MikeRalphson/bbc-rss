@@ -8,7 +8,17 @@
     "nitrokey": {
       "description": "Your Nitro API key (leave blank for /progs access only)",
       "value": "",
-	  "required": false
+      "required": false
+    },
+    "searchsuggestkey": {
+      "description": "Your BBC searchSuggest API key (can be left blank)",
+      "value": "",
+      "required": false
+    },
+    "C4_API_KEY": {
+      "description": "Your Channel4 API key (leave blank for BBC access only)",
+      "value": "",
+      "required": false
     }
   }
 }
