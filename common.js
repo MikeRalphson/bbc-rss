@@ -68,6 +68,42 @@ function getJSON(options, onResult) {
 	req.end();
 }
 
+function getHTML(options, onResult) {
+
+	var prot = options.port == 443 ? https : http;
+	options.headers.Connection = 'keep-alive';
+	var req = prot.request(options, function(res) {
+		var output = '';
+		res.setEncoding('utf8');
+
+		res.on('data', function (chunk) {
+			output += chunk;
+		});
+
+		res.on('end', function() {
+			if (res.statusCode >= 300 && res.statusCode < 400 && hasHeader('location', res.headers)) {
+				// handle redirects, as per request module
+				var location = res.headers[hasHeader('location', res.headers)];
+				var locUrl = url.parse(location);
+				options.path = locUrl.pathname;
+				options.host = locUrl.host;
+				console.log('Redirecting to '+options.path);
+				getJSON(options, onResult);
+			}
+			else {
+				onResult(res.statusCode, output);
+			}
+		});
+	});
+
+	req.on('error', function(err) {
+		onResult(500,'error: ' + err.message + ' ' + output);
+	});
+
+	req.end();
+}
+
+
 function finish(payload) {
 	//console.log('final '+payload.results.length);
 
@@ -213,6 +249,8 @@ module.exports = {
 	 * @param callback: callback to pass the results JSON object(s) back
 	 */
 	getJSON : getJSON,
+
+	getHTML : getHTML,
 
 	updateHitCounter : function() {
 		try {

@@ -49,7 +49,8 @@
     margin-top: 10px;
     color: #5E5E5E;
 }
-.smart-green input[type="text"], .smart-green input[type="email"], .smart-green input[type="password"], .smart-green textarea, .smart-green select {
+.smart-green input[type="text"], .smart-green input[type="email"], .smart-green input[type="password"], .smart-green input[type="range"],
+	.smart-green textarea, .smart-green select {
     color: #555;
     height: 30px;
     line-height:15px;

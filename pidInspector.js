@@ -1,8 +1,11 @@
 var url = require('url');
 var ejs = require('ejs');
+var cheerio = require('cheerio');
 var common = require('./common');
 var nitro = require('bbcparse/nitroSdk.js');
 var api = require('bbcparse/nitroApi/api.js');
+
+//http://www.developerdrive.com/2012/07/creating-a-slider-control-with-the-html5-range-input/
 
 function getSegments(req,res,pid) {
 
@@ -321,11 +324,142 @@ function analyseVersions(req,res,pid,raw) {
 	});
 }
 
+function extractPids(req,res,urlObject,raw) {
+	var options = {
+		host: urlObject.host,
+		port: urlObject.port,
+		path: urlObject.path,
+		method: 'GET',
+		headers: {
+			'Accept': 'text/html'
+		}
+	};
+	var html = common.getHTML(options,function(stateCode,body){
+
+		var s = '<html><head><title>PID breakdown</title>';
+	    s += '<link rel="stylesheet" href="/css/pure.css">';
+		s += '<link rel="stylesheet" type="text/css" href="/css/smart-green.css" media="screen">';
+
+		s += '</head><body>';
+		s += '<div class="smart-green">';
+		s += '<h1>PID Breakdown</h1>';
+
+		var $ = cheerio.load(body);
+
+		var results = [];
+		var log = '';
+
+		$("script").each(function(i,e){
+			var text = $(e).text();
+			if (text.indexOf('{"meta":{')>=0) {
+				var content = '{"meta":{'+text.split('{"meta":{')[1];
+				//content = content.substr(0,content.length-3);
+				content = content.replace('); });','');
+				var obj = {};
+				try {
+					var obj = JSON.parse(content);
+					if (obj.body.media.pid) {
+						var result = {};
+						result.title = obj.body.title;
+						result.pid = obj.body.media.pid;
+						result.url = 'http://www.bbc.co.uk/programmes/'+result.pid;
+						result.vpid = 'n/a';
+						result.image = obj.body.media.holdingImageUrl;
+						result.duration = obj.body.media.duration;
+						results.push(result);
+					}
+					for (var p in obj.body.promos) {
+						var promo = obj.body.promos[p];
+						var result = {};
+						result.title = promo.title;
+						result.url = 'http://www.bbc.co.uk'+promo.url;
+						result.image = promo.image.href;
+						result.pid = promo.asset.media.pid ? promo.asset.media.pid : 'n/a';
+						result.vpid = 'n/a';
+						result.duration = promo.asset.media.duration;
+						results.push(result);
+					}
+				}
+				catch (ex) {
+				}
+
+				//log += JSON.stringify(obj,null,2)+'\n';
+				//log += text+'\n';
+			}
+		});
+
+		$("figure").each(function (){
+			var e = this;
+
+			var playable = $(e).attr('data-playable');
+			if (playable) {
+				var opt = {};
+				try {
+					opt = JSON.parse(playable);
+					var result = {};
+					result.title = opt.settings.playlistObject.title;
+					result.url = opt.settings.externalEmbedUrl;
+					result.pid = opt.settings.statsObject.clipPID;
+					result.vpid = opt.settings.playlistObject.items[0].vpid;
+					result.image = opt.otherSettings.unProcessedImageUrl;
+					if (!result.pid) {
+						result.pid = '<a href="/pidlookup.html?vpid='+result.vpid+'">Needs lookup</a>';
+					}
+					results.push(result);
+				}
+				catch (e) {
+					log += '\n'+e;
+				}
+				log += '<pre>'+JSON.stringify(opt,null,2)+'</pre>';
+			}
+		});
+
+		/*
+		<div class="video">
+		<div class="emp" data-pid="p023317q" data-poster-template="http://ichef.bbci.co.uk/images/ic/$recipe/p0249p99.jpg" data-version-pid="p0233186" data-guidance=""><p class="emp__message--no-js">You need to have JavaScript enabled to view this video clip.</p></div>
+		<p class="caption k-type-body-article">Bang Goes the Theory presenters Jem and Dallas use a 340m plastic tubing coiled to experience the speed of sound</p>
+		</div>
+		*/
+
+		$("div .video").each(function (i,e){
+			var div2 = $(e).children("div .emp").first();
+			var result = {};
+			result.duration = 'n/a';
+			result.image = $(div2).attr('data-poster-template').replace('$recipe','640x360');
+			result.pid = $(div2).attr('data-pid');
+			result.vpid = $(div2).attr('data-version-pid');
+			result.title = $(e).children("p").first().text();
+			result.url = 'http://www.bbc.co.uk/programmes/'+result.pid;
+			results.push(result);
+		});
+
+		s += '<table border="1" class="pure-table pure-table-striped"><thead><tr><td>Title</td><td>PID</td><td>VPID</td><td>Image</td>';
+		s += '<td>Durn</td></tr></thead>';
+		for (var r in results) {
+			var result = results[r];
+			s += '<tr><td><a href="'+result.url+'">'+result.title+'</a></td><td>'+result.pid+'</td><td>'+result.vpid+'</td>';
+			s += '<td><a href="'+result.image+'">Image</a></td><td>'+result.duration+'</td></tr>';
+		}
+		s += '</table>';
+		s += '</div>';
+
+		if (log) {
+			s += '<pre>'+log+'</pre>';
+		}
+
+		s += '</body></html>';
+
+		res.send(s);
+	});
+}
+
 module.exports = {
 
 	processPid :  function(req,res) {
 		result = false;
 		var pid = req.query.txtPid;
+		var link;
+
 		if (pid) {
 			var pids = pid.split('/');
 			for (var p in pids) {
@@ -334,6 +468,12 @@ module.exports = {
 					result = true;
 				}
 			}
+
+			if ((!result) && ((typeof req.query.btnExtract !== 'undefined'))) {
+				link = url.parse(pid);
+				result = ((link.protocol == 'http:') || (link.protocol == 'https:'));
+			}
+
 			if (result) {
 				var raw = (typeof req.query.raw !== 'undefined');
 				console.log('Looking for pid '+pid+' raw:'+raw);
@@ -345,6 +485,9 @@ module.exports = {
 				}
 				else if (typeof req.query.btnAnalyse !== 'undefined') {
 					var versions = analyseVersions(req,res,pid,raw);
+				}
+				else if (typeof req.query.btnExtract !== 'undefined') {
+					var pids = extractPids(req,res,link,raw);
 				}
 				else {
 					result = false;
