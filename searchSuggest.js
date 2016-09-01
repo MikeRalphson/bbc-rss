@@ -20,7 +20,7 @@ function ss_child(payload,parent) {
 				payload.results.push(p);
 			}
 			else {
-				console.log('Recursing to '+p.pid);
+				//console.log('Recursing to '+p.pid);
 				var job = {};
 				job.pid = p.pid;
 				job.done = false;
@@ -28,9 +28,9 @@ function ss_child(payload,parent) {
 				common.list(payload,p);
 			}
 		}
-		else {
-			console.log('Inner '+parent.pid+' '+stateCode);
-		}
+		//else {
+		//	console.log('Inner '+parent.pid+' '+stateCode);
+		//}
 		common.clear(parent.pid,payload);
 	});
 }
@@ -49,7 +49,7 @@ function ss_children(obj,payload) {
 			p = o.tleo[j];
 			if (p.pid && p.type) {
 				any = true;
-				console.log('Children: '+p.type+' '+p.pid);
+				//console.log('Children: '+p.type+' '+p.pid);
 				var job = {};
 				job.done = false;
 				job.pid = p.pid;
@@ -131,7 +131,9 @@ module.exports = {
 				ss_children(obj,payload);
 			}
 			else {
-				res.send('<html><head><title>BBC RSS</title></head><body><h2>Feed not found</h2></body></html>\n');
+				var data = {};
+				data.stateCode = stateCode;
+				res.render('fnf',data);
 			}
 		});
 	}

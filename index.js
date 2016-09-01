@@ -187,7 +187,9 @@ app.get('/rss/:domain/:prefix/:feed.rss', function (req, res) {
 			children(obj,payload);
 		}
 		else {
-			res.send('<html><head><title>BBC RSS</title></head><body><h2>'+stateCode+': Feed not found</h2></body></html>\n');
+			var data = {};
+			data.stateCode = stateCode;
+			res.render('fnf',data);
 		}
 	});
 

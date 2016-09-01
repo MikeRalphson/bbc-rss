@@ -9,7 +9,15 @@
 			<h2>
 				The PID for VPID <%= vpid %> is <a href="http://www.bbc.co.uk/programmes/<%= pid %>"><%= pid %></a>
 			</h2>
+			<% if (obj.nitro.results.items && obj.nitro.results.items.length>0) { %>
+				<h3>Type of PID: <%= obj.nitro.results.items[0].version_of.result_type %>.
+					Duration: <%= obj.nitro.results.items[0].duration %>
+				</h3>
+			<% } // end if result %>
+			<a class="button" href="javascript:history.back()">Go Back</a>
 		</div>
-		<pre><%= JSON.stringify(obj,null,2) %></pre>
+		<% if (raw) { %>
+			<pre><%= JSON.stringify(obj,null,2) %></pre>
+		<% } // end if raw %>
 	</body>
 </html>

@@ -1,0 +1,27 @@
+<html><head><title>PID breakdown</title>
+<link rel="stylesheet" href="/css/pure.css">
+<link rel="stylesheet" type="text/css" href="/css/smart-green.css" media="screen">
+</head><body>
+<div class="smart-green">
+<h1>PID Breakdown</h1>
+
+<table border="1" class="pure-table pure-table-striped"><thead><tr><td>Type</td><td>Title</td><td>PID</td><td>VPID</td><td>Image</td>
+<td>Durn</td></tr></thead>
+
+<% results.forEach(function(result){ %>
+
+	<tr><td><%= result.type %></td><td><%- result.title %></td><td><%- result.pid %></td><td><%= result.vpid %></td>
+	<td><a href="<%= result.image %>">Image</a></td><td><%= result.duration %></td></tr>
+
+<% }); %>
+
+</table>
+<br/>
+<a class="button" href="/pid.html">Go back</a>
+</div>
+
+<% if (log) { %>
+	<pre><%= log %></pre>
+<% } %>
+
+</body></html>
