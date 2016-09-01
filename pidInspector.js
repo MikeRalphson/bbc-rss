@@ -324,6 +324,26 @@ function analyseVersions(req,res,pid,raw) {
 	});
 }
 
+function vpidLookup(req,res) {
+	var api_key = process.env.nitrokey || 'key';
+	var query = nitro.newQuery();
+	query.add(api.fVersionsPid,req.query.vpid,true);
+	nitro.make_request('programmes.api.bbc.com',api.nitroVersions,api_key,query,{},function(obj){
+		var data = {};
+		data.vpid = req.query.vpid;
+		if (obj.nitro.results.items && obj.nitro.results.items.length>0) {
+			data.pid = obj.nitro.results.items[0].version_of.pid
+		}
+		else {
+			data.pid = 'Not found';
+		}
+		data.obj = obj;
+		res.render('vpidResult',data);
+	},function(statecode,err){
+		res.sendFile(__dirname+'/pub/pidNotFound.html');
+	});
+}
+
 function extractPids(req,res,urlObject,raw) {
 	var options = {
 		host: urlObject.host,
@@ -347,7 +367,7 @@ function extractPids(req,res,urlObject,raw) {
 		var $ = cheerio.load(body);
 
 		var results = [];
-		var log = '';
+		var log = ''; //body;
 
 		$("script").each(function(i,e){
 			var text = $(e).text();
@@ -388,7 +408,7 @@ function extractPids(req,res,urlObject,raw) {
 			}
 		});
 
-		$("figure").each(function (){
+		$("figure, div .media-player").each(function (){
 			var e = this;
 
 			var playable = $(e).attr('data-playable');
@@ -401,16 +421,14 @@ function extractPids(req,res,urlObject,raw) {
 					result.url = opt.settings.externalEmbedUrl;
 					result.pid = opt.settings.statsObject.clipPID;
 					result.vpid = opt.settings.playlistObject.items[0].vpid;
+					result.duration = opt.settings.playlistObject.items[0].duration;
 					result.image = opt.otherSettings.unProcessedImageUrl;
-					if (!result.pid) {
-						result.pid = '<a href="/pidlookup.html?vpid='+result.vpid+'">Needs lookup</a>';
-					}
 					results.push(result);
 				}
 				catch (e) {
 					log += '\n'+e;
 				}
-				log += '<pre>'+JSON.stringify(opt,null,2)+'</pre>';
+				///log += '<pre>'+JSON.stringify(opt,null,2)+'</pre>';
 			}
 		});
 
@@ -433,14 +451,39 @@ function extractPids(req,res,urlObject,raw) {
 			results.push(result);
 		});
 
+		$(".vxp-playlist-data").each(function(i,e){
+			var text = $(e).text();
+			var obj = JSON.parse(text);
+			for (var m in obj) {
+				var clip = obj[m];
+				var result = {};
+				result.vpid = clip.media.externalId;
+				result.title = clip.media.caption;
+				result.image = clip.media.image.href;
+				result.duration = clip.media.duration;
+				results.push(result);
+			}
+		});
+
 		s += '<table border="1" class="pure-table pure-table-striped"><thead><tr><td>Title</td><td>PID</td><td>VPID</td><td>Image</td>';
 		s += '<td>Durn</td></tr></thead>';
 		for (var r in results) {
 			var result = results[r];
-			s += '<tr><td><a href="'+result.url+'">'+result.title+'</a></td><td>'+result.pid+'</td><td>'+result.vpid+'</td>';
+			if ((!result.url) && (result.pid)) {
+				result.url = 'http://www.bbc.co.uk/programmes/'+result.pid;
+			}
+			if ((!result.pid) && (result.vpid)) {
+				result.pid = '<a href="/pidlookup.html?vpid='+result.vpid+'">Needs lookup</a>';
+			}
+			if (result.url) {
+				result.title = '<a href="'+result.url+'">'+result.title+'</a>';
+			}
+			s += '<tr><td>'+result.title+'</td><td>'+result.pid+'</td><td>'+result.vpid+'</td>';
 			s += '<td><a href="'+result.image+'">Image</a></td><td>'+result.duration+'</td></tr>';
 		}
 		s += '</table>';
+		s += '<br/>';
+		s += '<a class="button" href="/pid.html">Go back</a>';
 		s += '</div>';
 
 		if (log) {
@@ -454,6 +497,8 @@ function extractPids(req,res,urlObject,raw) {
 }
 
 module.exports = {
+
+	vpidLookup : vpidLookup,
 
 	processPid :  function(req,res) {
 		result = false;
@@ -469,8 +514,8 @@ module.exports = {
 				}
 			}
 
-			if ((!result) && ((typeof req.query.btnExtract !== 'undefined'))) {
-				link = url.parse(pid);
+			if (typeof req.query.btnExtract !== 'undefined') {
+				link = url.parse(req.query.txtPid);
 				result = ((link.protocol == 'http:') || (link.protocol == 'https:'));
 			}
 

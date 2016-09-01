@@ -1,0 +1,15 @@
+<html>
+	<head>
+		<title>VPID Lookup Result</title>
+		<link rel="stylesheet" type="text/css" href="/css/smart-green.css" media="screen">
+	</head>
+	<body>
+		<div class="smart-green">
+			<h1>VPID Lookup result</h1>
+			<h2>
+				The PID for VPID <%= vpid %> is <a href="http://www.bbc.co.uk/programmes/<%= pid %>"><%= pid %></a>
+			</h2>
+		</div>
+		<pre><%= JSON.stringify(obj,null,2) %></pre>
+	</body>
+</html>

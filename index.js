@@ -3,6 +3,7 @@ var compression = require('compression');
 
 var app = express();
 app.use(compression());
+app.set('view engine', 'ejs');
 
 var common = require('./common');
 var pid = require('./pidInspector');
@@ -71,6 +72,14 @@ app.get('/pid.html', function(req,res) {
 	}
 	else {
 		res.sendFile(__dirname+'/pub'+req.path);
+	}
+});
+app.get('/pidLookup.html', function(req,res) {
+	if (req.query.vpid) {
+		pid.vpidLookup(req,res);
+	}
+	else {
+		res.sendFile(__dirname+'/pub/pidNotFound.html');
 	}
 });
 
