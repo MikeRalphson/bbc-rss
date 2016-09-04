@@ -7,8 +7,11 @@
 		<div class="smart-green">
 			<h1>VPID Lookup result</h1>
 			<h2>
-				The PID for VPID <%= vpid %> is <a href="http://www.bbc.co.uk/programmes/<%= pid %>"><%= pid %></a>
+				The PID for VPID <%= vpid %> is <a href="/pid.html?txtPid=<%= pid %>&btnExtract="><%= pid %></a>
 			</h2>
+			<h3>
+				<a href="http://www.bbc.co.uk/programmes/<%= pid %>">Programme page</a>
+			</h3>
 			<% if (obj.nitro.results.items && obj.nitro.results.items.length>0) { %>
 				<h3>Type of PID: <%= obj.nitro.results.items[0].version_of.result_type %>.
 					Duration: <%= obj.nitro.results.items[0].duration %>

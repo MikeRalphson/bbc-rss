@@ -5,6 +5,10 @@
 <div class="smart-green">
 <h1>PID Breakdown</h1>
 
+<% if (h2) { %>
+	<h3><%= h2 %></h3>
+<% } // end if h2 %>
+
 <table border="1" class="pure-table pure-table-striped"><thead><tr><td>Type</td><td>Title</td><td>PID</td><td>VPID</td><td>Image</td>
 <td>Durn</td></tr></thead>
 
@@ -17,7 +21,7 @@
 
 </table>
 <br/>
-<a class="button" href="/pid.html">Go back</a>
+<a class="button" href="javascript:history.back();">Go back</a>
 </div>
 
 <% if (log) { %>

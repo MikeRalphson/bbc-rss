@@ -345,6 +345,16 @@ function vpidLookup(req,res) {
 	});
 }
 
+function extractProg(p) {
+	var result = {};
+	result.type = p.type;
+	result.pid = p.pid;
+	result.vpid = p.versions ? p.versions[0].pid : 'n/a';
+	result.title = p.title;
+	result.image = p.image ? 'http://ichef.bbci.co.uk/images/ic/640x360/'+p.image.pid+'.jpg' : null;
+	return result;
+}
+
 function extractPids(req,res,urlObject,raw) {
 	var options = {
 		host: urlObject.host,
@@ -361,6 +371,25 @@ function extractPids(req,res,urlObject,raw) {
 
 		var results = [];
 		var log = '';
+		var h2 = '';
+
+		// from /programmes .json output (to disappear by end-2016?)
+		if (body.startsWith('{')) {
+			var obj = JSON.parse(body);
+			var p = obj.programme;
+			if (p) {
+				h2 = p.long_synopsis ? p.long_synopsis : p.medium_synopsis ? p.medium_synopsis : p.short_synopsis;
+			}
+			while (p) {
+				results.push(extractProg(p));
+				if (p.peers) {
+					if (p.peers.previous) results.push(p.peers.previous);
+					if (p.peers.next) results.push(p.peers.next);
+				}
+
+				p = p.parent ? p.parent.programme : null;
+			}
+		}
 
 		$("script").each(function(i,e){
 			var text = $(e).text();
@@ -372,7 +401,7 @@ function extractPids(req,res,urlObject,raw) {
 					var obj = JSON.parse(content);
 					if (obj.body.media.pid) {
 						var result = {};
-						result.type = 1;
+						result.type = 'clip(1)';
 						result.title = obj.body.title;
 						result.pid = obj.body.media.pid;
 						result.url = 'http://www.bbc.co.uk/programmes/'+result.pid;
@@ -384,7 +413,7 @@ function extractPids(req,res,urlObject,raw) {
 					for (var p in obj.body.promos) {
 						var promo = obj.body.promos[p];
 						var result = {};
-						result.type = 2;
+						result.type = 'clip(2)';
 						result.title = promo.title;
 						result.url = 'http://www.bbc.co.uk'+promo.url;
 						result.image = promo.image.href;
@@ -402,6 +431,7 @@ function extractPids(req,res,urlObject,raw) {
 			}
 		});
 
+		// http://www.bbc.co.uk/news/magazine-37189150
 		$("figure, div .media-player").each(function (){
 			var e = this;
 
@@ -411,7 +441,7 @@ function extractPids(req,res,urlObject,raw) {
 				try {
 					opt = JSON.parse(playable);
 					var result = {};
-					result.type = 3;
+					result.type = 'clip(3)';
 					result.title = opt.settings.playlistObject.title;
 					result.url = opt.settings.externalEmbedUrl;
 					result.pid = opt.settings.statsObject.clipPID;
@@ -438,7 +468,7 @@ function extractPids(req,res,urlObject,raw) {
 			var div2 = $(e).children("div .emp").first();
 			if ($(div2).attr('data-pid')) {
 				var result = {};
-				result.type = 4;
+				result.type = 'clip(4)';
 				result.duration = 'n/a';
 				result.image = $(div2).attr('data-poster-template');
 				if (result.image) result.image = result.image.replace('$recipe','640x360');
@@ -456,7 +486,7 @@ function extractPids(req,res,urlObject,raw) {
 			for (var m in obj) {
 				var clip = obj[m];
 				var result = {};
-				result.type = 5;
+				result.type = 'clip(5)';
 				result.vpid = clip.media.externalId;
 				result.title = clip.media.caption ? clip.media.caption : 'VXP';
 				result.image = clip.media.image.href;
@@ -473,12 +503,16 @@ function extractPids(req,res,urlObject,raw) {
 			if ((!result.pid) && (result.vpid)) {
 				result.pid = '<a href="/pidlookup.html?vpid='+result.vpid+'">Needs lookup</a>';
 			}
+			else {
+				result.pid = '<a href="/pid.html?txtPid='+result.pid+'&btnExtract=">'+result.pid+'</a>';
+			}
 			if (result.url) {
 				result.title = '<a href="'+result.url+'">'+result.title+'</a>';
 			}
 		}
 
 		var data = {};
+		data.h2 = h2;
 		data.results = results;
 		data.log = log;
 
@@ -506,7 +540,10 @@ module.exports = {
 			}
 
 			if (typeof req.query.btnExtract !== 'undefined') {
-				link = url.parse(req.query.txtPid);
+				var u = req.query.txtPid;
+				if (result) u += '.json';
+				if ((result) && (!u.startsWith('http'))) u = 'http://www.bbc.co.uk/programmes/'+u;
+				link = url.parse(u);
 				result = ((link.protocol == 'http:') || (link.protocol == 'https:'));
 			}
 

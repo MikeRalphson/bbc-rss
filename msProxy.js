@@ -52,7 +52,7 @@ module.exports = {
 				//s += JSON.stringify(obj,null,2);
 				s += '</pre>';
 
-				s += '<table border="2" cellpadding="5" class="pure-table pure-table-striped"><thead><tr>'
+				s += '<table border="2" cellpadding="5" class="pure-table pure-table-striped"><thead><tr>';
 				s += '<td>Width</td>';
 				s += '<td>Height</td>';
 				s += '<td>Bitrate</td>';

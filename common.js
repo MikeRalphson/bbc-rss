@@ -12,8 +12,8 @@ connectionString = connectionString + '?ssl=true';
 
 function hasHeader(header, headers) {
 	// snaffled from request module
-	var headers = Object.keys(headers || this.headers),
-		lheaders = headers.map(function (h) {return h.toLowerCase();});
+	headers = Object.keys(headers || this.headers);
+	var lheaders = headers.map(function (h) {return h.toLowerCase();});
 	header = header.toLowerCase();
 	for (var i=0;i<lheaders.length;i++) {
 		if (lheaders[i] === header) return headers[i];
@@ -48,7 +48,7 @@ function getJSON(options, onResult) {
 			}
 			else {
 				if (res.statusCode == 200) {
-					obj = {}
+					obj = {};
 					try {
 						obj = JSON.parse(output);
 					}
