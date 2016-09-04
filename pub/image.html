@@ -1,0 +1,91 @@
+<html>
+<head><title>Image viewer/resizer</title>
+<link rel="stylesheet" type="text/css" href="/css/smart-green.css" media="screen">
+<script src="/scripts/jQuery-min.js"></script>
+</head>
+<body>
+<div class="smart-green">
+	<h1>Image viewer/resizer</h1>
+	<div id="picHolder">
+		<img id="img" src="" alt="Resized image" />
+	</div>
+	<label for="slider"><span>Width</span>
+	<div id="slider">
+	<!--16px-->
+	<input id="slide" type="range" min="16" max="1920" step="16" value="640" list="sliderlist" onchange="updateSlider(this.value);" />
+	 <!--1248px-->
+	 </label>
+	</div><br/>
+	<div>
+	<!--<output for="fader" id="chosen">640</output>-->
+
+	<label for="url"><span>URL:</span>
+		<input id="url" type="text" disabled />
+	</label>
+
+	</div>
+	<div>
+		Aspect ratio:
+		<input type="radio" name="aspect" value="16x9" checked>16x9</input>
+		<input type="radio" name="aspect" value="16x16">Square</input>
+		<input type="radio" name="aspect" value="16xn">Native</input>
+	</div>
+	<!-- <div>
+		Episode Series Brand
+	</div> -->
+	<br/>
+	<a class="button" href="javascript:history.back();">Go back</a>
+</div>
+<script type="text/javascript">
+	var pid, spid, bpid = '';
+	function getParameterByName(name, url) {
+		if (!url) url = window.location.href;
+		name = name.replace(/[\[\]]/g, "\\$&");
+		var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+			results = regex.exec(url);
+		if (!results) return null;
+		if (!results[2]) return '';
+		return decodeURIComponent(results[2].replace(/\+/g, " "));
+	}
+	function updateSlider(newValue){
+		var aspect = $('input[name=aspect]:checked').val();
+		var height = newValue;
+		if (aspect == '16x9') height = ((newValue/16)*9)
+		else if (aspect == '16xn') height = 'n';
+		$('#url').val('http://ichef.bbci.co.uk/images/ic/'+newValue+'x'+height+'/'+pid+'.jpg');
+		$('#img').attr('src',$('#url').val());
+	}
+	function ticks(element) {
+		if ('list' in element && 'min' in element && 'max' in element && 'step' in element) {
+			//if (element.hasOwnProperty('list') && element.hasOwnProperty('min') && element.hasOwnProperty('max') &&    element.hasOwnProperty('step')) {
+			var datalist = document.createElement('datalist'),
+			minimum = parseInt(element.getAttribute('min')),
+			step = parseInt(element.getAttribute('step')),
+			maximum = parseInt(element.getAttribute('max'));
+			datalist.id = element.getAttribute('list');
+			for (var i = minimum; i < maximum+step; i = i + step) {
+				datalist.innerHTML +="<option value="+i+"></option>";
+			}
+			element.parentNode.insertBefore(datalist, element.nextSibling);
+		}
+	}
+
+	$(document).ready(function(){
+		var lists = document.querySelectorAll("input[type=range][list]"),
+		arr = Array.prototype.slice.call(lists);
+		arr.forEach(ticks);
+
+		pid = getParameterByName('pid');
+		spid = getParameterByName('spid');
+		bpid = getParameterByName('bpid');
+		if (bpid == '') bpid = spid ? spid : pid;
+		if (spid == '') spid = bpid;
+
+		$('input[name=aspect]').change(function(){
+			updateSlider($('#slide').val());
+		});
+
+		updateSlider(640);
+	});
+</script>
+</body>

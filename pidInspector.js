@@ -351,7 +351,7 @@ function extractProg(p) {
 	result.pid = p.pid;
 	result.vpid = p.versions ? p.versions[0].pid : 'n/a';
 	result.title = p.title;
-	result.image = p.image ? 'http://ichef.bbci.co.uk/images/ic/640x360/'+p.image.pid+'.jpg' : null;
+	result.image = p.image ? '/image.html?pid='+p.image.pid : null;
 	return result;
 }
 
