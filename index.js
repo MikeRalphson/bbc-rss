@@ -159,7 +159,7 @@ app.get('/rss/:domain/:prefix/:feed.rss', function (req, res) {
 	else {
 		domain = '/radio';
 	}
-	mode = '/genres';
+	var mode = '/genres';
 	if (prefix == 'formats') {
 		mode = '/formats';
 		prefix = '';
