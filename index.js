@@ -1,3 +1,4 @@
+'use strict';
 var express = require('express');
 var compression = require('compression');
 
@@ -6,6 +7,7 @@ app.use(compression());
 app.set('view engine', 'ejs');
 
 var common = require('./common');
+var ibl = require('./ibl');
 var pid = require('./pidInspector');
 var searchSuggest = require('./searchSuggest');
 var ssp = require('./searchSuggestProxy');
@@ -20,7 +22,7 @@ function children(obj,payload) {
 	payload.results = [];
 	if ((obj.category_slice) && (obj.category_slice.programmes)) {
 		for (var i=0;i<obj.category_slice.programmes.length;i++) {
-			p = obj.category_slice.programmes[i];
+			var p = obj.category_slice.programmes[i];
 
 			if ((p.type == 'episode') || (p.type == 'clip')) {
 				payload.results.push(p);
@@ -123,6 +125,10 @@ app.get('/rss/channel4/derived/:mode.rss', function (req, res) {
 	req.params.category = 'derived/'+req.params.mode;
 	delete req.params.mode;
 	channel4.getCategory(req,res);
+});
+
+app.get('/rss/tv/accessibility/:category.rss', function(req,res) {
+	ibl.getCategory(req, res);
 });
 
 app.get('/rss/:domain/:feed.rss', function (req, res) {
