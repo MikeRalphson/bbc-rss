@@ -132,6 +132,8 @@ function finish(payload) {
 
 		var domain = payload.orgDomain ? payload.orgDomain : payload.domain;
 
+        // programmes returned directly by category search may not have a media_type defined!
+
 		if ((domain != 'tv') || (p.media_type != 'audio')) {
 			var d = new Date(p.actual_start);
 			var title = (p.display_titles ? p.display_titles.title +
@@ -156,7 +158,7 @@ function finish(payload) {
 			if (i.pubDate == 'Invalid Date') {
 				i.pubDate = p.first_broadcast_date; // raw
 			}
-			if (typeof i.pubDate == 'undefined') {
+			if ((typeof i.pubDate == 'undefined') || (!i.pubDate)) {
 				i.pubDate = new Date().toUTCString();
 			}
 

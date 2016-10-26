@@ -127,6 +127,7 @@ module.exports = {
 				payload.finish = common.finish;
 				payload.orgDomain = req.params.domain; //original not modified
 				payload.domain = 'custom';
+				payload.prefix = 'custom';
 				payload.feed = req.params.search;
 				ss_children(obj,payload);
 			}
