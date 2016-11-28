@@ -73,15 +73,18 @@ module.exports = {
 
 	getCategory : function (req,res) {
 		var query = nitro.newQuery();
-		query.add(c4.commonPlatformC4,'',true);
+		query.add(c4.commonPlatformC4,'',false);
 
 		var options = {};
-		options.Accept = 'application/xml';
-		options.api_key_name = 'apikey';
+		options.headers = {
+			Accept: 'application/xml',
+			'X-C4-API-Key': process.env.C4_API_KEY
+		};
+		//options.api_key_name = 'apikey';
 
 		var cat = req.params.category;
 
-		nitro.make_request(c4.host,c4.getCategories4od(cat),process.env.C4_API_KEY,query,options,function(obj){
+		nitro.make_request('channel4.com',c4.getCategories4od(cat),'',query,options,function(obj){
 			var json = x2j.xml2json(obj);
 			respond(cat,json,res);
 		},function(stateCode,obj){

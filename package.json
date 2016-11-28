@@ -1,6 +1,6 @@
 {
   "name": "bbc-rss",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "BBC iPlayer RSS adaptor",
   "main": "index.js",
   "scripts": {
@@ -26,13 +26,12 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "bbcparse": "latest",
-    "openc4": "latest",
-    "jgexml": "latest",
+    "cheerio": "latest",
     "compression": "^1.6.2",
     "ejs": "^2.5.1",
     "express": "^4.13.3",
     "jgexml": "^0.2.0",
-    "pg": "^4.5.6",
-	"cheerio": "latest"
+    "openc4": "latest",
+    "pg": "^4.5.6"
   }
 }
