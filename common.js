@@ -142,7 +142,7 @@ function finish(payload) {
 			if (p.ancestor && p.ancestor.title && (p.ancestor.title != orgTitle)) {
 				title = p.ancestor.title + ' / ' + title;
 			}
-			if ((p.ancestor && p.ancestor.ancestor) && (p.ancestor.ancestor.title != orgTitle)) {
+			if ((p.ancestor && p.ancestor.ancestor && p.ancestor.ancestor.title) && (p.ancestor.ancestor.title != orgTitle)) {
 				title = p.ancestor.ancestor.title + ' / ' + title;
 			}
 
