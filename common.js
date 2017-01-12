@@ -139,7 +139,7 @@ function finish(payload) {
 			var title = (p.display_titles ? p.display_titles.title +
 				(p.display_titles.subtitle ? ' / ' + p.display_titles.subtitle : '') : p.title);
 			var orgTitle = title;
-			if ((p.ancestor) && (p.ancestor.title != orgTitle)) {
+			if (p.ancestor && p.ancestor.title && (p.ancestor.title != orgTitle)) {
 				title = p.ancestor.title + ' / ' + title;
 			}
 			if ((p.ancestor && p.ancestor.ancestor) && (p.ancestor.ancestor.title != orgTitle)) {

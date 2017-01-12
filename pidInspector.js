@@ -562,6 +562,9 @@ module.exports = {
 				else if (typeof req.query.btnExtract !== 'undefined') {
 					var pids = extractPids(req,res,link,raw);
 				}
+				else if (typeof req.query.btnSingle !== 'undefined') {
+					res.redirect('/rss/tv/pid/'+pid+'.rss');
+				}
 				else {
 					result = false;
 				}

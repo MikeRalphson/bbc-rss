@@ -143,6 +143,24 @@ app.get('/rss/:domain/:feed.rss', function (req, res) {
 	res.redirect(301,p);
 });
 
+app.get('/rss/:domain/pid/:pid.rss', function(req, res) {
+	var payload = {};
+	payload.res = res;
+	payload.finish = common.finish;
+	payload.domain = req.params.domain; //original not modified
+	payload.prefix = 'pid';
+	payload.feed = req.params.pid;
+	payload.source = [];
+	payload.results = [];
+	var job = {};
+	job.done = false;
+	job.pid = req.params.pid;
+	payload.source.push(job);
+	var p = {};
+	p.pid = req.params.pid;
+	common.list(payload,p);
+});
+
 app.get('/rss/:domain/:prefix/:feed.rss', function (req, res) {
 	//. http://expressjs.com/en/api.html#req
 	//. http://expressjs.com/en/api.html#res
