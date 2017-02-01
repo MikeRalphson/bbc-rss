@@ -64,7 +64,7 @@ function ss_children(obj,payload) {
 		}
 	}
 	if (!any) {
-		finish(payload);
+		common.finish(payload);
 	}
 	return payload.results;
 }
