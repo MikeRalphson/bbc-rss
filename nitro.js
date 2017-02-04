@@ -54,7 +54,7 @@ function processResults(payload,obj) {
     }
     if (obj.nitro && obj.nitro.pagination && obj.nitro.pagination.next) {
         var newQuery = sdk.queryFrom(obj.nitro.pagination.next.href,true);
-        sdk.make_request(host,api.nitroProgrammes,key,query,{},function(obj){
+        sdk.make_request(host,api.nitroProgrammes,key,newQuery,{},function(obj){
             processResults(payload,obj);
         },
         function(err){
