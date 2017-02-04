@@ -7,11 +7,12 @@ app.use(compression());
 app.set('view engine', 'ejs');
 
 var common = require('./common');
+var nitro = require('./nitro');
 var ibl = require('./ibl');
 var pid = require('./pidInspector');
 var searchSuggest = require('./searchSuggest');
 var ssp = require('./searchSuggestProxy');
-var nitro = require('./nitroProxy.js');
+var nitroProxy = require('./nitroProxy.js');
 var msp = require('./msProxy.js');
 var channel4 = require('./channel4.js');
 var sky = require('./skyProxy.js');
@@ -99,7 +100,7 @@ app.get('/suggest', function(req, res) {
 });
 
 app.get('/nitro/*', function(req, res) {
-	nitro.nitroProxy(req,res);
+	nitroProxy.nitroProxy(req,res);
 });
 
 app.get('/sky/*', function(req, res) {
@@ -134,6 +135,10 @@ app.get('/rss/itv/category/:category.rss', function (req, res) {
 
 app.get('/rss/tv/accessibility/:category.rss', function(req,res) {
 	ibl.getCategory(req, res);
+});
+
+app.get('/rss/:domain/upcoming/:feed.rss', function (req, res) {
+	nitro.upcomingByCategory(req,res);
 });
 
 app.get('/rss/:domain/:feed.rss', function (req, res) {

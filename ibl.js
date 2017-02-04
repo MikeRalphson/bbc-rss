@@ -80,6 +80,8 @@ function getCategory(req, res) {
 		}
     });
 
+    common.updateHitCounter();
+
     return true;
 
 }
