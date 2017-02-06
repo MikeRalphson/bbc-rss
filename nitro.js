@@ -9,7 +9,7 @@ var key = process.env.nitrokey || 'key';
 function saveNitroProgramme(payload,item) {
 	if (item.item_type != 'episode') return;
     var prefix = payload.prefix;
-    if (prefix == 'upcoming') {
+    if (prefix.startsWith('upcoming')) {
         prefix = 'Upcoming: ';
         if (item.availability && item.availability.version_types && item.availability.version_types.version_type) {
             if (item.availability.version_types.version_type.start) {
@@ -17,6 +17,13 @@ function saveNitroProgramme(payload,item) {
 				var offset = 0;
 				if (item.version && item.version.duration) {
 					offset = sdk.iso8601durationToSeconds(item.version.duration);
+				}
+				if ((offset == 0) && item.available_versions && item.available_versions.version) {
+					for (var v of item.available_versions.version) {
+						if (offset == 0) offset = sdk.iso8601durationToSeconds(v.duration);
+					}
+				}
+				if (offset > 0) {
 					start = new Date(start - (offset * 1000)); // to msec
 				}
                 prefix = start.toString().substr(0,21)+' ';
@@ -72,21 +79,15 @@ function processResults(payload,obj) {
     }
 }
 
-function upcomingByCategory(req,res) {
+function upcomingByCategory(req,res,format) {
     var payload = {};
     payload.res = res;
     payload.finish = common.finish;
     payload.domain = req.params.domain; //original not modified
-    payload.prefix = 'upcoming';
     payload.feed = req.params.feed;
     payload.results = [];
     payload.inFlight = 0;
 
-/*
-programmes.api.bbc.com/nitro/api/programmes?K&page_size=30&mixin=contributions&mixin=duration&mixin=ancestor_titles&
-mixin=available_versions&availability=P30D&mixin=availability&availability_entity_type=episode
-&genre=C00035/
-*/
     var query = sdk.newQuery();
     query.add(api.fProgrammesPageSize,30,true);
     query.add(api.mProgrammesAncestorTitles);
@@ -94,7 +95,15 @@ mixin=available_versions&availability=P30D&mixin=availability&availability_entit
     query.add(api.fProgrammesAvailability,'P30D');
     query.add(api.mProgrammesAvailability);
     query.add(api.fProgrammesAvailabilityEntityTypeEpisode);
-    query.add(api.fProgrammesGenre,req.params.feed);
+    query.add(api.xProgrammesEmbargoedInclude);
+	if (format) {
+    	payload.prefix = 'upcomingfmt';
+    	query.add(api.fProgrammesFormat,req.params.feed);
+	}
+	else {
+    	payload.prefix = 'upcoming';
+    	query.add(api.fProgrammesGenre,req.params.feed);
+	}
     query.add(api.mProgrammesImages);
     query.add(api.mProgrammesDuration);
 

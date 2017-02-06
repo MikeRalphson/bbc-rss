@@ -138,7 +138,11 @@ app.get('/rss/tv/accessibility/:category.rss', function(req,res) {
 });
 
 app.get('/rss/:domain/upcoming/:feed.rss', function (req, res) {
-	nitro.upcomingByCategory(req,res);
+	nitro.upcomingByCategory(req,res,false);
+});
+
+app.get('/rss/:domain/upcomingfmt/:feed.rss', function (req, res) {
+	nitro.upcomingByCategory(req,res,true);
 });
 
 app.get('/rss/:domain/:feed.rss', function (req, res) {
@@ -240,3 +244,4 @@ var server = app.listen(myport, function () {
 
   console.log('RSS / Nitro proxy app listening at http://%s:%s', host, port);
 });
+
