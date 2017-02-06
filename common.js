@@ -153,7 +153,7 @@ function finish(payload) {
 			i.category = p.media_type ? p.media_type : (domain == 'radio' ? 'audio' : 'audio_video');
 			i.guid = {};
 			i.guid["@isPermaLink"] = 'false';
-			i.guid[""] = 'PID:' + p.pid;
+			i.guid[""] = (payload.pidprefix ? payload.pidprefix : 'PID:') + p.pid;
 			i.pubDate = d.toUTCString();
 			if (i.pubDate == 'Invalid Date') {
 				i.pubDate = p.first_broadcast_date; // raw

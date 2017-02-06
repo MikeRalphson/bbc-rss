@@ -99,6 +99,7 @@ function programmesByCategory(req,res,format,availability,signed,audiodescribed)
     payload.results = [];
     payload.inFlight = 0;
  	payload.prefix = (availability == 'available' ? availability : 'upcoming');
+ 	payload.pidprefix = (availability == 'available' ? 'PID:' : 'uPID:');
 
     var query = sdk.newQuery();
     query.add(api.fProgrammesPageSize,30,true);
