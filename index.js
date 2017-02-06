@@ -137,12 +137,20 @@ app.get('/rss/tv/accessibility/:category.rss', function(req,res) {
 	ibl.getCategory(req, res);
 });
 
+app.get('/rss/tv/upcoming/signed.rss', function (req, res) {
+	nitro.upcomingByCategory(req,res,false,true,false);
+});
+
+app.get('/rss/tv/upcoming/audiodescribed.rss', function (req, res) {
+	nitro.upcomingByCategory(req,res,false,false,true);
+});
+
 app.get('/rss/:domain/upcoming/:feed.rss', function (req, res) {
-	nitro.upcomingByCategory(req,res,false);
+	nitro.upcomingByCategory(req,res,false,false,false);
 });
 
 app.get('/rss/:domain/upcomingfmt/:feed.rss', function (req, res) {
-	nitro.upcomingByCategory(req,res,true);
+	nitro.upcomingByCategory(req,res,true,false,false);
 });
 
 app.get('/rss/:domain/:feed.rss', function (req, res) {

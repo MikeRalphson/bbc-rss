@@ -80,7 +80,7 @@ function processResults(payload,obj) {
     }
 }
 
-function upcomingByCategory(req,res,format) {
+function upcomingByCategory(req,res,format,signed,audiodescribed) {
     var payload = {};
     payload.res = res;
     payload.finish = common.finish;
@@ -88,6 +88,7 @@ function upcomingByCategory(req,res,format) {
     payload.feed = req.params.feed;
     payload.results = [];
     payload.inFlight = 0;
+ 	payload.prefix = 'upcoming';
 
     var query = sdk.newQuery();
     query.add(api.fProgrammesPageSize,30,true);
@@ -97,16 +98,24 @@ function upcomingByCategory(req,res,format) {
     query.add(api.mProgrammesAvailability);
     query.add(api.fProgrammesAvailabilityEntityTypeEpisode);
     query.add(api.xProgrammesEmbargoedInclude);
-	if (format) {
-    	payload.prefix = 'upcomingfmt';
-    	query.add(api.fProgrammesFormat,req.params.feed);
-	}
-	else {
-    	payload.prefix = 'upcoming';
-    	query.add(api.fProgrammesGenre,req.params.feed);
+	if ((!signed) && (!audiodescribed)) {
+		if (format) {
+   		 	payload.prefix = 'upcomingfmt';
+    		query.add(api.fProgrammesFormat,req.params.feed);
+		}
+		else {
+    		query.add(api.fProgrammesGenre,req.params.feed);
+		}
 	}
     query.add(api.mProgrammesImages);
     query.add(api.mProgrammesDuration);
+
+	if (signed) {
+		query.add(api.fProgrammesSignedExclusive);
+	}
+	if (audiodescribed) {
+		query.add(api.fProgrammesAudioDescribedTrue);
+	}
 
     sdk.make_request(host,api.nitroProgrammes,key,query,{},function(obj){
         processResults(payload,obj);
