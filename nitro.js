@@ -2,13 +2,14 @@ var sdk = require('bbcparse/nitroSdk.js');
 var api = require('bbcparse/nitroApi/api.js');
 
 var common = require('./common.js');
+var twitterMap = require('./twittermap.js');
 
 var host = 'programmes.api.bbc.com';
 var key = process.env.nitrokey || 'key';
 
 function saveNitroProgramme(payload,item) {
 	if (item.item_type != 'episode') return;
-    var prefix = payload.prefix;
+    var prefix = (payload.prefix == 'available' ? '' : payload.prefix);
     if (prefix.startsWith('upcoming')) {
         prefix = 'Upcoming: ';
         if (item.availability && item.availability.version_types && item.availability.version_types.version_type) {
@@ -32,9 +33,7 @@ function saveNitroProgramme(payload,item) {
 
     }
 
-    var twitter = '';
-    if (item.master_brand.mid == 'bbc_radio_four_extra') twitter = ' @BBCRadio4Extra';
-    if (item.master_brand.mid == 'bbc_radio_four') twitter = ' @BBCRadio4';
+    var twitter = twitterMap.midToTwitter(item.master_brand.mid);
 
     var ancestors = '';
     if (item.ancestor_titles) {
@@ -47,8 +46,17 @@ function saveNitroProgramme(payload,item) {
     }
     if (ancestors) ancestors += ' ';
 
+	var suffix = '';
+	if (item.genre_groupings && item.genre_groupings.genre_group) {
+		for (var genre of item.genre_groupings.genre_group) {
+			if (genre.id == 'C00035') suffix = '#scifi';
+			if (genre.id == 'C00025') suffix = '#horror';
+			if (genre.id == 'C00032') suffix = '#psych';
+		}
+	}
+
     var p = {};
-    p.title = prefix + ancestors + (item.title ? item.title : '') + twitter;
+    p.title = (prefix + ancestors + (item.title ? item.title : '') + ' ' + twitter + ' ' + suffix).trim();
     p.pid = item.pid;
     p.actual_start = item.updated_time;
 	if (item.synopses) {
@@ -82,7 +90,7 @@ function processResults(payload,obj) {
     }
 }
 
-function upcomingByCategory(req,res,format,signed,audiodescribed) {
+function programmesByCategory(req,res,format,availability,signed,audiodescribed) {
     var payload = {};
     payload.res = res;
     payload.finish = common.finish;
@@ -90,20 +98,21 @@ function upcomingByCategory(req,res,format,signed,audiodescribed) {
     payload.feed = req.params.feed;
     payload.results = [];
     payload.inFlight = 0;
- 	payload.prefix = 'upcoming';
+ 	payload.prefix = (availability == 'available' ? availability : 'upcoming');
 
     var query = sdk.newQuery();
     query.add(api.fProgrammesPageSize,30,true);
     query.add(api.mProgrammesAncestorTitles);
     query.add(api.mProgrammesAvailableVersions);
-    query.add(api.fProgrammesAvailability,'P30D');
+    query.add(api.fProgrammesAvailability,availability);
     query.add(api.mProgrammesAvailability);
+    query.add(api.mProgrammesGenreGroupings);
     query.add(api.fProgrammesAvailabilityEntityTypeEpisode);
     query.add(api.xProgrammesEmbargoedInclude);
 	if ((!signed) && (!audiodescribed)) {
 		var feeds = req.params.feed.split(',');
 		if (format) {
-   		 	payload.prefix = 'upcomingfmt';
+   		 	payload.prefix += 'fmt';
 			for (var feed of feeds) {
     			query.add(api.fProgrammesFormat,feed);
 			}
@@ -144,5 +153,5 @@ function upcomingByCategory(req,res,format,signed,audiodescribed) {
 }
 
 module.exports = {
-    upcomingByCategory : upcomingByCategory
+    programmesByCategory : programmesByCategory
 };

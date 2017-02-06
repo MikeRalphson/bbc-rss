@@ -138,19 +138,22 @@ app.get('/rss/tv/accessibility/:category.rss', function(req,res) {
 });
 
 app.get('/rss/tv/upcoming/signed.rss', function (req, res) {
-	nitro.upcomingByCategory(req,res,false,true,false);
+	nitro.programmesByCategory(req,res,false,'P30D',true,false);
 });
 
 app.get('/rss/tv/upcoming/audiodescribed.rss', function (req, res) {
-	nitro.upcomingByCategory(req,res,false,false,true);
+	nitro.programmesByCategory(req,res,false,'P30D',false,true);
 });
 
 app.get('/rss/:domain/upcoming/:feed.rss', function (req, res) {
-	nitro.upcomingByCategory(req,res,false,false,false);
+	nitro.programmesByCategory(req,res,false,'P30D',false,false);
+});
+app.get('/rss/:domain/available/:feed.rss', function (req, res) {
+	nitro.programmesByCategory(req,res,false,'available',false,false);
 });
 
 app.get('/rss/:domain/upcomingfmt/:feed.rss', function (req, res) {
-	nitro.upcomingByCategory(req,res,true,false,false);
+	nitro.programmesByCategory(req,res,true,'P30D',false,false);
 });
 
 app.get('/rss/:domain/:feed.rss', function (req, res) {
