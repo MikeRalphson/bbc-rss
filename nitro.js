@@ -51,8 +51,10 @@ function saveNitroProgramme(payload,item) {
     p.title = prefix + ancestors + (item.title ? item.title : '') + twitter;
     p.pid = item.pid;
     p.actual_start = item.updated_time;
-    p.long_synopsis = item.synopses.long ? item.synopses.long : 
+	if (item.synopses) {
+   		p.long_synopsis = item.synopses.long ? item.synopses.long : 
         item.synopses.medium ? item.synopses.medium : item.synopses.short;
+	}
     p.image = {};
     p.image.pid = item.images.image.href.split('=')[1];
 	p.media_type = item.media_type;
@@ -99,12 +101,17 @@ function upcomingByCategory(req,res,format,signed,audiodescribed) {
     query.add(api.fProgrammesAvailabilityEntityTypeEpisode);
     query.add(api.xProgrammesEmbargoedInclude);
 	if ((!signed) && (!audiodescribed)) {
+		var feeds = req.params.feed.split(',');
 		if (format) {
    		 	payload.prefix = 'upcomingfmt';
-    		query.add(api.fProgrammesFormat,req.params.feed);
+			for (var feed of feeds) {
+    			query.add(api.fProgrammesFormat,feed);
+			}
 		}
 		else {
-    		query.add(api.fProgrammesGenre,req.params.feed);
+			for (var feed of feeds) {
+    			query.add(api.fProgrammesGenre,feed);
+			}
 		}
 	}
     query.add(api.mProgrammesImages);
@@ -115,6 +122,13 @@ function upcomingByCategory(req,res,format,signed,audiodescribed) {
 	}
 	if (audiodescribed) {
 		query.add(api.fProgrammesAudioDescribedTrue);
+	}
+
+	if (req.params.domain == 'tv') {
+		query.add(api.fProgrammesMediaTypeAudioVideo);
+	}
+	else if (req.params.domain == 'radio') {
+		query.add(api.fProgrammesMediaTypeAudio);
 	}
 
     sdk.make_request(host,api.nitroProgrammes,key,query,{},function(obj){
