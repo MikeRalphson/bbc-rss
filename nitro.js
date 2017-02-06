@@ -55,6 +55,7 @@ function saveNitroProgramme(payload,item) {
         item.synopses.medium ? item.synopses.medium : item.synopses.short;
     p.image = {};
     p.image.pid = item.images.image.href.split('=')[1];
+	p.media_type = item.media_type;
 
     payload.results.push(p);
 }
