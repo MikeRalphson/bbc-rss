@@ -108,7 +108,7 @@ function programmesByCategory(req,res,format,availability,signed,audiodescribed)
     query.add(api.mProgrammesAvailability);
     query.add(api.mProgrammesGenreGroupings);
     query.add(api.fProgrammesAvailabilityEntityTypeEpisode);
-    query.add(api.xProgrammesEmbargoedInclude);
+    //query.add(api.xProgrammesEmbargoedInclude);
 	if ((!signed) && (!audiodescribed)) {
 		var feeds = req.params.feed.split(',');
 		if (format) {
