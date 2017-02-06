@@ -7,12 +7,18 @@ var host = 'programmes.api.bbc.com';
 var key = process.env.nitrokey || 'key';
 
 function saveNitroProgramme(payload,item) {
+	if (item.item_type != 'episode') return;
     var prefix = payload.prefix;
     if (prefix == 'upcoming') {
         prefix = 'Upcoming: ';
         if (item.availability && item.availability.version_types && item.availability.version_types.version_type) {
             if (item.availability.version_types.version_type.start) {
                 var start = new Date(item.availability.version_types.version_type.start);
+				var offset = 0;
+				if (item.version && item.version.duration) {
+					offset = sdk.iso8601durationToSeconds(item.version.duration);
+					start = new Date(start - (offset * 1000)); // to msec
+				}
                 prefix = start.toString().substr(0,21)+' ';
             }
         }
@@ -79,7 +85,7 @@ function upcomingByCategory(req,res) {
 /*
 programmes.api.bbc.com/nitro/api/programmes?K&page_size=30&mixin=contributions&mixin=duration&mixin=ancestor_titles&
 mixin=available_versions&availability=P30D&mixin=availability&availability_entity_type=episode
-&genre=C00035
+&genre=C00035/
 */
     var query = sdk.newQuery();
     query.add(api.fProgrammesPageSize,30,true);
@@ -90,6 +96,7 @@ mixin=available_versions&availability=P30D&mixin=availability&availability_entit
     query.add(api.fProgrammesAvailabilityEntityTypeEpisode);
     query.add(api.fProgrammesGenre,req.params.feed);
     query.add(api.mProgrammesImages);
+    query.add(api.mProgrammesDuration);
 
     sdk.make_request(host,api.nitroProgrammes,key,query,{},function(obj){
         processResults(payload,obj);
