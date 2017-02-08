@@ -5,7 +5,9 @@ The story so far: in October 2014, the BBC [shut down](http://www.theregister.co
 
 ![Don't Panic](https://github.com/MikeRalphson/static/blob/master/dont_panic.gif?raw=true)
 
-This app provides over 200 by-category RSS feeds for both iPlayer-radio and the (TV) iPlayer.
+This app provides over 300 by-category RSS feeds for both iPlayer-radio and the (TV) iPlayer, 
+covering available and upcoming programmes. Individual feeds are available for over 40,000 
+brands and series. Custom search-driven feeds are also available.
 
 It even suports users with digital watches.
 
