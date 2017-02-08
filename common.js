@@ -180,8 +180,11 @@ function finish(payload) {
 	feed.rss = rss;
 	s = j2x.getXml(feed,'@','',2);
 
-	payload.res.set('Content-Type', 'text/xml');
-	payload.res.send(s);
+	if (!payload.xmlOffset) {
+		payload.res.set('Content-Type', 'text/xml');
+	}
+	payload.res.write(s.substr(payload.xmlOffset ? payload.xmlOffset : 0));
+	payload.res.end();
 }
 
 function clear(pid,payload) {

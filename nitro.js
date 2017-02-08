@@ -100,9 +100,13 @@ function programmesByCategory(req,res,format,availability,signed,audiodescribed)
     payload.inFlight = 0;
  	payload.prefix = (availability == 'available' ? availability : 'upcoming');
  	payload.pidprefix = (availability == 'available' ? 'PID:' : 'uPID:');
+	payload.xmlOffset = 1;
+
+	payload.res.set('Content-Type', 'text/xml');
+	res.write('<');
 
     var query = sdk.newQuery();
-    query.add(api.fProgrammesPageSize,30,true);
+    query.add(api.fProgrammesPageSize,50,true);
     query.add(api.mProgrammesAncestorTitles);
     query.add(api.mProgrammesAvailableVersions);
     query.add(api.fProgrammesAvailability,availability);
