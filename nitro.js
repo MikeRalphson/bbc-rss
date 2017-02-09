@@ -52,7 +52,7 @@ function saveNitroProgramme(payload,item) {
 			if (genre.id == 'C00035') suffix = '#scifi';
 			if (genre.id == 'C00025') suffix = '#horror';
 			if (genre.id == 'C00032') suffix = '#psych';
-			if (genre.id == 'C00193') suffix = '#comedy';
+			if ((genre.id == 'C00193') || (genre.id == 'C00196')) suffix = '#comedy';
 		}
 	}
 
