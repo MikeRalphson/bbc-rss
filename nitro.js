@@ -10,7 +10,7 @@ var key = process.env.nitrokey || 'key';
 function saveNitroProgramme(payload,item) {
 	if (item.item_type != 'episode') return;
     var prefix = (payload.prefix == 'available' ? '' : payload.prefix);
-    if (prefix.startsWith('upcoming')) {
+    if (prefix == 'upcoming') {
         prefix = 'Upcoming: ';
         if (item.availability && item.availability.version_types && item.availability.version_types.version_type) {
             if (item.availability.version_types.version_type.start) {
@@ -52,6 +52,7 @@ function saveNitroProgramme(payload,item) {
 			if (genre.id == 'C00035') suffix = '#scifi';
 			if (genre.id == 'C00025') suffix = '#horror';
 			if (genre.id == 'C00032') suffix = '#psych';
+			if (genre.id == 'C00193') suffix = '#comedy';
 		}
 	}
 
@@ -90,34 +91,58 @@ function processResults(payload,obj) {
     }
 }
 
-function programmesByCategory(req,res,format,availability,signed,audiodescribed) {
+function programmesByCategory(req,res,options) {
+
+//params are:
+// mode:string
+// category:string
+// domain:string
+//options are:
+// mode: string, overrides req.params.mode
+// availability: string
+
+	if (!options.mode) options.mode = req.params.mode;
+	//console.log('in nitro, mode: '+options.mode);
+
     var payload = {};
     payload.res = res;
     payload.finish = common.finish;
     payload.domain = req.params.domain; //original not modified
-    payload.feed = req.params.feed;
+    payload.feed = req.params.category;
+	payload.mode = options.mode;
     payload.results = [];
     payload.inFlight = 0;
- 	payload.prefix = (availability == 'available' ? availability : 'upcoming');
- 	payload.pidprefix = (availability == 'available' ? 'PID:' : 'uPID:');
-	payload.xmlOffset = 1;
+ 	payload.prefix = (options.availability == 'available' ? 'available' : 'upcoming');
+ 	payload.pidprefix = (options.availability == 'available' ? 'PID:' : 'uPID:');
+	payload.xmlOffset = 1; // 1 character already sent
 
-	payload.res.set('Content-Type', 'text/xml');
+	res.set('Content-Type', 'text/xml');
 	res.write('<');
 
     var query = sdk.newQuery();
     query.add(api.fProgrammesPageSize,50,true);
     query.add(api.mProgrammesAncestorTitles);
     query.add(api.mProgrammesAvailableVersions);
-    query.add(api.fProgrammesAvailability,availability);
+    query.add(api.fProgrammesAvailability,options.availability);
     query.add(api.mProgrammesAvailability);
     query.add(api.mProgrammesGenreGroupings);
     query.add(api.fProgrammesAvailabilityEntityTypeEpisode);
     //query.add(api.xProgrammesEmbargoedInclude);
-	if ((!signed) && (!audiodescribed)) {
-		var feeds = req.params.feed.split(',');
-		if (format) {
-   		 	payload.prefix += 'fmt';
+
+	if (options.mode != 'accessibility') {
+		var feed = req.params.category;
+		if (options.mode == 'env') {
+			feed = process.env[feed] || '';
+			//console.log(feed);
+		}
+		var feeds = feed.split(',');
+		if ((options.mode == 'pid') || (options.mode == 'env')) {
+			for (var feed of feeds) {
+				//console.log(feed);
+				query.add(api.fProgrammesDescendantsOf,feed);
+			}
+		}
+		else if (options.mode == 'format') {
 			for (var feed of feeds) {
     			query.add(api.fProgrammesFormat,feed);
 			}
@@ -131,10 +156,10 @@ function programmesByCategory(req,res,format,availability,signed,audiodescribed)
     query.add(api.mProgrammesImages);
     query.add(api.mProgrammesDuration);
 
-	if (signed) {
+	if (req.params.category == 'signed') {
 		query.add(api.fProgrammesSignedExclusive);
 	}
-	if (audiodescribed) {
+	if (req.params.category == 'audiodescribed') {
 		query.add(api.fProgrammesAudioDescribedTrue);
 	}
 

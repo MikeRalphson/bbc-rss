@@ -133,28 +133,27 @@ app.get('/rss/itv/category/:category.rss', function (req, res) {
 	itv.getCategory(req,res);
 });
 
+// ibl
 app.get('/rss/tv/accessibility/:category.rss', function(req,res) {
 	ibl.getCategory(req, res);
 });
 
-app.get('/rss/tv/upcoming/signed.rss', function (req, res) {
-	nitro.programmesByCategory(req,res,false,'P30D',true,false);
+// nitro
+app.get('/rss/:domain/upcoming/:mode/:category.rss', function (req, res) {
+	nitro.programmesByCategory(req,res,{availability:'P30D'});
+});
+app.get('/rss/:domain/available/:mode/:category.rss', function (req, res) {
+	nitro.programmesByCategory(req,res,{availability:'available'});
 });
 
-app.get('/rss/tv/upcoming/audiodescribed.rss', function (req, res) {
-	nitro.programmesByCategory(req,res,false,'P30D',false,true);
-});
-
+// compatibility
 app.get('/rss/:domain/upcoming/:feed.rss', function (req, res) {
-	nitro.programmesByCategory(req,res,false,'P30D',false,false);
+	nitro.programmesByCategory(req,res,{availability:'P30D',mode:'genre'});
 });
 app.get('/rss/:domain/available/:feed.rss', function (req, res) {
-	nitro.programmesByCategory(req,res,false,'available',false,false);
+	nitro.programmesByCategory(req,res,{availability:'available',mode:'genre'});
 });
-
-app.get('/rss/:domain/upcomingfmt/:feed.rss', function (req, res) {
-	nitro.programmesByCategory(req,res,true,'P30D',false,false);
-});
+// end compatibility
 
 app.get('/rss/:domain/:feed.rss', function (req, res) {
 	// redirect for a couple of incorrect feed links, now corrected
