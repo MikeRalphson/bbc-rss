@@ -3,3 +3,4 @@ npm_debug
 *.json
 *.zip
 *.txt
+*.xml

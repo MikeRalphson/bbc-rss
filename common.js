@@ -5,8 +5,6 @@ var pg = require('pg');
 
 var j2x = require('jgexml/json2xml.js');
 
-const bbc = 'www.bbc.co.uk';
-
 var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/main';
 if (connectionString.indexOf('localhost') <0) {
 	connectionString = connectionString + '?ssl=true';
@@ -206,53 +204,6 @@ function clear(pid,payload) {
 	}
 }
 
-function list(payload,parent) {
-	//. path = '/programmes/'+obj.pid+'/episodes/player.json'
-	//. path = '/programmes/'+obj.pid+'/children.json'
-	var options = {
-		host: bbc,
-		port: 80,
-		path: '/programmes/'+parent.pid+'/children.json',
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			'Accept': 'application/json'
-		}
-	};
-	getJSON(options,function(stateCode,obj) {
-		if (stateCode == 200) {
-			//console.log(JSON.stringify(parent,null,2));
-			//console.log(JSON.stringify(obj,null,2));
-			for (var i in obj.children.programmes) {
-				//process.stdout.write('.');
-				var p = obj.children.programmes[i];
-				p.ancestor = parent;
-				if ((p.type == 'episode') || (p.type == 'clip')) {
-					if (p.available_until) {
-						//console.log(JSON.stringify(p,null,2));
-						payload.results.push(p);
-					}
-				}
-				else {
-					// brand or series
-					//console.log('Recursing to '+p.pid);
-					//console.log(JSON.stringify(p,null,2));
-					var job = {};
-					job.pid = p.pid;
-					job.done = false;
-					payload.source.push(job);
-					list(payload,p);
-				}
-			}
-		}
-		else {
-			var ecc = (parent.expected_child_count ? parent.expected_child_count : 0);
-			if (ecc>0) console.log('Inner '+parent.pid+' '+stateCode+' '+parent.title+' ecc: '+ecc);
-		}
-		clear(parent.pid,payload);
-	});
-}
-
 module.exports = {
 	/**
 	 * getJSON:  REST get request returning JSON object(s)
@@ -292,10 +243,6 @@ module.exports = {
 			callback(hit);
 		}
 	},
-
-	bbc: bbc,
-
-	list : list,
 
 	finish : finish,
 

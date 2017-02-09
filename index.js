@@ -7,6 +7,7 @@ app.use(compression());
 app.set('view engine', 'ejs');
 
 var common = require('./common');
+var progs = require('./progs.js');
 var nitro = require('./nitro');
 var ibl = require('./ibl');
 var pid = require('./pidInspector');
@@ -19,38 +20,6 @@ var sky = require('./skyProxy.js');
 var itv = require('./itv.js');
 
 var globalCache = {};
-
-function children(obj,payload) {
-	var deferred = 0;
-	payload.source = [];
-	payload.results = [];
-	if ((obj.category_slice) && (obj.category_slice.programmes)) {
-		for (var i=0;i<obj.category_slice.programmes.length;i++) {
-			var p = obj.category_slice.programmes[i];
-
-			if ((p.type == 'episode') || (p.type == 'clip')) {
-				payload.results.push(p);
-				//if (payload.results.length == 1) {
-				//  console.log(JSON.stringify(p,null,2));
-				//}
-			}
-			else if ((p.type == 'brand') || (p.type == 'series')) {
-				//console.log(JSON.stringify(p,null,2));
-				deferred++;
-				var job = {};
-				job.done = false;
-				job.pid = p.pid;
-				payload.source.push(job);
-				common.list(payload,p);
-			}
-		}
-	}
-	if (deferred<=0) {
-		console.log('Empty or all episodes');
-		common.finish(payload);
-	}
-	return payload.results;
-}
 
 app.get('/dynamic/hitCounter.js', function(req,res) {
 	common.getHitCounter(function(hits) {
@@ -173,86 +142,11 @@ app.get('/rss/:domain/:feed.rss', function (req, res) {
 });
 
 app.get('/rss/:domain/pid/:pid.rss', function(req, res) {
-	var payload = {};
-	payload.res = res;
-	payload.finish = common.finish;
-	payload.domain = req.params.domain; //original not modified
-	payload.prefix = 'pid';
-	payload.feed = req.params.pid;
-	payload.source = [];
-	payload.results = [];
-	var job = {};
-	job.done = false;
-	job.pid = req.params.pid;
-	payload.source.push(job);
-	var p = {};
-	p.pid = req.params.pid;
-	common.list(payload,p);
+	progs.getPid(req,res);
 });
 
 app.get('/rss/:domain/:prefix/:feed.rss', function (req, res) {
-	//. http://expressjs.com/en/api.html#req
-	//. http://expressjs.com/en/api.html#res
-
-	// req.path (string)
-	// req.query (object)
-	console.log(req.path);
-	for (var h in req.headers) {
-		console.log(h+': '+req.headers[h]);
-	}
-
-	var domain = req.params.domain;
-	var prefix = req.params.prefix;
-	var feed = req.params.feed;
-
-	if (domain == 'tv') {
-		domain = '';
-	}
-	else {
-		domain = '/radio';
-	}
-	var mode = '/genres';
-	if (prefix == 'formats') {
-		mode = '/formats';
-		prefix = '';
-	}
-
-	if (feed == 'all') {
-		feed = prefix;
-		feed = '';
-	}
-
-	var options = {
-		host: common.bbc,
-		port: 80,
-		path: domain+'/programmes'+mode+(prefix ? '/'+prefix : '')+(feed ? '/'+feed : '')+'/player.json',
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			'Accept': 'application/json'
-		}
-	};
-
-	common.getJSON(options,function(stateCode,obj) {
-		if (stateCode == 200) {
-			//feed = (prefix ? prefix : 'formats') + (feed ? '/' + feed : '');
-			var payload = {};
-			payload.res = res;
-			payload.finish = common.finish;
-			payload.domain = req.params.domain; //original not modified
-			payload.prefix = prefix ? prefix : 'formats';
-			payload.feed = feed;
-			children(obj,payload);
-		}
-		else {
-			var data = {};
-			data.stateCode = stateCode;
-			res.render('fnf',data);
-		}
-	});
-
-	common.updateHitCounter();
-
+	progs.getProgrammes(req,res);
 });
 
 var myport = process.env.PORT || 3000;
