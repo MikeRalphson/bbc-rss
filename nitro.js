@@ -188,6 +188,7 @@ function programmesByCategory(req,res,options) {
 			payload.results = payload.cache[key].results;
 		}
 		common.finish(payload);
+		payload.results = [];
 	}
 
     sdk.make_request(host,api.nitroProgrammes,apikey,query,{},function(obj){
