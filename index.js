@@ -18,6 +18,8 @@ var channel4 = require('./channel4.js');
 var sky = require('./skyProxy.js');
 var itv = require('./itv.js');
 
+var globalCache = {};
+
 function children(obj,payload) {
 	var deferred = 0;
 	payload.source = [];
@@ -139,11 +141,19 @@ app.get('/rss/tv/accessibility/:category.rss', function(req,res) {
 });
 
 // nitro
-app.get('/rss/:domain/upcoming/:mode/:category.rss', function (req, res) {
-	nitro.programmesByCategory(req,res,{availability:'P30D'});
+app.get('/:service/:domain/upcoming/:mode/:category.rss', function (req, res) {
+	var options = {availability:'P30D'};
+	if (req.params.service == 'cache') {
+		options.cache = globalCache;
+	}
+	nitro.programmesByCategory(req,res,options);
 });
-app.get('/rss/:domain/available/:mode/:category.rss', function (req, res) {
-	nitro.programmesByCategory(req,res,{availability:'available'});
+app.get('/:service/:domain/available/:mode/:category.rss', function (req, res) {
+	var options = {availability:'available'};
+	if (req.params.service == 'cache') {
+		options.cache = globalCache;
+	}
+	nitro.programmesByCategory(req,res,options);
 });
 
 // compatibility

@@ -116,10 +116,11 @@ function finish(payload) {
 	rss.channel = {};
 	rss.channel.title = 'BBC iPlayer RSS programmes feed - '+payload.prefix + '/' + 
 		(payload.mode ? payload.mode + '/' : '') + (payload.feed ? payload.feed : 'all');
-	rss.channel.link = 'http://bbc-rss.herokuapp.com/rss/'+(payload.domain ? payload.domain+'/' : 
-		'')+(payload.prefix ? encodeURIComponent(payload.prefix)+'/' : '') + 
-		(payload.mode ? payload.mode + '/' : '') +
-		encodeURIComponent(payload.feed ? payload.feed : 'all')+'.rss';
+	rss.channel.link = 'http://bbc-rss.herokuapp.com/'+(payload.service ? payload.service : 'rss')
+		+ '/' + (payload.domain ? payload.domain+'/' : '')
+		+ (payload.prefix ? encodeURIComponent(payload.prefix) + '/' : '') 
+		+ (payload.mode ? payload.mode + '/' : '')
+		+ encodeURIComponent(payload.feed ? payload.feed : 'all')+'.rss';
 	rss.channel["atom:link"] = {};
 	rss.channel["atom:link"]["@rel"] = 'self';
 	rss.channel["atom:link"]["@href"] = rss.channel.link;

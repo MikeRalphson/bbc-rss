@@ -5,7 +5,7 @@ var common = require('./common.js');
 var twitterMap = require('./twittermap.js');
 
 var host = 'programmes.api.bbc.com';
-var key = process.env.nitrokey || 'key';
+var apikey = process.env.nitrokey || 'key';
 
 function saveNitroProgramme(payload,item) {
 	if (item.item_type != 'episode') return;
@@ -79,7 +79,7 @@ function processResults(payload,obj) {
     }
     if (obj.nitro && obj.nitro.pagination && obj.nitro.pagination.next) {
         var newQuery = sdk.queryFrom(obj.nitro.pagination.next.href,true);
-        sdk.make_request(host,api.nitroProgrammes,key,newQuery,{},function(obj){
+        sdk.make_request(host,api.nitroProgrammes,apikey,newQuery,{},function(obj){
             processResults(payload,obj);
         },
         function(err){
@@ -87,22 +87,31 @@ function processResults(payload,obj) {
         });
     }
     else {
-        common.finish(payload);
+		if (payload.cache) {
+			//console.log('Caching results for next call');
+			var entry = {};
+			entry.results = payload.results;
+			entry.timeStamp = new Date();
+			payload.cache[payload.prefix+'/'+payload.feed] = entry;
+		}
+		else {
+        	common.finish(payload);
+		}
     }
 }
 
 function programmesByCategory(req,res,options) {
 
 //params are:
-// mode:string
+// service: rss or cache
+// domain: radio, tv or both
+// mode: genre, format, env or pid
 // category:string
-// domain:string
 //options are:
 // mode: string, overrides req.params.mode
 // availability: string
 
 	if (!options.mode) options.mode = req.params.mode;
-	//console.log('in nitro, mode: '+options.mode);
 
     var payload = {};
     payload.res = res;
@@ -115,6 +124,8 @@ function programmesByCategory(req,res,options) {
  	payload.prefix = (options.availability == 'available' ? 'available' : 'upcoming');
  	payload.pidprefix = (options.availability == 'available' ? 'PID:' : 'uPID:');
 	payload.xmlOffset = 1; // 1 character already sent
+	payload.cache = options.cache;
+	payload.service = req.params.service;
 
 	res.set('Content-Type', 'text/xml');
 	res.write('<');
@@ -170,7 +181,16 @@ function programmesByCategory(req,res,options) {
 		query.add(api.fProgrammesMediaTypeAudio);
 	}
 
-    sdk.make_request(host,api.nitroProgrammes,key,query,{},function(obj){
+	if (payload.cache) {
+		var key = payload.prefix+'/'+payload.feed;
+		if (payload.cache[key]) {
+			//console.log('Returning cached results');
+			payload.results = payload.cache[key].results;
+		}
+		common.finish(payload);
+	}
+
+    sdk.make_request(host,api.nitroProgrammes,apikey,query,{},function(obj){
         processResults(payload,obj);
     },
     function(err){
