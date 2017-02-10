@@ -10,6 +10,9 @@ if (connectionString.indexOf('localhost') <0) {
 	connectionString = connectionString + '?ssl=true';
 }
 
+const MONTH = (1000 * 60 * 60 * 24 * 28);
+const WEEK  = (1000 * 60 * 60 * 24 * 7);
+
 function hasHeader(header, headers) {
 	// snaffled from request module
 	headers = Object.keys(headers || this.headers);
@@ -114,10 +117,11 @@ function finish(payload) {
 	rss.channel = {};
 	rss.channel.title = 'BBC iPlayer RSS programmes feed - '+payload.prefix + '/' + 
 		(payload.mode ? payload.mode + '/' : '') + (payload.feed ? payload.feed : 'all');
-	rss.channel.link = 'http://bbc-rss.herokuapp.com/'+(payload.service ? payload.service : 'rss')
+	rss.channel.link = 'http://bbc-rss.herokuapp.com/'
+		+ (payload.params.service ? payload.params.service : 'rss')
 		+ '/' + (payload.domain ? payload.domain+'/' : '')
 		+ (payload.prefix ? encodeURIComponent(payload.prefix) + '/' : '') 
-		+ (payload.mode ? payload.mode + '/' : '')
+		+ (payload.options.mode ? payload.options.mode + '/' : '')
 		+ encodeURIComponent(payload.feed ? payload.feed : 'all')+'.rss';
 	rss.channel["atom:link"] = {};
 	rss.channel["atom:link"]["@rel"] = 'self';
@@ -246,6 +250,10 @@ module.exports = {
 
 	finish : finish,
 
-	clear : clear
+	clear : clear,
+
+	WEEK : WEEK,
+
+	MONTH : MONTH
 
 };

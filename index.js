@@ -125,6 +125,14 @@ app.get('/:service/:domain/available/:mode/:category.rss', function (req, res) {
 	nitro.programmesByCategory(req,res,options);
 });
 
+app.get('/cache/:domain/short/:mode/:category.rss', function (req, res) {
+	var options = {availability: 'available'};
+	options.cache = globalCache;
+	options.limit = common.WEEK;
+	options.short = true;
+	nitro.programmesByCategory(req,res,options);
+});
+
 // compatibility
 app.get('/rss/:domain/upcoming/:feed.rss', function (req, res) {
 	nitro.programmesByCategory(req,res,{availability:'P30D',mode:'genre'});

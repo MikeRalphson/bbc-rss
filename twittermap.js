@@ -228,6 +228,14 @@ var map = [
     "account": "@BBCWales"
   },
   {
+  	"mid": "bbc_radio_cymru",
+	"account": "@BBCRadioCymru"
+  },
+  {
+  	"mid": "bbc_radio_scotland",
+	"account": "@BBCRadioScot"
+  },
+  {
     "mid": "bbc_radio_wiltshire",
     "account": "@BBCWiltshire"
   },

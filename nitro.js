@@ -7,8 +7,23 @@ var twitterMap = require('./twittermap.js');
 var host = 'programmes.api.bbc.com';
 var apikey = process.env.nitrokey || 'key';
 
+function pubDate(item) {
+	var result = item.updated_time;
+	if (item.availability && item.availability.version_types &&
+		item.availability.version_types.version_type) {
+		result = item.availability.version_types.version_type.start;
+	}
+	return result;
+}
+
+function cacheKey(payload) {
+	return payload.domain+'/'+payload.prefix+'/'+payload.feed;
+}
+
 function saveNitroProgramme(payload,item) {
 	if (item.item_type != 'episode') return;
+	if ((payload.timeStamp - new Date(pubDate(item))) > payload.options.limit) return;
+
     var prefix = (payload.prefix == 'available' ? '' : payload.prefix);
     if (prefix == 'upcoming') {
         prefix = 'Upcoming: ';
@@ -59,10 +74,16 @@ function saveNitroProgramme(payload,item) {
     var p = {};
     p.title = (prefix + ancestors + (item.title ? item.title : '') + ' ' + twitter + ' ' + suffix).trim();
     p.pid = item.pid;
-    p.actual_start = item.updated_time;
+    p.actual_start = pubDate(item);
 	if (item.synopses) {
-   		p.long_synopsis = item.synopses.long ? item.synopses.long : 
-        item.synopses.medium ? item.synopses.medium : item.synopses.short;
+		if (payload.options.short) {
+			if (p.title.toLowerCase().indexOf('podcast')>=0) return;
+			p.long_synopsis = item.synopses.short;
+		}
+		else {
+   			p.long_synopsis = item.synopses.long ? item.synopses.long :
+        		item.synopses.medium ? item.synopses.medium : item.synopses.short;
+		}
 	}
     p.image = {};
     p.image.pid = item.images.image.href.split('=')[1];
@@ -87,12 +108,15 @@ function processResults(payload,obj) {
         });
     }
     else {
-		if (payload.cache) {
-			//console.log('Caching results for next call');
+		if (payload.options.cache) {
 			var entry = {};
 			entry.results = payload.results;
-			entry.timeStamp = new Date();
-			payload.cache[payload.prefix+'/'+payload.feed] = entry;
+			entry.timeStamp = payload.timeStamp;
+			var key = cacheKey(payload);
+			if (!payload.options.cache[key]) {
+				console.log('Caching '+entry.results.length+' items for '+key);
+			}
+			payload.options.cache[key] = entry;
 		}
 		else {
         	common.finish(payload);
@@ -112,25 +136,26 @@ function programmesByCategory(req,res,options) {
 // availability: string
 
 	if (!options.mode) options.mode = req.params.mode;
+	if (!options.limit) options.limit = common.MONTH;
 
     var payload = {};
     payload.res = res;
     payload.finish = common.finish;
     payload.domain = req.params.domain; //original not modified
-    payload.feed = req.params.category;
-	payload.mode = options.mode;
+    payload.feed = req.params.category; // use from params once /progs goes away
+	payload.params = req.params;
+	payload.options = options;
     payload.results = [];
     payload.inFlight = 0;
  	payload.prefix = (options.availability == 'available' ? 'available' : 'upcoming');
  	payload.pidprefix = (options.availability == 'available' ? 'PID:' : 'uPID:');
 	payload.xmlOffset = 1; // 1 character already sent
-	payload.cache = options.cache;
-	payload.service = req.params.service;
+	payload.timeStamp = new Date();
 
 	res.set('Content-Type', 'text/xml');
 	res.write('<');
 
-    var query = sdk.newQuery();
+    var query = options.query || sdk.newQuery();
     query.add(api.fProgrammesPageSize,50,true);
     query.add(api.mProgrammesAncestorTitles);
     query.add(api.mProgrammesAvailableVersions);
@@ -181,11 +206,10 @@ function programmesByCategory(req,res,options) {
 		query.add(api.fProgrammesMediaTypeAudio);
 	}
 
-	if (payload.cache) {
-		var key = payload.prefix+'/'+payload.feed;
-		if (payload.cache[key]) {
-			//console.log('Returning cached results');
-			payload.results = payload.cache[key].results;
+	if (payload.options.cache) {
+		var key = cacheKey(payload);
+		if (payload.options.cache[key]) {
+			payload.results = payload.options.cache[key].results;
 		}
 		common.finish(payload);
 		payload.results = [];
