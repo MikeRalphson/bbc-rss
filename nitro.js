@@ -42,7 +42,8 @@ function saveNitroProgramme(payload,item) {
 				if (offset > 0) {
 					start = new Date(start - (offset * 1000)); // to msec
 				}
-                prefix = start.toString().substr(0,21)+' ';
+				var dateStr = start.toString();
+                prefix = dateStr.substr(0,10)+' '+dateStr.substr(16,5)+' '+dateStr.substr(25,3)+' ';
             }
         }
 
