@@ -18,6 +18,7 @@ var msp = require('./msProxy.js');
 var channel4 = require('./channel4.js');
 var sky = require('./skyProxy.js');
 var itv = require('./itv.js');
+var redirect = require('./redirect.json');
 
 var globalCache = {};
 
@@ -154,7 +155,15 @@ app.get('/rss/:domain/pid/:pid.rss', function(req, res) {
 });
 
 app.get('/rss/:domain/:prefix/:feed.rss', function (req, res) {
-	progs.getProgrammes(req,res);
+	var redir = redirect.find(function(e,i,a){
+		return e.from == req.path;
+	});
+	if (redir) {
+		res.redirect(301,redir.to);
+	}
+	else {
+		progs.getProgrammes(req,res);
+	}
 });
 
 var myport = process.env.PORT || 3000;

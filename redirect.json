@@ -1,0 +1,946 @@
+[
+  {
+    "from": "/rss/tv/formats/animation.rss",
+    "to": "/rss/tv/available/format/PT001.rss"
+  },
+  {
+    "from": "/rss/radio/formats/appeals.rss",
+    "to": "/rss/radio/available/format/PT002.rss"
+  },
+  {
+    "from": "/rss/radio/formats/bulletins.rss",
+    "to": "/rss/radio/available/format/PT003.rss"
+  },
+  {
+    "from": "/rss/tv/formats/bulletins.rss",
+    "to": "/rss/tv/available/format/PT003.rss"
+  },
+  {
+    "from": "/rss/radio/comedy/all.rss",
+    "to": "/rss/radio/available/genre/C00193.rss"
+  },
+  {
+    "from": "/rss/tv/comedy/all.rss",
+    "to": "/rss/tv/available/genre/C00193.rss"
+  },
+  {
+    "from": "/rss/radio/comedy/character.rss",
+    "to": "/rss/radio/available/genre/C00202.rss"
+  },
+  {
+    "from": "/rss/tv/comedy/character.rss",
+    "to": "/rss/tv/available/genre/C00202.rss"
+  },
+  {
+    "from": "/rss/radio/comedy/impressionists.rss",
+    "to": "/rss/radio/available/genre/C00194.rss"
+  },
+  {
+    "from": "/rss/tv/comedy/impressionists.rss",
+    "to": "/rss/tv/available/genre/C00194.rss"
+  },
+  {
+    "from": "/rss/radio/comedy/music.rss",
+    "to": "/rss/radio/available/genre/C00203.rss"
+  },
+  {
+    "from": "/rss/tv/comedy/music.rss",
+    "to": "/rss/tv/available/genre/C00203.rss"
+  },
+  {
+    "from": "/rss/radio/comedy/satire.rss",
+    "to": "/rss/radio/available/genre/C00195.rss"
+  },
+  {
+    "from": "/rss/tv/comedy/satire.rss",
+    "to": "/rss/tv/available/genre/C00195.rss"
+  },
+  {
+    "from": "/rss/radio/comedy/sitcoms.rss",
+    "to": "/rss/radio/available/genre/C00196.rss"
+  },
+  {
+    "from": "/rss/tv/comedy/sitcoms.rss",
+    "to": "/rss/tv/available/genre/C00196.rss"
+  },
+  {
+    "from": "/rss/radio/comedy/sketch.rss",
+    "to": "/rss/radio/available/genre/C00197.rss"
+  },
+  {
+    "from": "/rss/tv/comedy/sketch.rss",
+    "to": "/rss/tv/available/genre/C00197.rss"
+  },
+  {
+    "from": "/rss/radio/comedy/spoof.rss",
+    "to": "/rss/radio/available/genre/C00198.rss"
+  },
+  {
+    "from": "/rss/tv/comedy/spoof.rss",
+    "to": "/rss/tv/available/genre/C00198.rss"
+  },
+  {
+    "from": "/rss/radio/comedy/standup.rss",
+    "to": "/rss/radio/available/genre/C00199.rss"
+  },
+  {
+    "from": "/rss/tv/comedy/standup.rss",
+    "to": "/rss/tv/available/genre/C00199.rss"
+  },
+  {
+    "from": "/rss/radio/comedy/stunt.rss",
+    "to": "/rss/radio/available/genre/C00204.rss"
+  },
+  {
+    "from": "/rss/tv/comedy/stunt.rss",
+    "to": "/rss/tv/available/genre/C00204.rss"
+  },
+  {
+    "from": "/rss/radio/formats/discussionandtalk.rss",
+    "to": "/rss/radio/available/format/PT004.rss"
+  },
+  {
+    "from": "/rss/tv/formats/discussionandtalk.rss",
+    "to": "/rss/tv/available/format/PT004.rss"
+  },
+  {
+    "from": "/rss/radio/formats/docudramas.rss",
+    "to": "/rss/radio/available/format/PT005.rss"
+  },
+  {
+    "from": "/rss/tv/formats/docudramas.rss",
+    "to": "/rss/tv/available/format/PT005.rss"
+  },
+  {
+    "from": "/rss/radio/formats/documentaries.rss",
+    "to": "/rss/radio/available/genre/PT006.rss"
+  },
+  {
+    "from": "/rss/tv/formats/documentaries.rss",
+    "to": "/rss/tv/available/genre/PT006.rss"
+  },
+  {
+    "from": "/rss/radio/drama/all.rss",
+    "to": "/rss/radio/available/genre/C00017.rss"
+  },
+  {
+    "from": "/rss/tv/drama/all.rss",
+    "to": "/rss/tv/available/genre/C00017.rss"
+  },
+  {
+    "from": "/rss/radio/drama/actionandadventure.rss",
+    "to": "/rss/radio/available/genre/C00018.rss"
+  },
+  {
+    "from": "/rss/tv/drama/actionandadventure.rss",
+    "to": "/rss/tv/available/genre/C00018.rss"
+  },
+  {
+    "from": "/rss/radio/drama/biographical.rss",
+    "to": "/rss/radio/available/genre/C00019.rss"
+  },
+  {
+    "from": "/rss/tv/drama/biographical.rss",
+    "to": "/rss/tv/available/genre/C00019.rss"
+  },
+  {
+    "from": "/rss/radio/drama/classicandperiod.rss",
+    "to": "/rss/radio/available/genre/C00020.rss"
+  },
+  {
+    "from": "/rss/tv/drama/classicandperiod.rss",
+    "to": "/rss/tv/available/genre/C00020.rss"
+  },
+  {
+    "from": "/rss/radio/drama/crime.rss",
+    "to": "/rss/radio/available/genre/C00021.rss"
+  },
+  {
+    "from": "/rss/tv/drama/crime.rss",
+    "to": "/rss/tv/available/genre/C00021.rss"
+  },
+  {
+    "from": "/rss/radio/drama/historical.rss",
+    "to": "/rss/radio/available/genre/C00024.rss"
+  },
+  {
+    "from": "/rss/tv/drama/historical.rss",
+    "to": "/rss/tv/available/genre/C00024.rss"
+  },
+  {
+    "from": "/rss/radio/drama/horrorandsupernatural.rss",
+    "to": "/rss/radio/available/genre/C00025.rss"
+  },
+  {
+    "from": "/rss/tv/drama/horrorandsupernatural.rss",
+    "to": "/rss/tv/available/genre/C00025.rss"
+  },
+  {
+    "from": "/rss/radio/drama/legalandcourtroom.rss",
+    "to": "/rss/radio/available/genre/C00026.rss"
+  },
+  {
+    "from": "/rss/tv/drama/legalandcourtroom.rss",
+    "to": "/rss/tv/available/genre/C00026.rss"
+  },
+  {
+    "from": "/rss/radio/drama/medical.rss",
+    "to": "/rss/radio/available/genre/C00028.rss"
+  },
+  {
+    "from": "/rss/tv/drama/medical.rss",
+    "to": "/rss/tv/available/genre/C00028.rss"
+  },
+  {
+    "from": "/rss/radio/drama/musical.rss",
+    "to": "/rss/radio/available/genre/C00029.rss"
+  },
+  {
+    "from": "/rss/tv/drama/musical.rss",
+    "to": "/rss/tv/available/genre/C00029.rss"
+  },
+  {
+    "from": "/rss/radio/drama/political.rss",
+    "to": "/rss/radio/available/genre/C00031.rss"
+  },
+  {
+    "from": "/rss/tv/drama/political.rss",
+    "to": "/rss/tv/available/genre/C00031.rss"
+  },
+  {
+    "from": "/rss/radio/drama/psychological.rss",
+    "to": "/rss/radio/available/genre/C00032.rss"
+  },
+  {
+    "from": "/rss/tv/drama/psychological.rss",
+    "to": "/rss/tv/available/genre/C00032.rss"
+  },
+  {
+    "from": "/rss/radio/drama/relationshipsandromance.rss",
+    "to": "/rss/radio/available/genre/C00034.rss"
+  },
+  {
+    "from": "/rss/tv/drama/relationshipsandromance.rss",
+    "to": "/rss/tv/available/genre/C00034.rss"
+  },
+  {
+    "from": "/rss/radio/drama/scifiandfantasy.rss",
+    "to": "/rss/radio/available/genre/C00035.rss"
+  },
+  {
+    "from": "/rss/tv/drama/scifiandfantasy.rss",
+    "to": "/rss/tv/available/genre/C00035.rss"
+  },
+  {
+    "from": "/rss/radio/drama/soaps.rss",
+    "to": "/rss/radio/available/genre/C00036.rss"
+  },
+  {
+    "from": "/rss/tv/drama/soaps.rss",
+    "to": "/rss/tv/available/genre/C00036.rss"
+  },
+  {
+    "from": "/rss/radio/drama/spiritual.rss",
+    "to": "/rss/radio/available/genre/C00033.rss"
+  },
+  {
+    "from": "/rss/tv/drama/spiritual.rss",
+    "to": "/rss/tv/available/genre/C00033.rss"
+  },
+  {
+    "from": "/rss/radio/drama/thriller.rss",
+    "to": "/rss/radio/available/genre/C00037.rss"
+  },
+  {
+    "from": "/rss/tv/drama/thriller.rss",
+    "to": "/rss/tv/available/genre/C00037.rss"
+  },
+  {
+    "from": "/rss/radio/drama/waranddisaster.rss",
+    "to": "/rss/radio/available/genre/C00038.rss"
+  },
+  {
+    "from": "/rss/tv/drama/waranddisaster.rss",
+    "to": "/rss/tv/available/genre/C00038.rss"
+  },
+  {
+    "from": "/rss/radio/drama/western.rss",
+    "to": "/rss/radio/available/genre/C00039.rss"
+  },
+  {
+    "from": "/rss/tv/drama/western.rss",
+    "to": "/rss/tv/available/genre/C00039.rss"
+  },
+  {
+    "from": "/rss/radio/entertainment/all.rss",
+    "to": "/rss/radio/available/genre/C00200.rss"
+  },
+  {
+    "from": "/rss/tv/entertainment.rss",
+    "to": "/rss/tv/available/genre/C00200.rss"
+  },
+  {
+    "from": "/rss/radio/entertainment/varietyshows.rss",
+    "to": "/rss/radio/available/genre/C00201.rss"
+  },
+  {
+    "from": "/rss/tv/entertainment/varietyshows.rss",
+    "to": "/rss/tv/available/genre/C00201.rss"
+  },
+  {
+    "from": "/rss/radio/factual/all.rss",
+    "to": "/rss/radio/available/genre/C00045.rss"
+  },
+  {
+    "from": "/rss/tv/factual/all.rss",
+    "to": "/rss/tv/available/genre/C00045.rss"
+  },
+  {
+    "from": "/rss/radio/factual/antiques.rss",
+    "to": "/rss/radio/available/genre/C00048.rss"
+  },
+  {
+    "from": "/rss/tv/factual/antiques.rss",
+    "to": "/rss/tv/available/genre/C00048.rss"
+  },
+  {
+    "from": "/rss/radio/factual/artscultureandthemedia.rss",
+    "to": "/rss/radio/available/genre/C00046.rss"
+  },
+  {
+    "from": "/rss/tv/factual/artscultureandthemedia.rss",
+    "to": "/rss/tv/available/genre/C00046.rss"
+  },
+  {
+    "from": "/rss/radio/factual/beautyandstyle.rss",
+    "to": "/rss/radio/available/genre/C00049.rss"
+  },
+  {
+    "from": "/rss/tv/factual/beautyandstyle.rss",
+    "to": "/rss/tv/available/genre/C00049.rss"
+  },
+  {
+    "from": "/rss/radio/factual/carsandmotors.rss",
+    "to": "/rss/radio/available/genre/C00052.rss"
+  },
+  {
+    "from": "/rss/tv/factual/carsandmotors.rss",
+    "to": "/rss/tv/available/genre/C00052.rss"
+  },
+  {
+    "from": "/rss/radio/factual/consumer.rss",
+    "to": "/rss/radio/available/genre/C00054.rss"
+  },
+  {
+    "from": "/rss/tv/factual/consumer.rss",
+    "to": "/rss/tv/available/genre/C00054.rss"
+  },
+  {
+    "from": "/rss/radio/factual/crimeandjustice.rss",
+    "to": "/rss/radio/available/genre/C00062.rss"
+  },
+  {
+    "from": "/rss/tv/factual/crimeandjustice.rss",
+    "to": "/rss/tv/available/genre/C00062.rss"
+  },
+  {
+    "from": "/rss/radio/factual/disability.rss",
+    "to": "/rss/radio/available/genre/C00124.rss"
+  },
+  {
+    "from": "/rss/tv/factual/disability.rss",
+    "to": "/rss/tv/available/genre/C00124.rss"
+  },
+  {
+    "from": "/rss/radio/factual/familiesandrelationships.rss",
+    "to": "/rss/radio/available/genre/C00056.rss"
+  },
+  {
+    "from": "/rss/tv/factual/familiesandrelationships.rss",
+    "to": "/rss/tv/available/genre/C00056.rss"
+  },
+  {
+    "from": "/rss/radio/factual/foodanddrink.rss",
+    "to": "/rss/radio/available/genre/C00057.rss"
+  },
+  {
+    "from": "/rss/tv/factual/foodanddrink.rss",
+    "to": "/rss/tv/available/genre/C00057.rss"
+  },
+  {
+    "from": "/rss/radio/factual/healthandwellbeing.rss",
+    "to": "/rss/radio/available/genre/C00059.rss"
+  },
+  {
+    "from": "/rss/tv/factual/healthandwellbeing.rss",
+    "to": "/rss/tv/available/genre/C00059.rss"
+  },
+  {
+    "from": "/rss/radio/factual/history.rss",
+    "to": "/rss/radio/available/genre/C00060.rss"
+  },
+  {
+    "from": "/rss/tv/factual/history.rss",
+    "to": "/rss/tv/available/genre/C00060.rss"
+  },
+  {
+    "from": "/rss/radio/factual/homesandgardens.rss",
+    "to": "/rss/radio/available/genre/C00061.rss"
+  },
+  {
+    "from": "/rss/tv/factual/homesandgardens.rss",
+    "to": "/rss/tv/available/genre/C00061.rss"
+  },
+  {
+    "from": "/rss/radio/factual/lifestories.rss",
+    "to": "/rss/radio/available/genre/C00050.rss"
+  },
+  {
+    "from": "/rss/tv/factual/lifestories.rss",
+    "to": "/rss/tv/available/genre/C00050.rss"
+  },
+  {
+    "from": "/rss/radio/factual/money.rss",
+    "to": "/rss/radio/available/genre/C00051.rss"
+  },
+  {
+    "from": "/rss/tv/factual/money.rss",
+    "to": "/rss/tv/available/genre/C00051.rss"
+  },
+  {
+    "from": "/rss/radio/factual/petsandanimals.rss",
+    "to": "/rss/radio/available/genre/C00047.rss"
+  },
+  {
+    "from": "/rss/tv/factual/petsandanimals.rss",
+    "to": "/rss/tv/available/genre/C00047.rss"
+  },
+  {
+    "from": "/rss/radio/factual/politics.rss",
+    "to": "/rss/radio/available/genre/C00063.rss"
+  },
+  {
+    "from": "/rss/tv/factual/politics.rss",
+    "to": "/rss/tv/available/genre/C00063.rss"
+  },
+  {
+    "from": "/rss/radio/factual/scienceandnature.rss",
+    "to": "/rss/radio/available/genre/C00064.rss"
+  },
+  {
+    "from": "/rss/tv/factual/scienceandnature.rss",
+    "to": "/rss/tv/available/genre/C00064.rss"
+  },
+  {
+    "from": "/rss/radio/factual/travel.rss",
+    "to": "/rss/radio/available/genre/C00065.rss"
+  },
+  {
+    "from": "/rss/tv/factual/travel.rss",
+    "to": "/rss/tv/available/genre/C00065.rss"
+  },
+  {
+    "from": "/rss/tv/formats/films.rss",
+    "to": "/rss/tv/available/format/PT007.rss"
+  },
+  {
+    "from": "/rss/radio/formats/gamesandquizzes.rss",
+    "to": "/rss/radio/available/format/PT008.rss"
+  },
+  {
+    "from": "/rss/tv/formats/gamesandquizzes.rss",
+    "to": "/rss/tv/available/format/PT008.rss"
+  },
+  {
+    "from": "/rss/radio/learning/all.rss",
+    "to": "/rss/radio/available/genre/C00040.rss"
+  },
+  {
+    "from": "/rss/tv/learning/all.rss",
+    "to": "/rss/tv/available/genre/C00040.rss"
+  },
+  {
+    "from": "/rss/radio/learning/adults.rss",
+    "to": "/rss/radio/available/genre/C00044.rss"
+  },
+  {
+    "from": "/rss/tv/learning/adults.rss",
+    "to": "/rss/tv/available/genre/C00044.rss"
+  },
+  {
+    "from": "/rss/radio/learning/preschool.rss",
+    "to": "/rss/radio/available/genre/C00041.rss"
+  },
+  {
+    "from": "/rss/tv/learning/preschool.rss",
+    "to": "/rss/tv/available/genre/C00041.rss"
+  },
+  {
+    "from": "/rss/radio/learning/primary.rss",
+    "to": "/rss/radio/available/genre/C00042.rss"
+  },
+  {
+    "from": "/rss/tv/learning/primary.rss",
+    "to": "/rss/tv/available/genre/C00042.rss"
+  },
+  {
+    "from": "/rss/radio/learning/secondary.rss",
+    "to": "/rss/radio/available/genre/C00043.rss"
+  },
+  {
+    "from": "/rss/tv/learning/secondary.rss",
+    "to": "/rss/tv/available/genre/C00043.rss"
+  },
+  {
+    "from": "/rss/radio/formats/magazinesandreviews.rss",
+    "to": "/rss/radio/available/format/PT009.rss"
+  },
+  {
+    "from": "/rss/tv/formats/magazinesandreviews.rss",
+    "to": "/rss/tv/available/format/PT009.rss"
+  },
+  {
+    "from": "/rss/tv/formats/makeovers.rss",
+    "to": "/rss/tv/available/format/PT010.rss"
+  },
+  {
+    "from": "/rss/radio/music/all.rss",
+    "to": "/rss/radio/available/genre/C00066.rss"
+  },
+  {
+    "from": "/rss/tv/music/all.rss",
+    "to": "/rss/tv/available/genre/C00066.rss"
+  },
+  {
+    "from": "/rss/radio/music/classicpopandrock.rss",
+    "to": "/rss/radio/available/genre/C00068.rss"
+  },
+  {
+    "from": "/rss/tv/music/classicpopandrock.rss",
+    "to": "/rss/tv/available/genre/C00068.rss"
+  },
+  {
+    "from": "/rss/radio/music/classical.rss",
+    "to": "/rss/radio/available/genre/C00069.rss"
+  },
+  {
+    "from": "/rss/tv/music/classical.rss",
+    "to": "/rss/tv/available/genre/C00069.rss"
+  },
+  {
+    "from": "/rss/radio/music/country.rss",
+    "to": "/rss/radio/available/genre/C00129.rss"
+  },
+  {
+    "from": "/rss/tv/music/country.rss",
+    "to": "/rss/tv/available/genre/C00129.rss"
+  },
+  {
+    "from": "/rss/radio/music/danceandelectronica.rss",
+    "to": "/rss/radio/available/genre/C00070.rss"
+  },
+  {
+    "from": "/rss/tv/music/danceandelectronica.rss",
+    "to": "/rss/tv/available/genre/C00070.rss"
+  },
+  {
+    "from": "/rss/radio/music/desi.rss",
+    "to": "/rss/radio/available/genre/C00133.rss"
+  },
+  {
+    "from": "/rss/tv/music/desi.rss",
+    "to": "/rss/tv/available/genre/C00133.rss"
+  },
+  {
+    "from": "/rss/radio/music/easylisteningsoundtracksandmusicals.rss",
+    "to": "/rss/radio/available/genre/C00071.rss"
+  },
+  {
+    "from": "/rss/tv/music/easylisteningsoundtracksandmusicals.rss",
+    "to": "/rss/tv/available/genre/C00071.rss"
+  },
+  {
+    "from": "/rss/radio/music/folk.rss",
+    "to": "/rss/radio/available/genre/C00136.rss"
+  },
+  {
+    "from": "/rss/tv/music/folk.rss",
+    "to": "/rss/tv/available/genre/C00136.rss"
+  },
+  {
+    "from": "/rss/radio/music/hiphoprnbanddancehall.rss",
+    "to": "/rss/radio/available/genre/C00077.rss"
+  },
+  {
+    "from": "/rss/tv/music/hiphoprnbanddancehall.rss",
+    "to": "/rss/tv/available/genre/C00077.rss"
+  },
+  {
+    "from": "/rss/radio/music/jazzandblues.rss",
+    "to": "/rss/radio/available/genre/C00138.rss"
+  },
+  {
+    "from": "/rss/tv/music/jazzandblues.rss",
+    "to": "/rss/tv/available/genre/C00138.rss"
+  },
+  {
+    "from": "/rss/radio/formats/mixes.rss",
+    "to": "/rss/radio/available/format/PT016.rss"
+  },
+  {
+    "from": "/rss/tv/formats/mixes.rss",
+    "to": "/rss/tv/available/format/PT016.rss"
+  },
+  {
+    "from": "/rss/radio/music/popandchart.rss",
+    "to": "/rss/radio/available/genre/C00075.rss"
+  },
+  {
+    "from": "/rss/tv/music/popandchart.rss",
+    "to": "/rss/tv/available/genre/C00075.rss"
+  },
+  {
+    "from": "/rss/radio/music/rockandindie.rss",
+    "to": "/rss/radio/available/genre/C00076.rss"
+  },
+  {
+    "from": "/rss/tv/music/rockandindie.rss",
+    "to": "/rss/tv/available/genre/C00076.rss"
+  },
+  {
+    "from": "/rss/radio/music/soulandreggae.rss",
+    "to": "/rss/radio/available/genre/C00142.rss"
+  },
+  {
+    "from": "/rss/tv/music/soulandreggae.rss",
+    "to": "/rss/tv/available/genre/C00142.rss"
+  },
+  {
+    "from": "/rss/radio/music/world.rss",
+    "to": "/rss/radio/available/genre/C00078.rss"
+  },
+  {
+    "from": "/rss/tv/music/world.rss",
+    "to": "/rss/tv/available/genre/C00078.rss"
+  },
+  {
+    "from": "/rss/radio/news/all.rss",
+    "to": "/rss/radio/available/genre/C00079.rss"
+  },
+  {
+    "from": "/rss/tv/news/all.rss",
+    "to": "/rss/tv/available/genre/C00079.rss"
+  },
+  {
+    "from": "/rss/radio/formats/performancesandevents.rss",
+    "to": "/rss/radio/available/genre/PT011.rss"
+  },
+  {
+    "from": "/rss/tv/formats/performancesandevents.rss",
+    "to": "/rss/tv/available/genre/PT011.rss"
+  },
+  {
+    "from": "/rss/radio/formats/phoneins.rss",
+    "to": "/rss/radio/available/format/PT012rss.rss"
+  },
+  {
+    "from": "/rss/radio/formats/readings.rss",
+    "to": "/rss/radio/available/format/PT013.rss"
+  },
+  {
+    "from": "/rss/tv/formats/reality.rss",
+    "to": "/rss/tv/available/format/PT014.rss"
+  },
+  {
+    "from": "/rss/radio/sport/all.rss",
+    "to": "/rss/radio/available/genre/C00081.rss"
+  },
+  {
+    "from": "/rss/tv/sport/all.rss",
+    "to": "/rss/tv/available/genre/C00081.rss"
+  },
+  {
+    "from": "/rss/radio/sport/americanfootball.rss",
+    "to": "/rss/radio/available/genre/C00205.rss"
+  },
+  {
+    "from": "/rss/tv/sport/americanfootball.rss",
+    "to": "/rss/tv/available/genre/C00205.rss"
+  },
+  {
+    "from": "/rss/radio/sport/athletics.rss",
+    "to": "/rss/radio/available/genre/C00094.rss"
+  },
+  {
+    "from": "/rss/tv/sport/athletics.rss",
+    "to": "/rss/tv/available/genre/C00094.rss"
+  },
+  {
+    "from": "/rss/radio/sport/baseball.rss",
+    "to": "/rss/radio/available/genre/C00176.rss"
+  },
+  {
+    "from": "/rss/tv/sport/baseball.rss",
+    "to": "/rss/tv/available/genre/C00176.rss"
+  },
+  {
+    "from": "/rss/radio/sport/basketball.rss",
+    "to": "/rss/radio/available/genre/C00099.rss"
+  },
+  {
+    "from": "/rss/tv/sport/basketball.rss",
+    "to": "/rss/tv/available/genre/C00099.rss"
+  },
+  {
+    "from": "/rss/radio/sport/bobsleigh.rss",
+    "to": "/rss/radio/available/genre/C00208.rss"
+  },
+  {
+    "from": "/rss/tv/sport/bobsleigh.rss",
+    "to": "/rss/tv/available/genre/C00208.rss"
+  },
+  {
+    "from": "/rss/radio/sport/boxing.rss",
+    "to": "/rss/radio/available/genre/C00093.rss"
+  },
+  {
+    "from": "/rss/tv/sport/boxing.rss",
+    "to": "/rss/tv/available/genre/C00093.rss"
+  },
+  {
+    "from": "/rss/radio/sport/commonwealthgames.rss",
+    "to": "/rss/radio/available/genre/C00109.rss"
+  },
+  {
+    "from": "/rss/tv/sport/commonwealthgames.rss",
+    "to": "/rss/tv/available/genre/C00109.rss"
+  },
+  {
+    "from": "/rss/radio/sport/cricket.rss",
+    "to": "/rss/radio/available/genre/C00085.rss"
+  },
+  {
+    "from": "/rss/tv/sport/cricket.rss",
+    "to": "/rss/tv/available/genre/C00085.rss"
+  },
+  {
+    "from": "/rss/radio/sport/cycling.rss",
+    "to": "/rss/radio/available/genre/C00097.rss"
+  },
+  {
+    "from": "/rss/tv/sport/cycling.rss",
+    "to": "/rss/tv/available/genre/C00097.rss"
+  },
+  {
+    "from": "/rss/radio/sport/disabilitysport.rss",
+    "to": "/rss/radio/available/genre/C00114.rss"
+  },
+  {
+    "from": "/rss/tv/sport/disabilitysport.rss",
+    "to": "/rss/tv/available/genre/C00114.rss"
+  },
+  {
+    "from": "/rss/radio/sport/football.rss",
+    "to": "/rss/radio/available/genre/C00082.rss"
+  },
+  {
+    "from": "/rss/tv/sport/football.rss",
+    "to": "/rss/tv/available/genre/C00082.rss"
+  },
+  {
+    "from": "/rss/radio/sport/formulaone.rss",
+    "to": "/rss/radio/available/genre/C00192.rss"
+  },
+  {
+    "from": "/rss/tv/sport/formulaone.rss",
+    "to": "/rss/tv/available/genre/C00192.rss"
+  },
+  {
+    "from": "/rss/radio/sport/gaelicgames.rss",
+    "to": "/rss/radio/available/genre/C00115.rss"
+  },
+  {
+    "from": "/rss/tv/sport/gaelicgames.rss",
+    "to": "/rss/tv/available/genre/C00115.rss"
+  },
+  {
+    "from": "/rss/radio/sport/golf.rss",
+    "to": "/rss/radio/available/genre/C00091.rss"
+  },
+  {
+    "from": "/rss/tv/sport/golf.rss",
+    "to": "/rss/tv/available/genre/C00091.rss"
+  },
+  {
+    "from": "/rss/radio/sport/gymnastics.rss",
+    "to": "/rss/radio/available/genre/C00116.rss"
+  },
+  {
+    "from": "/rss/tv/sport/gymnastics.rss",
+    "to": "/rss/tv/available/genre/C00116.rss"
+  },
+  {
+    "from": "/rss/radio/sport/hockey.rss",
+    "to": "/rss/radio/available/genre/C00103.rss"
+  },
+  {
+    "from": "/rss/tv/sport/hockey.rss",
+    "to": "/rss/tv/available/genre/C00103.rss"
+  },
+  {
+    "from": "/rss/radio/sport/horseracing.rss",
+    "to": "/rss/radio/available/genre/C00096.rss"
+  },
+  {
+    "from": "/rss/tv/sport/horseracing.rss",
+    "to": "/rss/tv/available/genre/C00096.rss"
+  },
+  {
+    "from": "/rss/radio/sport/icehockey.rss",
+    "to": "/rss/radio/available/genre/C00104.rss"
+  },
+  {
+    "from": "/rss/tv/sport/icehockey.rss",
+    "to": "/rss/tv/available/genre/C00104.rss"
+  },
+  {
+    "from": "/rss/radio/sport/motorsport.rss",
+    "to": "/rss/radio/available/genre/C00092.rss"
+  },
+  {
+    "from": "/rss/tv/sport/motorsport.rss",
+    "to": "/rss/tv/available/genre/C00092.rss"
+  },
+  {
+    "from": "/rss/radio/sport/netball.rss",
+    "to": "/rss/radio/available/genre/C00118.rss"
+  },
+  {
+    "from": "/rss/tv/sport/netball.rss",
+    "to": "/rss/tv/available/genre/C00118.rss"
+  },
+  {
+    "from": "/rss/radio/sport/olympics.rss",
+    "to": "/rss/radio/available/genre/C00111.rss"
+  },
+  {
+    "from": "/rss/tv/sport/olympics.rss",
+    "to": "/rss/tv/available/genre/C00111.rss"
+  },
+  {
+    "from": "/rss/radio/sport/rowing.rss",
+    "to": "/rss/radio/available/genre/C00105.rss"
+  },
+  {
+    "from": "/rss/tv/sport/rowing.rss",
+    "to": "/rss/tv/available/genre/C00105.rss"
+  },
+  {
+    "from": "/rss/radio/sport/rugbyleague.rss",
+    "to": "/rss/radio/available/genre/C00089.rss"
+  },
+  {
+    "from": "/rss/tv/sport/rugbyleague.rss",
+    "to": "/rss/tv/available/genre/C00089.rss"
+  },
+  {
+    "from": "/rss/radio/sport/rugbyunion.rss",
+    "to": "/rss/radio/available/genre/C00087.rss"
+  },
+  {
+    "from": "/rss/tv/sport/rugbyunion.rss",
+    "to": "/rss/tv/available/genre/C00087.rss"
+  },
+  {
+    "from": "/rss/radio/sport/sailing.rss",
+    "to": "/rss/radio/available/genre/C00106.rss"
+  },
+  {
+    "from": "/rss/tv/sport/sailing.rss",
+    "to": "/rss/tv/available/genre/C00106.rss"
+  },
+  {
+    "from": "/rss/radio/sport/shinty.rss",
+    "to": "/rss/radio/available/genre/C00112.rss"
+  },
+  {
+    "from": "/rss/tv/sport/shinty.rss",
+    "to": "/rss/tv/available/genre/C00112.rss"
+  },
+  {
+    "from": "/rss/radio/sport/snooker.rss",
+    "to": "/rss/radio/available/genre/C00095.rss"
+  },
+  {
+    "from": "/rss/tv/sport/snooker.rss",
+    "to": "/rss/tv/available/genre/C00095.rss"
+  },
+  {
+    "from": "/rss/radio/sport/swimming.rss",
+    "to": "/rss/radio/available/genre/C00108.rss"
+  },
+  {
+    "from": "/rss/tv/sport/swimming.rss",
+    "to": "/rss/tv/available/genre/C00108.rss"
+  },
+  {
+    "from": "/rss/radio/sport/synchronisedswimming.rss",
+    "to": "/rss/radio/available/genre/C00230.rss"
+  },
+  {
+    "from": "/rss/tv/sport/synchronisedswimming.rss",
+    "to": "/rss/tv/available/genre/C00230.rss"
+  },
+  {
+    "from": "/rss/radio/sport/tabletennis.rss",
+    "to": "/rss/radio/available/genre/C00120.rss"
+  },
+  {
+    "from": "/rss/tv/sport/tabletennis.rss",
+    "to": "/rss/tv/available/genre/C00120.rss"
+  },
+  {
+    "from": "/rss/radio/sport/taekwondo.rss",
+    "to": "/rss/radio/available/genre/C00183.rss"
+  },
+  {
+    "from": "/rss/tv/sport/taekwondo.rss",
+    "to": "/rss/tv/available/genre/C00183.rss"
+  },
+  {
+    "from": "/rss/radio/sport/tennis.rss",
+    "to": "/rss/radio/available/genre/C00090.rss"
+  },
+  {
+    "from": "/rss/tv/sport/tennis.rss",
+    "to": "/rss/tv/available/genre/C00090.rss"
+  },
+  {
+    "from": "/rss/radio/sport/triathlon.rss",
+    "to": "/rss/radio/available/genre/C00121.rss"
+  },
+  {
+    "from": "/rss/tv/sport/triathlon.rss",
+    "to": "/rss/tv/available/genre/C00121.rss"
+  },
+  {
+    "from": "/rss/radio/sport/winterolympics.rss",
+    "to": "/rss/radio/available/genre/C00110.rss"
+  },
+  {
+    "from": "/rss/tv/sport/winterolympics.rss",
+    "to": "/rss/tv/available/genre/C00110.rss"
+  },
+  {
+    "from": "/rss/radio/sport/wintersports.rss",
+    "to": "/rss/radio/available/genre/C00123.rss"
+  },
+  {
+    "from": "/rss/tv/sport/wintersports.rss",
+    "to": "/rss/tv/available/genre/C00123.rss"
+  },
+  {
+    "from": "/rss/tv/formats/talentshows.rss",
+    "to": "/rss/tv/available/format/PT015.rss"
+  }
+]
