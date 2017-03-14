@@ -150,8 +150,9 @@ app.get('/rss/:domain/:feed.rss', function (req, res) {
 	res.redirect(301,p);
 });
 
-app.get('/rss/:domain/pid/:pid.rss', function(req, res) {
-	progs.getPid(req,res);
+app.get('/rss/:domain/pid/:category.rss', function(req, res) {
+	//progs.getPid(req,res);
+	nitro.programmesByCategory(req,res,{availability:'available',mode:'pid'});
 });
 
 app.get('/rss/:domain/:prefix/:feed.rss', function (req, res) {
