@@ -34,6 +34,8 @@ function getCategory(req, res) {
 			payload.domain = 'tv';
 			payload.prefix = 'accessibility';
 			payload.feed = req.params.category;
+			payload.params = req.params;
+			payload.options = options;
             payload.results = [];
             payload.inFlight = 0;
 
