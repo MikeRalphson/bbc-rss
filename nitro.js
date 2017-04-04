@@ -1,3 +1,5 @@
+var moment = require('moment-timezone');
+
 var sdk = require('bbcparse/nitroSdk.js');
 var api = require('bbcparse/nitroApi/api.js');
 
@@ -42,8 +44,7 @@ function saveNitroProgramme(payload,item) {
 				if (offset > 0) {
 					start = new Date(start - (offset * 1000)); // to msec
 				}
-				var dateStr = start.toString();
-                prefix = dateStr.substr(0,10)+' '+dateStr.substr(16,5)+' '+dateStr.substr(25,3)+' ';
+				prefix = moment(start).tz('Europe/London').format('ddd MMM Do HH:mm z ');
             }
         }
 
