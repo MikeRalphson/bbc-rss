@@ -29,7 +29,7 @@
     "cheerio": "latest",
     "compression": "^1.6.2",
     "ejs": "^2.5.1",
-    "express": "^4.13.3",
+    "express": "^4.15.5",
     "jgexml": "^0.2.0",
     "moment-timezone": "^0.5.12",
     "openc4": "latest",
