@@ -6,7 +6,7 @@ var pg = require('pg');
 var j2x = require('jgexml/json2xml.js');
 
 var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/main';
-if (connectionString.indexOf('localhost') <0) {
+if ((connectionString !== 'none') && (connectionString.indexOf('localhost') <0)) {
 	connectionString = connectionString + '?ssl=true';
 }
 
@@ -220,6 +220,7 @@ module.exports = {
 
 	updateHitCounter : function() {
 		try {
+			if (connectionString === 'none') throw new Error();
 			var client = new pg.Client(connectionString);
 			client.connect();
 			var query = client.query("UPDATE hitcounter SET hit = hit+1 WHERE app = 'bbc-rss'");
@@ -231,6 +232,7 @@ module.exports = {
 
 	getHitCounter : function(callback) {
 		try {
+			if (connectionString === 'none') throw new Error();
 			var client = new pg.Client(connectionString);
 			client.connect();
 			var query = client.query("SELECT hit FROM hitcounter WHERE app = 'bbc-rss'");
