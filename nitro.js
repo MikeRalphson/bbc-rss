@@ -74,7 +74,6 @@ function saveNitroProgramme(payload,item) {
 	}
 
     var p = {};
-    p.title = (prefix + ancestors + (item.title ? item.title : '') + ' ' + twitter + ' ' + suffix).trim();
     p.pid = item.pid;
     p.actual_start = pubDate(item);
 	if (item.synopses) {
@@ -86,7 +85,18 @@ function saveNitroProgramme(payload,item) {
    			p.long_synopsis = item.synopses.long ? item.synopses.long :
         		item.synopses.medium ? item.synopses.medium : item.synopses.short;
 		}
+        p.short_synopsis = p.long_synopsis||'';
+        if ((p.short_synopsis.length > 140) && (item.synopses.medium || item.synopses.short)) {
+            if (item.synopses.medium) p.short_synopsis = item.synopses.medium;
+            if ((p.short_synopsis.length > 140) && (item.synopses.short)) {
+                p.short_synopsis = item.synopses.short;
+            }
+        }
+        if (p.short_synopsis.length > 140) {
+            p.short_synopsis = p.short_synopsis.substr(0,137)+'...';
+        }
 	}
+    p.title = (prefix + ancestors + (item.title ? item.title : '') + ' ' + twitter + ' ' + suffix + ' - '+p.short_synopsis).trim();
     p.image = {};
     p.image.pid = item.images.image.href.split('=')[1];
 	p.media_type = item.media_type;
