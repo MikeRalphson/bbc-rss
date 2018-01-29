@@ -281,7 +281,20 @@ function midToTwitter(mid) {
 	return '';
 }
 
+function replaceHandle(str) {
+    str = str.split('Neil Gaiman').join('@neilhimself');
+    str = str.split('Dirk Maggs').join('@DirkMaggs');
+    str = str.split('Toby Hadoke').join('@TobyHadoke');
+    str = str.split('Ben Moor').join('@benmoor');
+    str = str.split('Justin Richards').join('@JJCRichards');
+    str = str.split('Nicholas Briggs').join('@BriggsNicholas');
+    str = str.split('Louise Jameson').join('@Lou_Jameson');
+    str = str.split('Sophie Aldred').join('@sophie_aldred');
+    return str;
+}
+
 module.exports = {
-	midToTwitter : midToTwitter
+	midToTwitter : midToTwitter,
+    replaceHandle : replaceHandle
 };
 

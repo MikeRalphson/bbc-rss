@@ -96,7 +96,10 @@ function saveNitroProgramme(payload,item) {
             p.short_synopsis = p.short_synopsis.substr(0,137)+'...';
         }
 	}
+
     p.title = (prefix + ancestors + (item.title ? item.title : '') + ' ' + twitter + ' ' + suffix + ' - '+p.short_synopsis).trim();
+    p.title = twitterMap.replaceHandle(p.title);
+    if (p.title.startsWith('@')) p.title = '.'+p.title;
     p.image = {};
     p.image.pid = item.images.image.href.split('=')[1];
 	p.media_type = item.media_type;
