@@ -290,6 +290,7 @@ function replaceHandle(str) {
     str = str.split('Nicholas Briggs').join('@BriggsNicholas');
     str = str.split('Louise Jameson').join('@Lou_Jameson');
     str = str.split('Sophie Aldred').join('@sophie_aldred');
+    str = str.split('Eoin Colfer').join('@eoincolfer');
     return str;
 }
 

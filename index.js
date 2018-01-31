@@ -6,19 +6,20 @@ var app = express();
 app.use(compression());
 app.set('view engine', 'ejs');
 
-var common = require('./common');
-var progs = require('./progs.js');
-var nitro = require('./nitro');
-var ibl = require('./ibl');
-var pid = require('./pidInspector');
-var searchSuggest = require('./searchSuggest');
-var ssp = require('./searchSuggestProxy');
-var nitroProxy = require('./nitroProxy.js');
-var msp = require('./msProxy.js');
-var channel4 = require('./channel4.js');
-var sky = require('./skyProxy.js');
-var itv = require('./itv.js');
-var redirect = require('./redirect.json');
+const common = require('./common');
+const progs = require('./progs.js');
+const nitro = require('./nitro');
+const ibl = require('./ibl');
+const pid = require('./pidInspector');
+const searchSuggest = require('./searchSuggest');
+const ssp = require('./searchSuggestProxy');
+const nitroProxy = require('./nitroProxy.js');
+const msp = require('./msProxy.js');
+const channel4 = require('./channel4.js');
+const films = require('./films.js');
+const sky = require('./skyProxy.js');
+const itv = require('./itv.js');
+const redirect = require('./redirect.json');
 
 var globalCache = {};
 
@@ -99,6 +100,9 @@ app.get('/rss/channel4/derived/:mode.rss', function (req, res) {
 	req.params.category = 'derived/'+req.params.mode;
 	delete req.params.mode;
 	channel4.getCategory(req,res);
+});
+app.get('/rss/film4/:category.rss', function (req, res) {
+    films.getCategory(req,res);
 });
 
 app.get('/rss/itv/category/:category.rss', function (req, res) {
