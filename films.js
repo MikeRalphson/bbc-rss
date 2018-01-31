@@ -30,9 +30,11 @@ function respond(category,obj,res) {
 	rss.channel.generator = 'openSky by Mermade Software http://github.com/mermade/opensky';
 	rss.channel.item = [];
 
-    if (obj.channels && obj.channels.program) {
-        for (let prog of obj.channels.program) {
-            if ((prog.genre === "6") && (prog.subgenre === "8")) {
+    if (obj.channels) {
+        let channels = toArray(obj.channels);
+        for (let channel of channels) {
+        for (let prog of channel.program) {
+            if ((prog.genre === "6") && ((prog.subgenre === "8"))) { // || (prog.subgenre === "10"))) {
 
 /*
 {"eventid":"5660","channelid":"4044","date":"01\/02\/18","start":"1517496300000","dur":"6600","title":"The Day the Earth Stood Still","shortDesc":"(1951) Sci-fi classic starring Michael Rennie. An alien called Klaatu visits Earth to warn humans to stop warring or risk destroying the planet. But, inevitably, he's met with hostility.","genre":"6","subgenre":"8","edschoice":"false","parentalrating":{"k":"1","v":"U "},"widescreen":"","sound":{"k":"3","v":"Digital surround sound"},"remoteRecordable":"true","record":"1","scheduleStatus":"NOT_STARTED","blackout":"false","movielocator":"null"}
@@ -43,13 +45,25 @@ function respond(category,obj,res) {
                 i.link = 'http://www.channel4.com/programmes/'+encodeURIComponent((prog.title.toLowerCase().split(' ').join('-')));
 		        i.pubDate = new Date(new Number(prog.start)).toUTCString();
                 let prefix = moment(i.pubDate).tz('Europe/London').format('ddd MMM Do HH:mm z ');
-		        i.description = prefix+' on @Film4 '+prog.shortDesc;
+                let chan = '@Film4';
+                if (prog.channelid === "3605") {
+                    chan = '@horror_channel';
+                    i.link = 'http://www.horrorchannel.co.uk/shows.php?title='+encodeURIComponent(prog.title);
+                }
+		        i.description = prefix+' on '+chan+' '+prog.shortDesc;
 		        i.category = 'audio_video';
 		        i.guid = {};
 		        i.guid["@isPermaLink"] = 'false';
 		        i.guid[""] = 'SKYevent:' + prog.channelid+'/'+prog.eventid;
+
+                i.title = i.title + ' ' + i.description;
+                if (i.title.length > 220) {
+                    i.title = i.title.substr(0,220)+'...';
+                }
+
 		        rss.channel.item.push(i);
             }
+        }
         }
     }
 	feed.rss = rss;
@@ -70,7 +84,7 @@ module.exports = {
         query.add('detail',2);
         query.add('dur',2880);
         query.add('time',dateStr);
-        query.add('channels',4044);
+        query.add('channels',"4044,3605");
 		var options = {};
 
 		nitro.make_request('epgservices.sky.com','/tvlistings-proxy/TVListingsProxy/tvlistings.json','',query,options,function(obj){
