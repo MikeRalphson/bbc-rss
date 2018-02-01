@@ -48,7 +48,15 @@ function respond(category,obj,res) {
                 let chan;
                 if (prog.channelid === '4044') {
                     chan = '@Film4';
-                    i.link = 'http://www.channel4.com/programmes/'+encodeURIComponent((prog.title.toLowerCase().split(' ').join('-')));
+                    i.link = 'http://www.channel4.com/programmes/'+encodeURIComponent(prog.title.toLowerCase().split(' ').join('-'));
+                }
+                else if (prog.channelid === "4075") {
+                    chan = '@channel4';
+                    i.link = 'http://www.channel4.com/programmes/'+encodeURIComponent(prog.title.toLowerCase().split(' ').join('-'));
+                }
+                else if (prog.channelid === "4058") {
+                    chan = '@channel5_tv';
+                    i.link = 'http://www.channel5.com/show/'+encodeURIComponent(prog.title.toLowerCase().split(' ').join('-'));
                 }
                 else if (prog.channelid === "3605") {
                     chan = '@horror_channel';
@@ -102,7 +110,7 @@ module.exports = {
         query.add('detail',2);
         query.add('dur',2880);
         query.add('time',dateStr);
-        query.add('channels',"4044,3605,1043,6532");
+        query.add('channels',"4044,4058,4075,3605,1043,6532");
 		var options = {};
 
 		nitro.make_request('epgservices.sky.com','/tvlistings-proxy/TVListingsProxy/tvlistings.json','',query,options,function(obj){
