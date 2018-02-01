@@ -58,6 +58,7 @@ function respond(category,obj,res) {
                     if (desc.toLowerCase().indexOf('scifi')>=0) include = true;
                     if (desc.toLowerCase().indexOf('timetravel')>=0) include = true;
                     if (desc.toLowerCase().indexOf('classic')>=0) include = true;
+                    if (desc.toLowerCase().indexOf('fantasy')>=0) include = true;
                 }
                 else if (prog.channelid === "1043") {
                     chan = '@ITV';
