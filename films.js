@@ -18,13 +18,13 @@ function respond(category,obj,res) {
 	rss['@version'] = '2.0';
 	rss["@xmlns:atom"] = 'http://www.w3.org/2005/Atom';
 	rss.channel = {};
-	rss.channel.title = 'Film4 RSS programmes feed - '+category;
+	rss.channel.title = 'Films RSS programmes feed - '+category;
 	rss.channel.link = 'http://bbc-rss.herokuapp.com/rss/film4/'+category+'.rss';
 	rss.channel["atom:link"] = {};
 	rss.channel["atom:link"]["@rel"] = 'self';
 	rss.channel["atom:link"]["@href"] = rss.channel.link;
 	rss.channel["atom:link"]["@type"] = 'application/rss+xml';
-	rss.channel.description = 'Unofficial Film4 RSS feeds';
+	rss.channel.description = 'Unofficial Films RSS feeds';
 	rss.channel.webMaster = 'mike.ralphson@gmail.com (Mike Ralphson)';
 	rss.channel.pubDate = new Date().toUTCString();
 	rss.channel.generator = 'openSky by Mermade Software http://github.com/mermade/opensky';
@@ -34,21 +34,36 @@ function respond(category,obj,res) {
         let channels = toArray(obj.channels);
         for (let channel of channels) {
         for (let prog of channel.program) {
-            if ((prog.genre === "6") && ((prog.subgenre === "8"))) { // || (prog.subgenre === "10"))) {
+            if ((prog.genre === "6") && ((prog.subgenre === "8") || (prog.subgenre === "10"))) {
 
 /*
 {"eventid":"5660","channelid":"4044","date":"01\/02\/18","start":"1517496300000","dur":"6600","title":"The Day the Earth Stood Still","shortDesc":"(1951) Sci-fi classic starring Michael Rennie. An alien called Klaatu visits Earth to warn humans to stop warring or risk destroying the planet. But, inevitably, he's met with hostility.","genre":"6","subgenre":"8","edschoice":"false","parentalrating":{"k":"1","v":"U "},"widescreen":"","sound":{"k":"3","v":"Digital surround sound"},"remoteRecordable":"true","record":"1","scheduleStatus":"NOT_STARTED","blackout":"false","movielocator":"null"}
 */
 
+                let include = true;
 		        var i = {};
 		        i.title = prog.title;
-                i.link = 'http://www.channel4.com/programmes/'+encodeURIComponent((prog.title.toLowerCase().split(' ').join('-')));
 		        i.pubDate = new Date(new Number(prog.start)).toUTCString();
                 let prefix = moment(i.pubDate).tz('Europe/London').format('ddd MMM Do HH:mm z ');
-                let chan = '@Film4';
-                if (prog.channelid === "3605") {
+                let chan;
+                if (prog.channelid === '4044') {
+                    chan = '@Film4';
+                    i.link = 'http://www.channel4.com/programmes/'+encodeURIComponent((prog.title.toLowerCase().split(' ').join('-')));
+                }
+                else if (prog.channelid === "3605") {
                     chan = '@horror_channel';
                     i.link = 'http://www.horrorchannel.co.uk/shows.php?title='+encodeURIComponent(prog.title);
+                    include = false;
+                    if (prog.shortDesc.toLowerCase().indexOf('sci-fi')>=0) include = true;
+                    if (prog.shortDesc.toLowerCase().indexOf('classic')>=0) include = true;
+                }
+                else if (prog.channelid === "1043") {
+                    chan = '@ITV';
+                    i.link = 'http://www.itv.com/search?q='+encodeURIComponent(prog.title);
+                }
+                else if (prog.channelid === "6532") {
+                    chan = '@itv2';
+                    i.link = 'http://www.itv.com/search?q='+encodeURIComponent(prog.title);
                 }
 		        i.description = prefix+' on '+chan+' '+prog.shortDesc;
 		        i.category = 'audio_video';
@@ -61,7 +76,7 @@ function respond(category,obj,res) {
                     i.title = i.title.substr(0,220)+'...';
                 }
 
-		        rss.channel.item.push(i);
+		        if (include) rss.channel.item.push(i);
             }
         }
         }
@@ -84,7 +99,7 @@ module.exports = {
         query.add('detail',2);
         query.add('dur',2880);
         query.add('time',dateStr);
-        query.add('channels',"4044,3605");
+        query.add('channels',"4044,3605,1043,6532");
 		var options = {};
 
 		nitro.make_request('epgservices.sky.com','/tvlistings-proxy/TVListingsProxy/tvlistings.json','',query,options,function(obj){
