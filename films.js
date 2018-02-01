@@ -34,6 +34,7 @@ function respond(category,obj,res) {
         let channels = toArray(obj.channels);
         for (let channel of channels) {
         for (let prog of channel.program) {
+            // genre "6" is movies, subgenre "8" is scifi, subgenre "10" is horror
             if ((prog.genre === "6") && ((prog.subgenre === "8") || (prog.subgenre === "10"))) {
 
 /*
@@ -61,12 +62,14 @@ function respond(category,obj,res) {
                 else if (prog.channelid === "3605") {
                     chan = '@horror_channel';
                     i.link = 'http://www.horrorchannel.co.uk/shows.php?title='+encodeURIComponent(prog.title);
-                    include = false;
-                    let desc = prog.shortDesc.toLowerCase().split('-').join('');
-                    if (desc.toLowerCase().indexOf('scifi')>=0) include = true;
-                    if (desc.toLowerCase().indexOf('timetravel')>=0) include = true;
-                    if (desc.toLowerCase().indexOf('classic')>=0) include = true;
-                    if (desc.toLowerCase().indexOf('fantasy')>=0) include = true;
+                    if (prog.subgenre === "10") { // horror
+                        include = false;
+                        let desc = prog.shortDesc.toLowerCase().split('-').join('');
+                        if (desc.toLowerCase().indexOf('scifi')>=0) include = true;
+                        if (desc.toLowerCase().indexOf('timetravel')>=0) include = true;
+                        if (desc.toLowerCase().indexOf('classic')>=0) include = true;
+                        if (desc.toLowerCase().indexOf('fantasy')>=0) include = true;
+                    }
                 }
                 else if (prog.channelid === "1043") {
                     chan = '@ITV';
