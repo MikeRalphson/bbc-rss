@@ -54,8 +54,10 @@ function respond(category,obj,res) {
                     chan = '@horror_channel';
                     i.link = 'http://www.horrorchannel.co.uk/shows.php?title='+encodeURIComponent(prog.title);
                     include = false;
-                    if (prog.shortDesc.toLowerCase().indexOf('sci-fi')>=0) include = true;
-                    if (prog.shortDesc.toLowerCase().indexOf('classic')>=0) include = true;
+                    let desc = prog.shortDesc.toLowerCase().split('-').join('');
+                    if (desc.toLowerCase().indexOf('scifi')>=0) include = true;
+                    if (desc.toLowerCase().indexOf('timetravel')>=0) include = true;
+                    if (desc.toLowerCase().indexOf('classic')>=0) include = true;
                 }
                 else if (prog.channelid === "1043") {
                     chan = '@ITV';
