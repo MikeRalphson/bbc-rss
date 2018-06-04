@@ -48,19 +48,19 @@ function respond(category,obj,res) {
                 let prefix = moment(i.pubDate).tz('Europe/London').format('ddd MMM Do HH:mm z ');
                 let chan;
                 if (prog.channelid === '4044') {
-                    chan = '@Film4';
+                    //chan = '@Film4';
                     i.link = 'http://www.channel4.com/programmes/'+encodeURIComponent(prog.title.toLowerCase().split(' ').join('-'));
                 }
                 else if (prog.channelid === "4075") {
-                    chan = '@channel4';
+                    //chan = '@channel4';
                     i.link = 'http://www.channel4.com/programmes/'+encodeURIComponent(prog.title.toLowerCase().split(' ').join('-'));
                 }
                 else if (prog.channelid === "4058") {
-                    chan = '@channel5_tv';
+                    //chan = '@channel5_tv';
                     i.link = 'http://www.channel5.com/show/'+encodeURIComponent(prog.title.toLowerCase().split(' ').join('-'));
                 }
                 else if (prog.channelid === "3605") {
-                    chan = '@horror_channel';
+                    //chan = '@horror_channel';
                     i.link = 'http://www.horrorchannel.co.uk/shows.php?title='+encodeURIComponent(prog.title);
                     if (prog.subgenre === "10") { // horror
                         include = false;
@@ -72,14 +72,14 @@ function respond(category,obj,res) {
                     }
                 }
                 else if (prog.channelid === "1043") {
-                    chan = '@ITV';
+                    //chan = '@ITV';
                     i.link = 'http://www.itv.com/search?q='+encodeURIComponent(prog.title);
                 }
                 else if (prog.channelid === "6532") {
-                    chan = '@itv2';
+                    //chan = '@itv2';
                     i.link = 'http://www.itv.com/search?q='+encodeURIComponent(prog.title);
                 }
-		        i.description = prefix+' on '+chan+' '+prog.shortDesc;
+		        i.description = prefix+' '+prog.shortDesc;
 		        i.category = 'audio_video';
 		        i.guid = {};
 		        i.guid["@isPermaLink"] = 'false';

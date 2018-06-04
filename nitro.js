@@ -4,7 +4,6 @@ var sdk = require('bbcparse/nitroSdk.js');
 var api = require('bbcparse/nitroApi/api.js');
 
 var common = require('./common.js');
-var twitterMap = require('./twittermap.js');
 
 var host = 'programmes.api.bbc.com';
 var apikey = process.env.nitrokey || 'key';
@@ -49,8 +48,6 @@ function saveNitroProgramme(payload,item) {
         }
 
     }
-
-    var twitter = twitterMap.midToTwitter(item.master_brand.mid);
 
     var ancestors = '';
     if (item.ancestor_titles) {
@@ -97,8 +94,7 @@ function saveNitroProgramme(payload,item) {
         }
 	}
 
-    p.title = (prefix + ancestors + (item.title ? item.title : '') + ' ' + twitter + ' ' + suffix + ' - '+p.short_synopsis).trim();
-    p.title = twitterMap.replaceHandle(p.title);
+    p.title = (prefix + ancestors + (item.title ? item.title : '') + ' ' + suffix + ' - '+p.short_synopsis).trim();
     if (p.title.startsWith('@')) p.title = '.'+p.title;
     p.image = {};
     p.image.pid = item.images.image.href.split('=')[1];
