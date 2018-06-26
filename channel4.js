@@ -74,6 +74,7 @@ module.exports = {
 	getCategory : function (req,res) {
 		var query = nitro.newQuery();
 		query.add(c4.commonPlatformC4,'',false);
+        query.add('apikey',process.env.C4_API_KEY);
 
 		var options = {};
 		options.headers = {
@@ -84,7 +85,7 @@ module.exports = {
 
 		var cat = req.params.category;
 
-		nitro.make_request('channel4.com',c4.getCategories4od(cat),'',query,options,function(obj){
+		nitro.make_request('api.channel4.com',c4.getCategories4od(cat),'',query,options,function(obj){
 			var json = x2j.xml2json(obj);
 			respond(cat,json,res);
 		},function(stateCode,obj){
