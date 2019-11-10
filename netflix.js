@@ -72,7 +72,7 @@ function buildXml(searchTerm,catNo) {
       title += ' ('+p.release_year+' '+Math.round(p.duration/60.0)+'m) ';
     }
     else title += ' - ';
-    title += 'on NetFlix ';
+    title += 'on NetFlix. ';
     title += p.description;
     if (title.length >= 260) {
       title = title.substr(0,260)+'...';
