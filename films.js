@@ -79,6 +79,10 @@ function respond(category,obj,res) {
                     //chan = '@itv2';
                     i.link = 'http://www.itv.com/search?q='+encodeURIComponent(prog.title);
                 }
+                else if (prog.channelid === "5252") {
+                    //chan = '@talkingpicstv';
+                    i.link = 'https://talkingpicturestv.co.uk/schedule/';
+                }
 		        i.description = prefix+' '+prog.shortDesc;
 		        i.category = 'audio_video';
 		        i.guid = {};
@@ -113,7 +117,7 @@ module.exports = {
         query.add('detail',2);
         query.add('dur',2880);
         query.add('time',dateStr);
-        query.add('channels',"4044,4058,4075,3605,1043,6532");
+        query.add('channels',"4044,4058,4075,3605,1043,6532,5252");
 		var options = {};
 
 		nitro.make_request('epgservices.sky.com','/tvlistings-proxy/TVListingsProxy/tvlistings.json','',query,options,function(obj){
