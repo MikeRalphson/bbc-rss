@@ -10,7 +10,7 @@ function buildXml(links, page) {
   rss['@version'] = '2.0';
   rss["@xmlns:atom"] = 'http://www.w3.org/2005/Atom';
   rss.channel = {};
-  rss.channel.title = 'AudioPlayGround RSS programmes feed - '+page;
+  rss.channel.title = 'AudioPlayGround RSS feed - '+page;
   rss.channel.link = 'http://bbc-rss.herokuapp.com/rss/apg/'+page+'.rss';
   rss.channel["atom:link"] = {};
   rss.channel["atom:link"]["@rel"] = 'self';
