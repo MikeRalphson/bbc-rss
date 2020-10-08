@@ -36,6 +36,11 @@ function buildXml(links, page) {
     i.guid[""] = link.url;
     i.pubDate = d.toUTCString();
 
+    i.enclosure = {};
+    i.enclosure["@url"] = link.url;
+    i.enclosure["@length"] = 150260;
+    i.enclosure["@type"] = 'audio/mpeg';
+
     rss.channel.item.push(i);
   }
 
