@@ -11,12 +11,12 @@ function buildXml(links, page) {
   rss["@xmlns:atom"] = 'http://www.w3.org/2005/Atom';
   rss.channel = {};
   rss.channel.title = 'AudioPlayGround RSS programmes feed - '+page;
-  rss.channel.link = 'http://bbc-rss.herokuapp.com/rss/netflix/search/'+page+'.rss';
+  rss.channel.link = 'http://bbc-rss.herokuapp.com/rss/apg/'+page+'.rss';
   rss.channel["atom:link"] = {};
   rss.channel["atom:link"]["@rel"] = 'self';
   rss.channel["atom:link"]["@href"] = rss.channel.link;
   rss.channel["atom:link"]["@type"] = 'application/rss+xml';
-  rss.channel.description = 'Unofficial AudioPlayGround lRSS feeds';
+  rss.channel.description = 'Unofficial AudioPlayGround RSS feeds';
   rss.channel.webMaster = 'mike.ralphson@gmail.com (Mike Ralphson)';
   rss.channel.pubDate = new Date().toUTCString();
   rss.channel.generator = 'apg by Mermade Software http://github.com/mermade/bbc-rss';
