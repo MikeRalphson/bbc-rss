@@ -20,6 +20,7 @@ const films = require('./films.js');
 const sky = require('./skyProxy.js');
 const itv = require('./itv.js');
 const netflix = require('./netflix.js');
+const apg = require('./apg.js');
 const redirect = require('./redirect.json');
 
 var globalCache = {};
@@ -126,6 +127,13 @@ app.get('/rss/netflix/search/:search/:max.rss', function (req, res) {
 
 app.get('/rss/netflix/category/:cat.rss', function (req, res) {
     netflix.main('',req.params.cat,0,function(xml){
+      res.setHeader('content-type','text/xml');
+      res.end(xml);
+    });
+});
+
+app.get('/rss/apg/:page.rss', function (req, res) {
+    apg.main(req.params.page,function(xml){
       res.setHeader('content-type','text/xml');
       res.end(xml);
     });

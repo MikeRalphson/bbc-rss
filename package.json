@@ -26,13 +26,13 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "bbcparse": "latest",
-    "cheerio": "latest",
-    "compression": "^1.6.2",
-    "ejs": "^2.5.1",
-    "express": "^4.15.5",
-    "jgexml": "^0.2.0",
-    "moment-timezone": "^0.5.12",
-    "node-fetch": "^2.1.2",
+    "cheerio": "^1.0.0-rc.3",
+    "compression": "^1.7.4",
+    "ejs": "^2.7.4",
+    "express": "^4.17.1",
+    "jgexml": "^0.4.4",
+    "moment-timezone": "^0.5.31",
+    "node-fetch": "^2.6.1",
     "openc4": "latest",
     "pg": "^4.5.6"
   }
