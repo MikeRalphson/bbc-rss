@@ -11,5 +11,5 @@ brands and series. Custom search-driven feeds are also available.
 
 It even suports users with digital watches.
 
-![Screenshot](https://github.com/Mermade/bbc-rss/blob/master/pub/images/screenshot.png?raw=true)
+![Screenshot](https://github.com/MikeRalphson/bbc-rss/blob/main/pub/images/screenshot.png?raw=true)
 
